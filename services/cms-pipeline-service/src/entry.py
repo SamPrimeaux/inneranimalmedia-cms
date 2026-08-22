@@ -28,6 +28,58 @@ def _json_response(payload, status=200):
     return Response.from_json(payload, status=status)
 
 
+def _configured_machine_secrets(env):
+    keys = []
+    seen = set()
+    for name in (
+        "AGENTSAM_BRIDGE_KEY",
+        "INTERNAL_API_SECRET",
+        "INGEST_SECRET",
+        "IAM_SERVICE_KEY",
+        "EXECOS_KEY",
+    ):
+        val = getattr(env, name, None)
+        if val is None:
+            continue
+        s = str(val).strip()
+        if s and s not in seen:
+            seen.add(s)
+            keys.append(s)
+    return keys
+
+
+def _presented_credentials(request):
+    auth = request.headers.get("Authorization") or ""
+    bearer = auth[7:].strip() if auth.startswith("Bearer ") else ""
+    vals = [
+        bearer,
+        request.headers.get("X-Internal-Secret"),
+        request.headers.get("X-Ingest-Secret"),
+        request.headers.get("X-IAM-Service-Key"),
+        request.headers.get("X-ExecOS-Key"),
+    ]
+    out = []
+    seen = set()
+    for v in vals:
+        if not v:
+            continue
+        s = str(v).strip()
+        if s and s not in seen:
+            seen.add(s)
+            out.append(s)
+    return out
+
+
+def _verify_bridge_key(request, env):
+    expected = _configured_machine_secrets(env)
+    if not expected:
+        return False
+    presented = _presented_credentials(request)
+    if not presented:
+        return False
+    return any(p in expected for p in presented)
+
+
 class Default(WorkerEntrypoint):
     async def fetch(self, request):
         url = urlparse(request.url)
@@ -36,6 +88,9 @@ class Default(WorkerEntrypoint):
 
         if path == "/health":
             return _json_response({"ok": True, "service": "iam-cms-pipeline", "runtime": "python"})
+
+        if not _verify_bridge_key(request, self.env):
+            return _json_response({"error": "unauthorized"}, status=401)
 
         if path == "/pipeline/extract-sections" and method == "POST":
             body = await request.json()
