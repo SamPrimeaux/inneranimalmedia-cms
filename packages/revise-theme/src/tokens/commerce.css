@@ -1,0 +1,8 @@
+:root,
+[data-theme="revise"] {
+  --revise-product-gap: clamp(12px, 1.15vw, 18px);
+  --revise-product-media-ratio: 3 / 4;
+  --revise-product-card-min: 250px;
+  --revise-sale: #8f221b;
+  --revise-swatch-size: 18px;
+}

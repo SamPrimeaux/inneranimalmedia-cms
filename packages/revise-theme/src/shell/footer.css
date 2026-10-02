@@ -1,0 +1,60 @@
+[data-theme="revise"] .revise-footer {
+  background: var(--revise-surface-inverse);
+  color: var(--revise-text-inverse);
+}
+
+[data-theme="revise"] .revise-footer__main {
+  min-height: 315px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(140px, .5fr));
+  gap: var(--revise-space-6);
+  padding-block: var(--revise-space-7);
+}
+
+[data-theme="revise"] .revise-footer__brand {
+  max-width: 12ch;
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-display-sm);
+  line-height: 1;
+  letter-spacing: var(--revise-tracking-display);
+}
+
+[data-theme="revise"] .revise-footer__col {
+  display: grid;
+  align-content: start;
+  gap: var(--revise-space-2);
+}
+
+[data-theme="revise"] .revise-footer__col strong {
+  margin-bottom: var(--revise-space-2);
+  font-size: var(--revise-text-xs);
+  letter-spacing: var(--revise-tracking-label);
+  text-transform: uppercase;
+}
+
+[data-theme="revise"] .revise-footer__col a {
+  color: inherit;
+  text-decoration: none;
+  opacity: .74;
+}
+
+[data-theme="revise"] .revise-footer__bottom {
+  min-height: 89px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--revise-space-3);
+  border-top: 1px solid rgba(255,255,255,.16);
+  font-size: var(--revise-text-xs);
+  opacity: .72;
+}
+
+@media (max-width: 760px) {
+  [data-theme="revise"] .revise-footer__main {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  [data-theme="revise"] .revise-footer__brand {
+    grid-column: 1 / -1;
+  }
+}

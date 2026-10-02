@@ -1,0 +1,6 @@
+:root,
+[data-theme="revise"] {
+  --revise-shadow-soft: 0 18px 60px rgba(10, 10, 8, .10);
+  --revise-shadow-panel: 0 24px 80px rgba(10, 10, 8, .18);
+  --revise-shadow-card: 0 12px 30px rgba(10, 10, 8, .08);
+}

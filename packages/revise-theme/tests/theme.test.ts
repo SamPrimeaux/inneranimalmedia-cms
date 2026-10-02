@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import { validateThemeManifest } from "@inneranimalmedia/site-contracts";
 import { reviseThemeManifest } from "../src/runtime/register.js";
+import { reviseShowcaseHome, reviseShowcasePresets } from "../src/presets/showcase.js";
 
 const here = new URL("../", import.meta.url);
 
@@ -30,5 +31,33 @@ describe("Revise foundation", () => {
   it("has an explicit reduced-motion path", async () => {
     const css = await readFile(new URL("src/motion/revise-motion.css", here), "utf8");
     expect(css).toContain("prefers-reduced-motion: reduce");
+  });
+
+  it("ships a directed multi-act showcase instead of a two-section token demo", () => {
+    expect(reviseShowcaseHome.sections.length).toBeGreaterThanOrEqual(23);
+    expect(reviseShowcasePresets.map((preset) => preset.variant)).toEqual(
+      expect.arrayContaining([
+        "revise/sticky-curtain",
+        "revise/wardrobe-rail",
+        "revise/dark-promo-grid",
+        "revise/tabbed-products",
+        "revise/scroll-text-reveal",
+        "revise/parallax-diptych",
+        "revise/hotspot-lookbook",
+        "revise/pinned-pdp",
+        "revise/commerce-marquee",
+        "revise/newsletter",
+      ]),
+    );
+  });
+
+  it("ships the shared overlay choreography and distinct panel shapes", async () => {
+    const css = await readFile(new URL("src/shell/overlays.css", here), "utf8");
+    expect(css).toContain('data-overlay-shape="left-sheet"');
+    expect(css).toContain('data-overlay-shape="right-sheet"');
+    expect(css).toContain('data-overlay-shape="wide-right-sheet"');
+    expect(css).toContain('data-overlay-shape="top-sheet"');
+    expect(css).toContain('data-overlay-shape="anchored-card"');
+    expect(css).toContain("revise-overlay-item-enter");
   });
 });

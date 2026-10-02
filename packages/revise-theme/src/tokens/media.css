@@ -1,0 +1,7 @@
+:root,
+[data-theme="revise"] {
+  --revise-media-radius: 0px;
+  --revise-card-radius: 14px;
+  --revise-media-dim: .28;
+  --revise-media-parallax-scale: 1.12;
+}

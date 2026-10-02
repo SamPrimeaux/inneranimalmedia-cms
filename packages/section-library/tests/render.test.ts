@@ -7,8 +7,32 @@ const context = {
 };
 
 describe("section library", () => {
-  it("registers generic foundation sections", () => {
-    expect(registeredSectionTypes()).toEqual(["media-hero", "statement"]);
+  it("registers the shared semantic showcase vocabulary", () => {
+    expect(registeredSectionTypes()).toEqual([
+      "before-after",
+      "brand-film",
+      "bundle-builder",
+      "campaign-teaser",
+      "collection-split-media",
+      "collection-track",
+      "cta-band",
+      "editorial-grid",
+      "editorial-posts",
+      "faq",
+      "featured-product",
+      "fullscreen-media-product",
+      "logo-track",
+      "marquee",
+      "media-gallery",
+      "media-hero",
+      "shop-the-look",
+      "social-gallery",
+      "split-media",
+      "statement",
+      "stories",
+      "testimonials",
+      "trust-row",
+    ]);
   });
 
   it("keeps full-bleed background separate from contained content", () => {

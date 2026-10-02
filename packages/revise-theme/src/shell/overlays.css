@@ -1,0 +1,226 @@
+[data-theme="revise"] .revise-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--revise-layer-scrim);
+  background: var(--revise-overlay-scrim);
+  backdrop-filter: blur(var(--revise-overlay-blur));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 300ms ease,
+    visibility 0s linear 300ms;
+}
+
+[data-theme="revise"] .revise-scrim[data-state="open"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 300ms ease,
+    visibility 0s;
+}
+
+[data-theme="revise"] [data-overlay] {
+  position: fixed;
+  z-index: var(--revise-layer-overlay);
+  visibility: hidden;
+  background: var(--revise-surface-elevated);
+  color: var(--revise-text-primary);
+  box-shadow: var(--revise-shadow-panel);
+  overscroll-behavior: contain;
+  pointer-events: none;
+}
+
+[data-theme="revise"] [data-overlay][data-state="open"],
+[data-theme="revise"] [data-overlay][data-state="opening"] {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+[data-theme="revise"] [data-overlay-shape="left-sheet"] {
+  top: var(--revise-shell-offset, 89px);
+  bottom: 0;
+  left: 0;
+  width: var(--revise-overlay-menu);
+  transform: translate3d(-100%, 0, 0);
+  transition:
+    transform var(--revise-dur-panel) var(--revise-ease-travel),
+    visibility 0s linear var(--revise-dur-panel);
+}
+
+[data-theme="revise"] [data-overlay-shape="right-sheet"] {
+  inset: 0 0 0 auto;
+  width: var(--revise-overlay-cart);
+  min-height: 100dvh;
+  transform: translate3d(100%, 0, 0);
+  transition:
+    transform var(--revise-dur-panel) var(--revise-ease-travel),
+    visibility 0s linear var(--revise-dur-panel);
+}
+
+[data-theme="revise"] [data-overlay-shape="wide-right-sheet"] {
+  inset: 0 0 0 auto;
+  width: var(--revise-overlay-discover);
+  min-height: 100dvh;
+  transform: translate3d(100%, 0, 0);
+  opacity: 0;
+  transition:
+    transform var(--revise-dur-panel) var(--revise-ease-travel),
+    opacity var(--revise-dur-panel) var(--revise-ease-travel),
+    visibility 0s linear var(--revise-dur-panel);
+}
+
+[data-theme="revise"] [data-overlay-shape="top-sheet"] {
+  top: var(--revise-shell-offset, 89px);
+  left: 0;
+  right: 0;
+  min-height: var(--revise-overlay-search);
+  transform: translate3d(0, -110%, 0);
+  transition:
+    transform var(--revise-dur-control) var(--revise-ease-enter),
+    visibility 0s linear var(--revise-dur-control);
+}
+
+[data-theme="revise"] [data-overlay-shape="anchored-card"] {
+  right: max(var(--revise-overlay-gutter), env(safe-area-inset-right));
+  bottom: max(var(--revise-overlay-gutter), env(safe-area-inset-bottom));
+  width: min(394px, calc(100vw - (var(--revise-overlay-gutter) * 2)));
+  transform: scale(.82) translate3d(0, 18px, 0);
+  transform-origin: 100% 100%;
+  opacity: 0;
+  transition:
+    transform var(--revise-dur-cinematic) var(--revise-ease-cinematic),
+    opacity var(--revise-dur-cinematic) var(--revise-ease-cinematic),
+    visibility 0s linear var(--revise-dur-cinematic);
+}
+
+[data-theme="revise"] [data-overlay][data-state="open"],
+[data-theme="revise"] [data-overlay][data-state="opening"] {
+  transform: none;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+[data-theme="revise"] .revise-overlay__inner {
+  height: 100%;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding:
+    max(var(--revise-space-4), env(safe-area-inset-top))
+    var(--revise-space-5)
+    max(var(--revise-space-5), env(safe-area-inset-bottom));
+}
+
+[data-theme="revise"] .revise-overlay__header {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: var(--revise-space-3);
+  border-bottom: 1px solid var(--revise-border-subtle);
+}
+
+[data-theme="revise"] .revise-overlay__header h2 {
+  margin: 0;
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-display-sm);
+  line-height: 1;
+  letter-spacing: var(--revise-tracking-display);
+}
+
+[data-theme="revise"] .revise-overlay__close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-theme="revise"] [data-overlay][data-state="open"] [data-overlay-item] {
+  animation: revise-overlay-item-enter 600ms var(--revise-ease-enter) both;
+  animation-delay: calc(110ms + (var(--i, 0) * 40ms));
+}
+
+@keyframes revise-overlay-item-enter {
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+html.revise-scroll-locked,
+html.revise-scroll-locked body {
+  overflow: hidden;
+}
+
+[data-theme="revise"] .revise-search-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--revise-space-3);
+  padding: var(--revise-space-4) var(--revise-gutter);
+}
+
+[data-theme="revise"] .revise-search-form input {
+  min-height: 54px;
+  border: 0;
+  border-bottom: 1px solid var(--revise-border-strong);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: max(16px, var(--revise-text-lg));
+}
+
+[data-theme="revise"] .revise-nav-stack__row {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: var(--revise-space-3);
+  border: 0;
+  border-bottom: 1px solid var(--revise-border-subtle);
+  background: transparent;
+  color: inherit;
+  font: 700 var(--revise-text-lg) / 1 var(--revise-font-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-theme="revise"] .revise-nav-stack__row span:last-child {
+  margin-left: auto;
+}
+
+[data-theme="revise"] .revise-cart-empty {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--revise-space-4);
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  [data-theme="revise"] [data-overlay-shape="wide-right-sheet"],
+  [data-theme="revise"] [data-overlay-shape="right-sheet"] {
+    width: 100%;
+  }
+
+  [data-theme="revise"] [data-overlay-shape="anchored-card"] {
+    left: var(--revise-overlay-gutter);
+    right: var(--revise-overlay-gutter);
+    bottom: max(var(--revise-overlay-gutter), env(safe-area-inset-bottom));
+    width: auto;
+    transform-origin: 50% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="revise"] .revise-scrim,
+  [data-theme="revise"] [data-overlay] {
+    transition-duration: 80ms;
+  }
+
+  [data-theme="revise"] [data-overlay][data-state="open"] [data-overlay-item] {
+    animation: none;
+  }
+}

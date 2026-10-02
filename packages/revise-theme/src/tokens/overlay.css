@@ -1,0 +1,10 @@
+:root,
+[data-theme="revise"] {
+  --revise-overlay-scrim: rgba(8, 8, 7, .42);
+  --revise-overlay-blur: 4px;
+  --revise-overlay-menu: min(640px, 100vw);
+  --revise-overlay-cart: min(520px, 100vw);
+  --revise-overlay-discover: min(620px, 92vw);
+  --revise-overlay-search: 128px;
+  --revise-overlay-gutter: 16px;
+}

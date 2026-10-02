@@ -1,5 +1,6 @@
 import "./sections/media-hero.js";
 import "./sections/statement.js";
+import "./sections/showcase.js";
 
 export type { RenderContext } from "./context.js";
 export {
@@ -22,3 +23,5 @@ export {
   renderStatement,
   type StatementData,
 } from "./sections/statement.js";
+
+export * from "./sections/showcase.js";

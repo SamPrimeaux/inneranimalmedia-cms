@@ -1,7 +1,7 @@
 {
   "name": "@inneranimalmedia/revise-theme",
-  "version": "0.1.0",
-  "description": "Revise: framework-independent cinematic editorial commerce theme grammar for InnerAnimalMedia CMS.",
+  "version": "0.2.0",
+  "description": "Revise: portable cinematic editorial commerce theme with directed scroll composition, overlays, motion grammar, and reusable presets.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +25,19 @@
     "./theme.css": "./dist/theme.css",
     "./presets/foundation": "./dist/presets/foundation.json",
     "./presets/sections/media-hero/sticky-curtain": "./dist/presets/media-hero.sticky-curtain.json",
-    "./presets/sections/statement/editorial": "./dist/presets/statement.editorial.json"
+    "./presets/sections/statement/editorial": "./dist/presets/statement.editorial.json",
+    "./runtime": {
+      "types": "./dist/runtime/enhance.d.ts",
+      "default": "./dist/runtime/enhance.js"
+    },
+    "./overlay-manager": {
+      "types": "./dist/runtime/overlay-manager.d.ts",
+      "default": "./dist/runtime/overlay-manager.js"
+    },
+    "./showcase": {
+      "types": "./dist/presets/showcase.d.ts",
+      "default": "./dist/presets/showcase.js"
+    }
   },
   "files": [
     "dist",

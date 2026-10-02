@@ -13,13 +13,20 @@ const tokenFiles = [
   "src/tokens/radius.css",
   "src/tokens/motion.css",
   "src/tokens/z-index.css",
+  "src/tokens/shadow.css",
+  "src/tokens/overlay.css",
+  "src/tokens/commerce.css",
+  "src/tokens/media.css",
 ];
 
 const themeFiles = [
   ...tokenFiles,
   "src/theme/base.css",
   "src/shell/header.css",
+  "src/shell/overlays.css",
+  "src/shell/footer.css",
   "src/variants/sections/foundation.css",
+  "src/variants/sections/showcase.css",
   "src/motion/revise-motion.css",
 ];
 

@@ -65,3 +65,16 @@ The repository-wide portability audit still reports pre-existing blockers in the
 3. Build one overlay lifecycle before menu, cart, search and quick-view variants.
 4. Add the full Revise showcase preset only after the first section groups are proven at mobile, tablet and wide desktop sizes.
 5. Keep donor/provenance material outside public npm tarballs.
+
+
+## 0.2 showcase correction
+
+The first foundation commit proved package boundaries but materially underused
+the captured Radian evidence. The 0.2 correction adds the actual experiential
+system: directed short/tall rhythm, sticky and pinned desktop compositions,
+mobile de-pinning/stacking, horizontal rails, hotspots, tabbed discovery,
+multi-act commerce/editorial pacing, adaptive header state, and the shared
+overlay choreography.
+
+The showcase now uses roughly the same seven-act shape as the reference evidence
+without carrying donor identity or provider authority into Revise.
