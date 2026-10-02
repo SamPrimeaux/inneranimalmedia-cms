@@ -1,0 +1,39 @@
+{
+  "name": "@inneranimalmedia/cms-runtime",
+  "version": "0.1.0",
+  "description": "Portable local runtime and self-describing SQLite contract for Inner Animal Media CMS products.",
+  "type": "module",
+  "bin": {
+    "cms-runtime": "./bin/cms-runtime.mjs"
+  },
+  "exports": {
+    "./manifest-schema": "./schemas/cms-package.v2.schema.json",
+    "./sqlite-schema": "./schemas/sqlite/cms-local-runtime.v1.sql",
+    "./examples/local": "./manifests/cms-package.v2.local.example.json",
+    "./examples/cloudflare": "./manifests/cms-package.v2.cloudflare.example.json"
+  },
+  "files": [
+    "bin/cms-runtime.mjs",
+    "schemas/cms-package.v2.schema.json",
+    "schemas/sqlite/cms-local-runtime.v1.sql",
+    "manifests/cms-package.v2.local.example.json",
+    "manifests/cms-package.v2.cloudflare.example.json",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "python3 -m unittest discover -s test -p 'test_*.py' -v",
+    "audit:portability": "python3 scripts/audit-portability.py . --fail-on high",
+    "pack:check": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamPrimeaux/inneranimalmedia-cms.git"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  }
+}

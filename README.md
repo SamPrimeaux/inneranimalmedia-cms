@@ -22,18 +22,45 @@ Standalone, resellable CMS product — studio editor, section templates, Python 
 
 ## Quick start
 
+### Portable local runtime
+
+Consumers do **not** need this repository checkout. The SQLite schema and runtime
+catalog ship inside `@inneranimalmedia/cms-runtime`.
+
 ```bash
-# Python pipeline (BeautifulSoup + Workers AI)
+mkdir my-site
+cd my-site
+npm install -D @inneranimalmedia/cms-runtime
+
+npx cms-runtime init --project my-site
+npx cms-runtime doctor
+npx cms-runtime tools
+npx cms-runtime skills
+```
+
+Initialization creates only project-relative runtime state:
+
+```text
+.agentsam/cms.sqlite
+.agentsam/cms-content/
+.agentsam/cms/runtime.json
+```
+
+The SQLite database describes its own schema authority, capabilities, tools,
+skills, mutation boundaries, and human/agent operating guides. No developer
+filesystem path is persisted.
+
+### Python pipeline development
+
+The Python pipeline is an optional provider capability for HTML transforms and
+AI-assisted proposals. Local CMS CRUD does not require it.
+
+```bash
 ./scripts/setup-pipeline.sh
 cd services/cms-pipeline-service
 uv run pywrangler dev --port 8788
 curl -s http://127.0.0.1:8788/health
-
-# Deploy pipeline
-uv run pywrangler deploy
 ```
-
-Studio static assets ship to host R2 under `static/dashboard/app/cms/` (see `docs/HOST_INTEGRATION.md`).
 
 ## Docs
 
