@@ -290,19 +290,37 @@ def add_structural(findings: list[Finding], root: Path, texts: dict[str, str]) -
             "manifest compiler markers not found",
         )
 
-    required_tables = {"cms_pages", "cms_page_sections"}
+    required_tables = {"cms_sites", "cms_pages", "cms_sections", "cms_blocks"}
     created_tables: set[str] = set()
-    table_re = re.compile(r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`\"']?([A-Za-z0-9_]+)", re.I)
+    table_re = re.compile(
+        r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[^A-Za-z0-9_]*([A-Za-z0-9_]+)",
+        re.I,
+    )
     for rel, text in texts.items():
         if rel.endswith(".sql"):
             created_tables.update(m.group(1) for m in table_re.finditer(text))
-    missing = sorted(required_tables - created_tables)
-    if missing:
+
+    owns_schema = required_tables.issubset(created_tables)
+    canonical_adapter = texts.get(
+        "services/cms-pipeline-service/src/pipeline/canonical_bootstrap.py",
+        "",
+    )
+    canonical_test = texts.get("test/test_canonical_bootstrap.py", "")
+    has_external_adapter_contract = (
+        "build_canonical_bootstrap" in canonical_adapter
+        and all(name in canonical_adapter for name in required_tables)
+        and "CanonicalBootstrapTests" in canonical_test
+    )
+
+    if not owns_schema and not has_external_adapter_contract:
         add(
-            "STRUCT007", "critical", "data-contract", "services/cms-pipeline-service/src/pipeline/bootstrap.py",
-            "Runtime queries CMS tables that this product repo does not provision.",
-            "Ship portable migrations/schema for the minimum CMS data contract, or define a required external adapter with an executable conformance test.",
-            "missing CREATE TABLE for: " + ", ".join(missing),
+            "STRUCT007",
+            "critical",
+            "data-contract",
+            "services/cms-pipeline-service/src/pipeline/canonical_bootstrap.py",
+            "Runtime data contract is neither package-provisioned nor covered by an executable external-adapter contract.",
+            "Ship portable migrations for cms-core or keep an explicit adapter plus conformance tests for the required CMS tables.",
+            "required logical tables: " + ", ".join(sorted(required_tables)),
         )
 
     studio_calls_api = any("/api/cms/" in text for rel, text in texts.items() if rel.startswith("studio/"))

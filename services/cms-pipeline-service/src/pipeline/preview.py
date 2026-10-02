@@ -19,15 +19,15 @@ def inject_bootstrap_script(html: str, data: dict[str, Any], *, global_name: str
 
 def studio_bootstrap_payload(
     *,
-    project_slug: str,
+    project_id: str,
     page_id: str | None,
     bootstrap: dict[str, Any],
     preview_urls: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     return {
-        "project_slug": project_slug,
-        "page_id": page_id,
+        "schema": "inneranimalmedia.cms.studio-bootstrap.v2",
+        "project": {"id": project_id},
+        "page": {"id": page_id} if page_id else None,
         "bootstrap": bootstrap,
         "preview_urls": preview_urls or {},
-        "lane": "python-cms-pipeline",
     }

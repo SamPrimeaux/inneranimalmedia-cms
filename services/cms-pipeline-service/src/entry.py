@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 from workers import WorkerEntrypoint, Response
 
 from pipeline.agent_prototype import propose_sections
-from pipeline.bootstrap import build_bootstrap, fetch_page_sections
+from pipeline.canonical_bootstrap import build_canonical_bootstrap, fetch_sections
 from pipeline.html_sections import (
     default_sections_from_template,
     extract_body_inner,
@@ -22,62 +22,11 @@ from pipeline.html_sections import (
     section_names_from_html,
 )
 from pipeline.preview import inject_bootstrap_script, studio_bootstrap_payload
+from pipeline.runtime_contract import resolve_object_store, verify_bridge_key
 
 
 def _json_response(payload, status=200):
     return Response.from_json(payload, status=status)
-
-
-def _configured_machine_secrets(env):
-    keys = []
-    seen = set()
-    for name in (
-        "AGENTSAM_BRIDGE_KEY",
-        "INTERNAL_API_SECRET",
-        "INGEST_SECRET",
-        "IAM_SERVICE_KEY",
-        "EXECOS_KEY",
-    ):
-        val = getattr(env, name, None)
-        if val is None:
-            continue
-        s = str(val).strip()
-        if s and s not in seen:
-            seen.add(s)
-            keys.append(s)
-    return keys
-
-
-def _presented_credentials(request):
-    auth = request.headers.get("Authorization") or ""
-    bearer = auth[7:].strip() if auth.startswith("Bearer ") else ""
-    vals = [
-        bearer,
-        request.headers.get("X-Internal-Secret"),
-        request.headers.get("X-Ingest-Secret"),
-        request.headers.get("X-IAM-Service-Key"),
-        request.headers.get("X-ExecOS-Key"),
-    ]
-    out = []
-    seen = set()
-    for v in vals:
-        if not v:
-            continue
-        s = str(v).strip()
-        if s and s not in seen:
-            seen.add(s)
-            out.append(s)
-    return out
-
-
-def _verify_bridge_key(request, env):
-    expected = _configured_machine_secrets(env)
-    if not expected:
-        return False
-    presented = _presented_credentials(request)
-    if not presented:
-        return False
-    return any(p in expected for p in presented)
 
 
 class Default(WorkerEntrypoint):
@@ -89,7 +38,7 @@ class Default(WorkerEntrypoint):
         if path == "/health":
             return _json_response({"ok": True, "service": "iam-cms-pipeline", "runtime": "python"})
 
-        if not _verify_bridge_key(request, self.env):
+        if not verify_bridge_key(request, self.env):
             return _json_response({"error": "unauthorized"}, status=401)
 
         if path == "/pipeline/extract-sections" and method == "POST":
@@ -116,41 +65,44 @@ class Default(WorkerEntrypoint):
             return _json_response({"html": out})
 
         if path == "/pipeline/bootstrap" and method in ("GET", "POST"):
-            project = ""
+            site_id = ""
             if method == "GET":
                 from urllib.parse import parse_qs
 
-                project = (parse_qs(url.query).get("project_slug") or [""])[0]
+                params = parse_qs(url.query)
+                site_id = (params.get("site_id") or params.get("project_id") or [""])[0]
             else:
                 body = await request.json()
-                project = str(body.get("project_slug") or body.get("project") or "")
+                site_id = str(body.get("site_id") or body.get("project_id") or "")
+            if not site_id:
+                return _json_response({"error": "site_id required"}, status=400)
             if not self.env.DB:
-                return _json_response({"error": "DB binding missing"}, status=503)
-            data = await build_bootstrap(self.env.DB, project)
+                return _json_response({"error": "database capability unavailable"}, status=503)
+            data = await build_canonical_bootstrap(self.env.DB, site_id)
             return _json_response(data)
 
-        if path == "/pipeline/r2-text" and method == "POST":
+        if path in ("/pipeline/object-text", "/pipeline/r2-text") and method == "POST":
             body = await request.json()
-            key = str(body.get("r2_key") or body.get("key") or "").strip()
-            bucket = str(body.get("r2_bucket") or body.get("bucket") or "cms").strip().lower()
+            key = str(body.get("object_key") or body.get("key") or body.get("r2_key") or "").strip()
+            storage_role = str(body.get("storage_role") or "cms_content").strip()
             if not key:
-                return _json_response({"error": "r2_key required"}, status=400)
-            r2 = None
-            if bucket == "cms" and getattr(self.env, "CMS_BUCKET", None):
-                r2 = self.env.CMS_BUCKET
-            elif bucket in ("inneranimalmedia", "dashboard") and getattr(self.env, "ASSETS", None):
-                r2 = self.env.ASSETS
-            elif getattr(self.env, "CMS_BUCKET", None):
-                r2 = self.env.CMS_BUCKET
-            elif getattr(self.env, "ASSETS", None):
-                r2 = self.env.ASSETS
-            if not r2:
-                return _json_response({"error": "R2 binding missing", "bucket": bucket}, status=503)
-            obj = await r2.get(key)
+                return _json_response({"error": "object_key required"}, status=400)
+            store = resolve_object_store(self.env, storage_role)
+            if not store:
+                return _json_response(
+                    {"error": "object storage capability unavailable", "storage_role": storage_role},
+                    status=503,
+                )
+            obj = await store.get(key)
             if not obj:
-                return _json_response({"error": "not_found", "r2_key": key, "r2_bucket": bucket}, status=404)
+                return _json_response(
+                    {"error": "not_found", "object_key": key, "storage_role": storage_role},
+                    status=404,
+                )
             text = await obj.text()
-            return _json_response({"r2_key": key, "r2_bucket": bucket, "text": text})
+            return _json_response(
+                {"object_key": key, "storage_role": storage_role, "text": text}
+            )
 
         if path == "/agent/prototype" and method == "POST":
             if not self.env.AI:
@@ -158,19 +110,19 @@ class Default(WorkerEntrypoint):
             body = await request.json()
             goal = str(body.get("goal") or body.get("prompt") or "").strip()
             page_id = str(body.get("page_id") or "").strip()
-            project = str(body.get("project_slug") or body.get("project") or "").strip()
+            site_id = str(body.get("site_id") or body.get("project_id") or "").strip()
             if not goal:
                 return _json_response({"error": "goal required"}, status=400)
             page = body.get("page") or {}
             sections = body.get("sections")
             if sections is None and page_id and self.env.DB:
-                sections = await fetch_page_sections(self.env.DB, page_id)
+                sections = await fetch_sections(self.env.DB, page_id)
             if sections is None:
                 sections = []
             if not page and page_id and self.env.DB:
                 page = (
                     await self.env.DB.prepare(
-                        "SELECT id, slug, title, route_path, status FROM cms_pages WHERE id = ? LIMIT 1"
+                        "SELECT id, site_id, slug, title, status, type, parent, meta_title, meta_description, sort_order FROM cms_pages WHERE id = ? LIMIT 1"
                     )
                     .bind(page_id)
                     .first()
@@ -179,7 +131,7 @@ class Default(WorkerEntrypoint):
             proposal = await propose_sections(
                 self.env.AI,
                 goal=goal,
-                page=dict(page) if page else {"project_slug": project},
+                page=dict(page) if page else {"site_id": site_id},
                 sections=list(sections),
             )
             return _json_response(proposal)
@@ -187,13 +139,13 @@ class Default(WorkerEntrypoint):
         if path == "/pipeline/studio-bootstrap-html" and method == "POST":
             body = await request.json()
             shell = str(body.get("shell_html") or "")
-            project = str(body.get("project_slug") or "")
+            site_id = str(body.get("site_id") or body.get("project_id") or "")
             page_id = str(body.get("page_id") or "") or None
             bootstrap = body.get("bootstrap")
-            if bootstrap is None and project and self.env.DB:
-                bootstrap = await build_bootstrap(self.env.DB, project)
+            if bootstrap is None and site_id and self.env.DB:
+                bootstrap = await build_canonical_bootstrap(self.env.DB, site_id)
             payload = studio_bootstrap_payload(
-                project_slug=project,
+                project_id=site_id,
                 page_id=page_id,
                 bootstrap=bootstrap or {},
                 preview_urls=body.get("preview_urls") or {},
