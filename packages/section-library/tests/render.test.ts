@@ -146,4 +146,54 @@ describe("section library", () => {
     expect(html).toContain('data-commerce-offer="bundle"');
   });
 
+
+  it("renders resolved brand-film video media without provider assumptions", () => {
+    const videoContext = {
+      theme: "revise",
+      resolveMedia: (key: string) =>
+        key === "film.primary"
+          ? "/media/film.mp4"
+          : key === "film.poster"
+            ? "/media/poster.webp"
+            : null,
+    };
+    const html = renderSection({
+      type: "brand-film",
+      layout: { width: "full", bleed: "media" },
+      data: {
+        heading: "Brand film",
+        mediaKey: "film.primary",
+        posterKey: "film.poster",
+      },
+    }, videoContext);
+
+    expect(html).toContain("<video");
+    expect(html).toContain('src="/media/film.mp4"');
+    expect(html).toContain('poster="/media/poster.webp"');
+    expect(html).toContain("data-brand-film-toggle");
+  });
+
+  it("allows review anchors on reusable campaign and product sections", () => {
+    const collection = renderSection({
+      type: "collection-track",
+      layout: { width: "full", bleed: "none" },
+      data: {
+        anchor: "products-review",
+        heading: "Products",
+        tabs: [{ id: "live", label: "Live", items: [] }],
+      },
+    }, context);
+    const campaign = renderSection({
+      type: "campaign-teaser",
+      layout: { width: "full", bleed: "none" },
+      data: {
+        anchor: "campaign-review",
+        heading: "Campaign",
+      },
+    }, context);
+
+    expect(collection).toContain('id="products-review"');
+    expect(campaign).toContain('id="campaign-review"');
+  });
+
 });

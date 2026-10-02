@@ -1570,3 +1570,19 @@
     min-height: auto;
   }
 }
+
+@media (max-width: 767px) {
+  [data-theme="revise"] .iam-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    padding-inline: 2px;
+  }
+
+  [data-theme="revise"] .iam-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+}

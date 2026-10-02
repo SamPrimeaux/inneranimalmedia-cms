@@ -12,11 +12,15 @@ import {
   reviseShowcasePresets,
 } from "@inneranimalmedia/revise-theme";
 import {
-  completefulCommerceSectionData,
   completefulDemoOffers,
   completefulDemoProducts,
   completefulMedia,
 } from "./fixtures/completeful-merch.js";
+import {
+  buildFnfConceptPage,
+  fnfConceptMedia,
+  fnfConceptShell,
+} from "./fixtures/fnf-concept.js";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (!app) throw new Error("Missing #app");
@@ -75,6 +79,10 @@ const keys = [
   "showcase.social.6",
 ];
 
+const params = new URLSearchParams(window.location.search);
+const fixture = params.get("fixture") ?? "fnf";
+const isFnfConcept = fixture !== "neutral";
+
 const media = new Map(
   keys.map((key, index) => [
     key,
@@ -82,15 +90,14 @@ const media = new Map(
   ]),
 );
 
-for (const [key, url] of completefulMedia) {
-  media.set(key, url);
+if (isFnfConcept) {
+  for (const [key, url] of fnfConceptMedia) media.set(key, url);
+  for (const [key, url] of completefulMedia) media.set(key, url);
 }
 
-const demoPage = structuredClone(reviseShowcaseHome);
-const commerceOffers = demoPage.sections.find((section) => section.type === "commerce-offers");
-if (commerceOffers) {
-  commerceOffers.data = completefulCommerceSectionData;
-}
+const demoPage = isFnfConcept
+  ? buildFnfConceptPage()
+  : structuredClone(reviseShowcaseHome);
 
 const pageHtml = renderPage(demoPage, {
   context: {
@@ -100,11 +107,16 @@ const pageHtml = renderPage(demoPage, {
   presets: presetLibraryFrom(reviseShowcasePresets),
 });
 
-const announcement = [
-  "Free studio dispatch over $150",
-  "Members receive first access",
-  "New volume now available",
-].map((item) => "<span>" + item + "</span>").join("");
+const announcementItems = isFnfConcept
+  ? fnfConceptShell.announcement
+  : [
+      "Free studio dispatch over $150",
+      "Members receive first access",
+      "New volume now available",
+    ];
+const announcement = announcementItems
+  .map((item) => "<span>" + item + "</span>")
+  .join("");
 
 app.innerHTML = [
   '<div data-theme="revise" class="revise-demo">',
@@ -115,10 +127,17 @@ app.innerHTML = [
   '<div class="revise-header__left">',
   '<button class="revise-header__control" type="button" data-overlay-open="menu" aria-label="Open menu">',
   '<span class="revise-burger" aria-hidden="true"></span><span>Menu</span></button>',
-  '<a class="revise-header__link" href="#collection">Shop</a>',
-  '<a class="revise-header__link" href="#world">Editorial</a>',
+  isFnfConcept
+    ? '<a class="revise-header__link" href="#fnf-products">Products</a>'
+    : '<a class="revise-header__link" href="#collection">Shop</a>',
+  isFnfConcept
+    ? '<a class="revise-header__link" href="#fnf-stories">Stories</a>'
+    : '<a class="revise-header__link" href="#world">Editorial</a>',
+  isFnfConcept
+    ? '<a class="revise-header__link" href="#fnf-merch-lab">Product ideas</a>'
+    : '<a class="revise-header__link" href="#merch-lab">Offers</a>',
   "</div>",
-  '<a class="revise-header__brand" href="#">Revise</a>',
+  '<a class="revise-header__brand" href="#">' + (isFnfConcept ? fnfConceptShell.brand : "Revise") + '</a>',
   '<div class="revise-header__right">',
   '<button class="revise-header__control" type="button" data-overlay-open="search"><span>Search</span><b aria-hidden="true">⌕</b></button>',
   '<button class="revise-header__control" type="button" data-overlay-open="discover"><span>Discover</span><b aria-hidden="true">◌</b></button>',
@@ -129,12 +148,24 @@ app.innerHTML = [
   "</main>",
   '<footer class="revise-footer">',
   '<div class="iam-layout-max iam-safe-inline revise-footer__main">',
-  '<div class="revise-footer__brand">Revise / directed commerce + offer lab.</div>',
-  '<div class="revise-footer__col"><strong>Explore</strong><a href="#">New volume</a><a href="#">Objects</a><a href="#">Editorial</a></div>',
-  '<div class="revise-footer__col"><strong>Service</strong><a href="#">Delivery</a><a href="#">Returns</a><a href="#">Care</a></div>',
-  '<div class="revise-footer__col"><strong>Studio</strong><a href="#">About</a><a href="#">Journal</a><a href="#">Contact</a></div>',
+  '<div class="revise-footer__brand">' +
+    (isFnfConcept ? fnfConceptShell.footerBrand : "Revise / directed commerce + offer lab.") +
+    '</div>',
+  isFnfConcept
+    ? '<div class="revise-footer__col"><strong>Explore</strong><a href="#fnf-products">Products</a><a href="#fnf-campaigns">Campaigns</a><a href="#fnf-stories">Stories</a></div>'
+    : '<div class="revise-footer__col"><strong>Explore</strong><a href="#">New volume</a><a href="#">Objects</a><a href="#">Editorial</a></div>',
+  isFnfConcept
+    ? '<div class="revise-footer__col"><strong>Productize</strong><a href="#fnf-merch-lab">Catalog ideas</a><a href="#fnf-products">Live pieces</a><a href="#fnf-stories">Project media</a></div>'
+    : '<div class="revise-footer__col"><strong>Service</strong><a href="#">Delivery</a><a href="#">Returns</a><a href="#">Care</a></div>',
+  isFnfConcept
+    ? '<div class="revise-footer__col"><strong>Direction</strong><a href="#fnf-campaigns">Earned Hours</a><a href="#fnf-campaigns">High Octane</a><a href="#fnf-campaigns">Masters</a></div>'
+    : '<div class="revise-footer__col"><strong>Studio</strong><a href="#">About</a><a href="#">Journal</a><a href="#">Contact</a></div>',
   "</div>",
-  '<div class="iam-layout-max iam-safe-inline revise-footer__bottom"><span>Theme study + Completeful-backed merchandising fixture</span><span>Framework-independent · normalized commerce records · reduced-motion safe</span></div>',
+  '<div class="iam-layout-max iam-safe-inline revise-footer__bottom"><span>' +
+    (isFnfConcept ? fnfConceptShell.footerNote : "Theme study + normalized merchandising fixture") +
+    '</span><span>' +
+    (isFnfConcept ? "Customer concept preview · source status is labeled throughout" : "Framework-independent · normalized commerce records · reduced-motion safe") +
+    '</span></div>',
   "</footer>",
   '<button class="revise-offer-tab" type="button" data-overlay-open="promo">Get the edit</button>',
   '<div class="revise-scrim" data-overlay-scrim data-state="closed"></div>',
@@ -148,9 +179,19 @@ app.innerHTML = [
 
 const revise = enhanceRevise(document);
 
-const previewOverlay = new URLSearchParams(window.location.search).get("overlay");
+const previewOverlay = params.get("overlay");
 if (previewOverlay) {
   requestAnimationFrame(() => revise.overlays.open(previewOverlay));
+}
+
+const previewSection = params.get("section");
+if (previewSection) {
+  const target = document.getElementById(previewSection);
+  const targetSection = target?.closest<HTMLElement>("main > section") ?? target?.closest<HTMLElement>("section");
+  if (targetSection) {
+    document.body.classList.add("revise-section-preview");
+    targetSection.classList.add("is-preview-target");
+  }
 }
 
 document.addEventListener("click", (event) => {
@@ -193,14 +234,28 @@ function menuMarkup() {
     '<div class="revise-overlay__header"><p class="revise-overlay-kicker">Navigation</p>',
     '<button class="revise-overlay__close iam-touch-target" type="button" data-overlay-close aria-label="Close menu">×</button></div>',
     '<nav class="revise-nav-stack" aria-label="Main navigation">',
-    '<button class="revise-nav-stack__row" data-overlay-item style="--i:0"><span>New volume</span><span>→</span></button>',
-    '<button class="revise-nav-stack__row" data-overlay-item style="--i:1"><span>Objects</span><span>→</span></button>',
-    '<button class="revise-nav-stack__row" data-overlay-item style="--i:2"><span>Editorial</span><span>→</span></button>',
-    '<button class="revise-nav-stack__row" data-overlay-item style="--i:3"><span>Archive</span><span>→</span></button>',
+    isFnfConcept
+      ? '<a class="revise-nav-stack__row" data-overlay-item style="--i:0" href="#fnf-products" data-overlay-close><span>Live products</span><span>→</span></a>'
+      : '<button class="revise-nav-stack__row" data-overlay-item style="--i:0"><span>New volume</span><span>→</span></button>',
+    isFnfConcept
+      ? '<a class="revise-nav-stack__row" data-overlay-item style="--i:1" href="#fnf-merch-lab" data-overlay-close><span>Product ideas</span><span>→</span></a>'
+      : '<button class="revise-nav-stack__row" data-overlay-item style="--i:1"><span>Objects</span><span>→</span></button>',
+    isFnfConcept
+      ? '<a class="revise-nav-stack__row" data-overlay-item style="--i:2" href="#fnf-stories" data-overlay-close><span>Project stories</span><span>→</span></a>'
+      : '<button class="revise-nav-stack__row" data-overlay-item style="--i:2"><span>Editorial</span><span>→</span></button>',
+    isFnfConcept
+      ? '<a class="revise-nav-stack__row" data-overlay-item style="--i:3" href="#fnf-campaigns" data-overlay-close><span>Campaign directions</span><span>→</span></a>'
+      : '<button class="revise-nav-stack__row" data-overlay-item style="--i:3"><span>Archive</span><span>→</span></button>',
     "</nav>",
-    '<div class="revise-menu-editorial" data-overlay-item style="--i:4"><span>Find your direction</span>',
-    '<div><img src="/visual-06.svg" alt=""><img src="/visual-09.svg" alt=""><img src="/visual-11.svg" alt=""></div></div>',
-    '<div class="revise-menu-utility" data-overlay-item style="--i:5"><span>USD / US</span><span>Account</span></div>',
+    '<div class="revise-menu-editorial" data-overlay-item style="--i:4"><span>' +
+    (isFnfConcept ? "Existing F&FT source material" : "Find your direction") +
+    '</span>',
+    isFnfConcept
+      ? '<div><img src="' + fnfConceptMedia.get("fnf.hero") + '" alt=""><img src="' + fnfConceptMedia.get("fnf.high-octane") + '" alt=""><img src="' + fnfConceptMedia.get("fnf.build.heli.2") + '" alt=""></div></div>'
+      : '<div><img src="/visual-06.svg" alt=""><img src="/visual-09.svg" alt=""><img src="/visual-11.svg" alt=""></div></div>',
+    '<div class="revise-menu-utility" data-overlay-item style="--i:5"><span>' +
+    (isFnfConcept ? "Lafayette · Louisiana" : "USD / US") +
+    '</span><span>' + (isFnfConcept ? "Concept preview" : "Account") + '</span></div>',
     "</div></aside>",
   ].join("");
 }

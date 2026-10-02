@@ -265,3 +265,36 @@ body {
   font-family: var(--revise-font-display);
   font-size: var(--revise-display-sm);
 }
+
+
+body.revise-section-preview .revise-demo__main {
+  min-height: 100svh;
+  padding-top: 86px;
+}
+
+body.revise-section-preview .revise-demo__main > section {
+  display: none !important;
+}
+
+body.revise-section-preview .revise-demo__main > section.is-preview-target {
+  display: block !important;
+}
+
+body.revise-section-preview .revise-footer,
+body.revise-section-preview .revise-offer-tab {
+  display: none;
+}
+
+body.revise-section-preview .revise-header {
+  top: 8px;
+  color: var(--revise-text-primary);
+  background: color-mix(in srgb, var(--revise-surface-elevated) 90%, transparent);
+  border: 1px solid var(--revise-border-subtle);
+  border-radius: 999px;
+  box-shadow: var(--revise-shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+body.revise-section-preview .revise-announcement {
+  display: none;
+}

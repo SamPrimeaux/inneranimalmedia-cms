@@ -83,6 +83,7 @@ export function renderEditorialGrid(
     eyebrow?: string;
     heading?: string;
     items: MediaItem[];
+    anchor?: string;
   };
   const items = (data.items ?? []).map((item, index) => {
     return [
@@ -101,7 +102,7 @@ export function renderEditorialGrid(
   }).join("");
 
   return [
-    '<div class="iam-editorial-grid">',
+    '<div class="iam-editorial-grid"' + (data.anchor ? ' id="' + escapeHtml(data.anchor) + '"' : "") + '>',
     sectionHead(data.eyebrow, data.heading),
     '<div class="iam-editorial-grid__items">', items, "</div>",
     "</div>",
@@ -152,6 +153,7 @@ export function renderCollectionTrack(
     eyebrow?: string;
     heading?: string;
     tabs: Array<{ id: string; label: string; items: MediaItem[] }>;
+    anchor?: string;
   };
   const tabs = data.tabs ?? [];
   const tabButtons = tabs.map((tab, index) =>
@@ -168,7 +170,8 @@ export function renderCollectionTrack(
   ).join("");
 
   return [
-    '<div class="iam-collection-track" data-tab-group>',
+    '<div class="iam-collection-track" data-tab-group' +
+      (data.anchor ? ' id="' + escapeHtml(data.anchor) + '"' : "") + '>',
     sectionHead(data.eyebrow, data.heading),
     '<div class="iam-tabs" role="tablist">', tabButtons, "</div>",
     panels,
@@ -545,15 +548,26 @@ export function renderBrandFilm(
     heading: string;
     mediaKey?: string;
     mediaAlt?: string;
+    posterKey?: string;
   };
+  const mediaUrl = data.mediaKey ? context.resolveMedia(data.mediaKey) : null;
+  const posterUrl = data.posterKey ? context.resolveMedia(data.posterKey) : null;
+  const isVideo = Boolean(mediaUrl && /\.(?:mp4|webm)(?:\?|$)/i.test(mediaUrl));
+  const media = isVideo
+    ? '<video class="iam-brand-film__media" data-brand-film-video autoplay muted loop playsinline preload="metadata"' +
+      (posterUrl ? ' poster="' + escapeHtml(posterUrl) + '"' : "") +
+      '><source src="' + escapeHtml(mediaUrl ?? "") + '"></video>'
+    : resolveImage(context, data.mediaKey, data.mediaAlt ?? data.heading, "iam-brand-film__media");
   return [
     '<div class="iam-brand-film">',
-    resolveImage(context, data.mediaKey, data.mediaAlt ?? data.heading, "iam-brand-film__media"),
+    media,
     '<div class="iam-brand-film__shade"></div>',
     '<div class="iam-brand-film__copy">',
     data.eyebrow ? '<p class="iam-section-head__eyebrow">' + escapeHtml(data.eyebrow) + "</p>" : "",
     '<h2>' + escapeHtml(data.heading) + "</h2>",
-    '<button type="button" class="iam-brand-film__play iam-touch-target" aria-label="Play film">▶</button>',
+    isVideo
+      ? '<button type="button" class="iam-brand-film__play iam-touch-target" data-brand-film-toggle aria-label="Pause film">Ⅱ</button>'
+      : "",
     "</div></div>",
   ].join("");
 }
@@ -569,9 +583,11 @@ export function renderCampaignTeaser(
     mediaKey?: string;
     mediaAlt?: string;
     action?: Action;
+    anchor?: string;
   };
   return [
-    '<div class="iam-campaign-teaser">',
+    '<div class="iam-campaign-teaser"' +
+      (data.anchor ? ' id="' + escapeHtml(data.anchor) + '"' : "") + '>',
     '<div class="iam-campaign-teaser__copy">',
     data.eyebrow ? '<p class="iam-section-head__eyebrow">' + escapeHtml(data.eyebrow) + "</p>" : "",
     '<h2>' + escapeHtml(data.heading) + "</h2>",

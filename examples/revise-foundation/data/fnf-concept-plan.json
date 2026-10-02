@@ -1,0 +1,282 @@
+{
+  "schema_id": "inneranimalmedia.customer-concept-plan.v1",
+  "version": 1,
+  "customer": "Fuel & Free Time",
+  "source_snapshot": {
+    "date": "2026-10-02",
+    "store": "fuelnfreetime",
+    "sources": [
+      "products",
+      "store_collections",
+      "media_assets",
+      "media_albums",
+      "completeful_catalog_products",
+      "packages/heuristic-theme/presets/fuel-free-time",
+      "packages/heuristic-theme/storefront/about.html",
+      "packages/heuristic-theme/storefront/community.html"
+    ]
+  },
+  "review_urls": {
+    "full_concept": "http://127.0.0.1:4318/?fixture=fnf",
+    "campaign_directions": "http://127.0.0.1:4318/?fixture=fnf&section=fnf-campaigns",
+    "live_and_next_products": "http://127.0.0.1:4318/?fixture=fnf&section=fnf-products",
+    "sourced_product_ideas": "http://127.0.0.1:4318/?fixture=fnf&section=fnf-merch-lab",
+    "project_stories": "http://127.0.0.1:4318/?fixture=fnf&section=fnf-stories",
+    "neutral_revise_theme": "http://127.0.0.1:4318/?fixture=neutral"
+  },
+  "existing_store_truth": {
+    "products": [
+      {
+        "id": 2,
+        "slug": "fuel-n-free-time-tee",
+        "title": "Fuel N Free Time Tee",
+        "status": "active",
+        "price_cents": 3400,
+        "collection": "essentials",
+        "primary_media": "/media/products/shirts/fft-tee-frontside.webp"
+      },
+      {
+        "id": 5,
+        "slug": "fuel-and-adventure-cotton-tee",
+        "title": "Fuel and Adventure Cotton Tee",
+        "status": "active",
+        "price_cents": 0,
+        "collection": null,
+        "primary_media": "/media/archive/shopify-import/photos/IMG_1509.jpg",
+        "review_note": "Active record currently has price_cents=0; do not present as final-priced commerce until corrected."
+      },
+      {
+        "id": 6,
+        "slug": "fuel-n-freetime-hat",
+        "title": "Fresh Till Death",
+        "status": "active",
+        "price_cents": 3499,
+        "collection": "Fuel n Free Time",
+        "primary_media": "/media/products/fuel-n-freetime-hat/fuel-n-freetime-hat.webp"
+      }
+    ],
+    "collections": [
+      {
+        "id": 1,
+        "slug": "high-octane-performance-gear",
+        "title": "High Octane",
+        "status": "active",
+        "eyebrow": "Built for motion",
+        "description": "Performance-minded gear for garage nights, open roads, and redline living.",
+        "image_url": "/assets/presets/fuel-free-time/earned-hours-hero.webp"
+      },
+      {
+        "id": 2,
+        "slug": "masters",
+        "title": "Masters",
+        "status": "active",
+        "eyebrow": "Quiet confidence",
+        "description": "Refined staples for people who have put in the years and earned the hours.",
+        "image_url": "/assets/presets/fuel-free-time/masters.webp"
+      },
+      {
+        "id": 3,
+        "slug": "essentials",
+        "title": "Essentials",
+        "status": "active",
+        "eyebrow": "Repeat wear",
+        "description": "Dependable daily drivers made for early starts, late finishes, and everything after.",
+        "image_url": "/assets/presets/fuel-free-time/essentials.webp"
+      }
+    ],
+    "media_albums": [
+      {
+        "id": 1,
+        "slug": "master-s-collection",
+        "name": "Master's Collection",
+        "asset_count": 5,
+        "review_note": "Visual audit shows dirt-bike/build photography. Do not automatically equate this album with the Masters storefront collection."
+      },
+      {
+        "id": 2,
+        "slug": "helicopter-buildout-project",
+        "name": "Helicopter Buildout Project",
+        "asset_count": 16
+      },
+      {
+        "id": 3,
+        "slug": "helicopter-buildout",
+        "name": "Helicopter Buildout",
+        "asset_count": 11
+      }
+    ]
+  },
+  "catalog_candidates": [
+    {
+      "key": "heavyweight-tee",
+      "completeful_product_id": "47d3afff-3e4c-492a-8e8b-2dcfca38caa1",
+      "source_name": "Unisex Garment-Dyed Heavyweight T-Shirt-Comfort Colors 1717",
+      "fulfillment_cost_cents": 1100,
+      "proposed_retail_cents": 3200,
+      "roles": ["core-product", "drop-anchor"]
+    },
+    {
+      "key": "glass-coffee-can",
+      "completeful_product_id": "ab6f79dd-51de-4c33-9148-9cfec81e3870",
+      "source_name": "16oz Glass Coffee Can",
+      "fulfillment_cost_cents": 700,
+      "proposed_retail_cents": 2400,
+      "roles": ["lifestyle-upsell", "bundle-add-on"]
+    },
+    {
+      "key": "bamboo-sunglasses",
+      "completeful_product_id": "af7b535b-bed4-4c1f-9db3-b09676091842",
+      "source_name": "Bamboo Frame Sunglasses",
+      "fulfillment_cost_cents": 750,
+      "proposed_retail_cents": 2400,
+      "roles": ["accessory-cross-sell", "high-octane"]
+    },
+    {
+      "key": "luggage-tag",
+      "completeful_product_id": "0687f9d6-b826-47e3-adbf-84c331f365d6",
+      "source_name": "Aluminum Luggage Tags",
+      "fulfillment_cost_cents": 400,
+      "proposed_retail_cents": 1600,
+      "roles": ["low-friction-upsell", "travel"]
+    },
+    {
+      "key": "stainless-tumbler",
+      "completeful_product_id": "0dc6cade-4e94-4d30-89c7-c489e136ce1d",
+      "source_name": "16 oz Tumbler - Stainless",
+      "fulfillment_cost_cents": 1150,
+      "proposed_retail_cents": 2800,
+      "roles": ["premium-add-on", "high-octane", "masters"]
+    },
+    {
+      "key": "coffee-mug",
+      "completeful_product_id": "5b3cf047-8af0-4bd8-9397-6cbae9d64490",
+      "source_name": "Coffee Mug",
+      "fulfillment_cost_cents": 450,
+      "proposed_retail_cents": 1800,
+      "roles": ["cart-add-on", "essentials"]
+    },
+    {
+      "key": "framed-decor",
+      "completeful_product_id": "fcc6321b-96c7-4052-8bd8-a695410357bd",
+      "source_name": "1:1 Wooden Framed Decor",
+      "fulfillment_cost_cents": 651,
+      "proposed_retail_cents": 2400,
+      "roles": ["giftable-add-on", "masters"]
+    }
+  ],
+  "campaign_concepts": [
+    {
+      "id": "earned-hours",
+      "label": "Earned Hours",
+      "source_status": "existing-brand-direction-plus-concept-packaging",
+      "visual_keys": ["fnf.hero", "fnf.tee.front", "fnf.tee.back", "fnf.film.garage"],
+      "live_product_ids": [2, 6],
+      "catalog_candidate_keys": ["heavyweight-tee", "glass-coffee-can", "luggage-tag"],
+      "collection_slugs": ["essentials"],
+      "growth_campaign_draft": {
+        "name": "Earned Hours",
+        "goal": "Turn the core F&FT time-is-the-real-horsepower thesis into a measurable apparel + lifestyle launch campaign.",
+        "audience": "Existing F&FT followers, garage/moto/outdoor lifestyle shoppers, and first-time brand visitors.",
+        "priority": "high",
+        "brief": "Lead with the existing Time is the real horsepower and Some chase horsepower. We chase hours. brand language. Anchor with current F&FT apparel, then test simple lifestyle add-ons and bundles without diluting the earned-time story.",
+        "channels": ["homepage", "email", "social"],
+        "approval_mode": "draft_only",
+        "primary_source": "revise_customer_preview",
+        "metadata": {
+          "concept_id": "earned-hours",
+          "preview_section": "fnf-campaigns",
+          "live_product_ids": [2, 6],
+          "catalog_candidate_keys": ["heavyweight-tee", "glass-coffee-can", "luggage-tag"]
+        }
+      }
+    },
+    {
+      "id": "high-octane",
+      "label": "High Octane",
+      "source_status": "existing-active-collection-plus-product-concept",
+      "visual_keys": ["fnf.high-octane", "fnf.graphic.vette", "fnf.build.dirt.1"],
+      "live_product_ids": [2],
+      "catalog_candidate_keys": ["heavyweight-tee", "bamboo-sunglasses", "stainless-tumbler", "luggage-tag"],
+      "collection_slugs": ["high-octane-performance-gear"],
+      "growth_campaign_draft": {
+        "name": "High Octane",
+        "goal": "Build an action/performance campaign around the existing High Octane collection and source imagery.",
+        "audience": "Moto, garage, performance, road-trip, and action-lifestyle shoppers.",
+        "priority": "high",
+        "brief": "Use existing action/machine imagery and the live High Octane collection as the visual anchor. Productize a compact set of apparel + durable accessories that can be merchandised as a collection rather than unrelated catalog items.",
+        "channels": ["homepage", "email", "social"],
+        "approval_mode": "draft_only",
+        "primary_source": "revise_customer_preview",
+        "metadata": {
+          "concept_id": "high-octane",
+          "collection_slug": "high-octane-performance-gear",
+          "catalog_candidate_keys": ["heavyweight-tee", "bamboo-sunglasses", "stainless-tumbler", "luggage-tag"]
+        }
+      }
+    },
+    {
+      "id": "masters",
+      "label": "Masters",
+      "source_status": "existing-active-collection-plus-product-concept",
+      "visual_keys": ["fnf.masters", "fnf.hat"],
+      "live_product_ids": [6],
+      "catalog_candidate_keys": ["stainless-tumbler", "framed-decor"],
+      "collection_slugs": ["masters"],
+      "growth_campaign_draft": {
+        "name": "Masters",
+        "goal": "Position the existing Masters collection as the quieter premium F&FT lane.",
+        "audience": "Repeat customers and shoppers responding to refined, durable, low-noise apparel and giftable pieces.",
+        "priority": "normal",
+        "brief": "Keep the existing quiet-confidence language. Use dark lifestyle photography, premium detail, and fewer products. Avoid automatically using the media album called Master's Collection until that album is reviewed and relabeled.",
+        "channels": ["homepage", "email", "social"],
+        "approval_mode": "draft_only",
+        "primary_source": "revise_customer_preview",
+        "metadata": {
+          "concept_id": "masters",
+          "collection_slug": "masters",
+          "media_album_guard": "Do not auto-bind master-s-collection album."
+        }
+      }
+    },
+    {
+      "id": "project-stories",
+      "label": "Project Stories",
+      "source_status": "concept-using-existing-project-media",
+      "visual_keys": ["fnf.build.heli.1", "fnf.build.heli.2", "fnf.build.heli.3", "fnf.build.dirt.1"],
+      "live_product_ids": [],
+      "catalog_candidate_keys": ["heavyweight-tee"],
+      "media_album_slugs": ["helicopter-buildout", "helicopter-buildout-project", "master-s-collection"],
+      "growth_campaign_draft": {
+        "name": "Project Stories",
+        "goal": "Turn existing build/project galleries into recurring editorial, collaboration, and optional limited-capsule campaign content.",
+        "audience": "Community members who engage with builds, machines, craft, collaborators, and behind-the-scenes work.",
+        "priority": "normal",
+        "brief": "Start with the existing helicopter buildout galleries and dirt-bike build photography. Publish the story first; attach a limited product capsule only where it feels earned.",
+        "channels": ["homepage", "email", "social"],
+        "approval_mode": "draft_only",
+        "primary_source": "revise_customer_preview",
+        "metadata": {
+          "concept_id": "project-stories",
+          "media_album_slugs": ["helicopter-buildout", "helicopter-buildout-project", "master-s-collection"],
+          "product_attachment": "optional"
+        }
+      }
+    }
+  ],
+  "connection_contract": {
+    "campaign_authority": "growth_campaigns",
+    "collection_authority": "store_collections",
+    "product_authority": "products + product_variants",
+    "product_media_authority": "media_assets + product_images",
+    "editorial_media_authority": "media_albums + media_album_assets",
+    "catalog_source": "completeful_catalog_products",
+    "catalog_to_live_product_bridge": "completeful_product_links + completeful_variant_links",
+    "rule": "Preview approval precedes any production campaign/product writes."
+  },
+  "warnings": [
+    "Fuel and Adventure Cotton Tee is active but currently has price_cents=0; validate before customer-facing commerce.",
+    "The media album named master-s-collection visually appears to contain dirt-bike build photography; do not assume it belongs to the Masters storefront collection.",
+    "Completeful retail prices shown in the Revise preview are proposed demo pricing, not provider retail truth.",
+    "Estimated gross margin in the demo uses fulfillment cost only and excludes shipping, payment fees, tax, discounts, and returns."
+  ]
+}

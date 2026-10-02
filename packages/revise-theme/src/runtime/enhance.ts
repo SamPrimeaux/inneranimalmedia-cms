@@ -59,6 +59,44 @@ export function enhanceRevise(root: Document | HTMLElement = document): ReviseEn
     cleanup.push(() => rail.removeEventListener("scroll", update));
   });
 
+  root.querySelectorAll<HTMLElement>(".iam-brand-film").forEach((film) => {
+    const video = film.querySelector<HTMLVideoElement>("[data-brand-film-video]");
+    const toggle = film.querySelector<HTMLButtonElement>("[data-brand-film-toggle]");
+    if (!video || !toggle) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      toggle.textContent = video.paused ? "▶" : "Ⅱ";
+      toggle.setAttribute("aria-label", video.paused ? "Play film" : "Pause film");
+    };
+    const applyMotionPreference = () => {
+      if (reducedMotion.matches) {
+        video.pause();
+      } else {
+        void video.play().catch(() => undefined);
+      }
+      sync();
+    };
+    const onToggle = () => {
+      if (video.paused) void video.play().catch(() => undefined);
+      else video.pause();
+      sync();
+    };
+
+    toggle.addEventListener("click", onToggle);
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    reducedMotion.addEventListener?.("change", applyMotionPreference);
+    applyMotionPreference();
+
+    cleanup.push(() => {
+      toggle.removeEventListener("click", onToggle);
+      video.removeEventListener("play", sync);
+      video.removeEventListener("pause", sync);
+      reducedMotion.removeEventListener?.("change", applyMotionPreference);
+    });
+  });
+
   root.querySelectorAll<HTMLElement>("[data-before-after]").forEach((comparison) => {
     const range = comparison.querySelector<HTMLInputElement>(".iam-before-after__range");
     if (!range) return;
