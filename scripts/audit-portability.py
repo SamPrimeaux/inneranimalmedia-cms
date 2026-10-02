@@ -172,6 +172,8 @@ def classify(path: Path, root: Path) -> str:
     rel = path.relative_to(root).as_posix()
     if rel.startswith("docs/") or rel == "README.md":
         return "docs"
+    if rel.startswith(("test/", "tests/")):
+        return "example"
     if rel.startswith("integration/") or rel.startswith("manifests/") or ".example." in rel or rel.endswith(".example"):
         return "example"
     if path.suffix.lower() in {".json", ".jsonc", ".toml", ".yaml", ".yml"} or path.name.startswith(".env"):
@@ -186,6 +188,16 @@ def adjusted_severity(severity: str, scope: str) -> str:
         return severity
     order = ["info", "low", "medium", "high", "critical"]
     return order[max(0, order.index(severity) - 2)]
+
+
+def is_schema_identity_reference(rule: Rule, rel: str, line: str) -> bool:
+    """Allow branded schema ownership without suppressing runtime deployment origins."""
+    if rule.rule_id != "PORT002":
+        return False
+    if not rel.startswith("schemas/"):
+        return False
+    compact = line.strip()
+    return '"$id"' in compact or "'$id'" in compact
 
 
 def scan_rules(root: Path) -> tuple[list[Finding], dict[str, str]]:
@@ -205,6 +217,8 @@ def scan_rules(root: Path) -> tuple[list[Finding], dict[str, str]]:
                 continue
             for rule in RULES:
                 if scope not in rule.scopes or not rule.pattern.search(line):
+                    continue
+                if is_schema_identity_reference(rule, rel, line):
                     continue
                 findings.append(Finding(
                     rule.rule_id,
