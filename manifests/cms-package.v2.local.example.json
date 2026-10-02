@@ -17,7 +17,7 @@
   },
   "capabilities": {
     "database": {
-      "role": "cms_metadata",
+      "role": "cms_core",
       "provider": "sqlite"
     },
     "objectStorage": {
@@ -40,7 +40,9 @@
   "adapters": {
     "local": {
       "sqlitePath": ".agentsam/cms.sqlite",
-      "contentPath": ".agentsam/cms-content"
+      "contentPath": ".agentsam/cms-content",
+      "mode": "local_authority",
+      "schemaPath": "schemas/sqlite/cms-local-runtime.v1.sql"
     }
   },
   "distribution": {

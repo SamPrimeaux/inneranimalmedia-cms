@@ -161,7 +161,18 @@ def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
 
     if db_provider == "sqlite":
         local = _require_object(adapters.get("local"), "adapters.local")
+        _reject_unknown(
+            local,
+            {"sqlitePath", "contentPath", "mode", "schemaPath"},
+            "adapters.local",
+        )
         _require_string(local.get("sqlitePath"), "adapters.local.sqlitePath")
+        mode = _require_string(local.get("mode"), "adapters.local.mode")
+        if mode not in {"local_authority", "local_working_copy"}:
+            raise ManifestError(
+                "adapters.local.mode must be local_authority or local_working_copy"
+            )
+        _require_string(local.get("schemaPath"), "adapters.local.schemaPath")
     elif db_provider == "d1":
         cloudflare = _require_object(adapters.get("cloudflare"), "adapters.cloudflare")
         _require_string(cloudflare.get("databaseBinding"), "adapters.cloudflare.databaseBinding")

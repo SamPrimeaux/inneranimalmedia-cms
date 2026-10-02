@@ -65,7 +65,9 @@
           "additionalProperties": false,
           "properties": {
             "sqlitePath": { "type": "string", "minLength": 1 },
-            "contentPath": { "type": "string", "minLength": 1 }
+            "contentPath": { "type": "string", "minLength": 1 },
+            "mode": { "enum": ["local_authority", "local_working_copy"] },
+            "schemaPath": { "type": "string", "minLength": 1 }
           }
         },
         "cloudflare": {

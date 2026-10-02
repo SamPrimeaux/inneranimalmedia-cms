@@ -23,7 +23,13 @@ class CmsPackageContractTests(unittest.TestCase):
     def test_local_example_validates_and_compiles(self):
         resolved = validator.validate_manifest(load_example("cms-package.v2.local.example.json"))
         self.assertEqual(resolved["capabilities"]["database"]["provider"], "sqlite")
+        self.assertEqual(resolved["capabilities"]["database"]["role"], "cms_core")
         self.assertEqual(resolved["capabilities"]["objectStorage"]["provider"], "filesystem")
+        self.assertEqual(resolved["adapters"]["local"]["mode"], "local_authority")
+        self.assertEqual(
+            resolved["adapters"]["local"]["schemaPath"],
+            "schemas/sqlite/cms-local-runtime.v1.sql",
+        )
 
     def test_cloudflare_example_uses_bindings_not_resource_ids(self):
         resolved = validator.validate_manifest(load_example("cms-package.v2.cloudflare.example.json"))
