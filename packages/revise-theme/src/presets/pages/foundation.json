@@ -1,0 +1,37 @@
+{
+  "id": "revise-foundation",
+  "type": "page-preset",
+  "theme": "revise",
+  "sections": [
+    {
+      "type": "media-hero",
+      "variant": "revise/sticky-curtain",
+      "data": {
+        "eyebrow": "Revise / Foundation",
+        "heading": "Editorial systems with room to move.",
+        "body": "A portable visual grammar built on shared semantic sections and host-resolved media.",
+        "mediaKey": "home.hero.primary",
+        "mediaAlt": "Abstract folded paper study",
+        "primaryAction": {
+          "label": "Explore the system",
+          "href": "#system"
+        },
+        "secondaryAction": {
+          "label": "View layout roles",
+          "href": "#layout"
+        }
+      },
+      "preset": "revise/sticky-curtain"
+    },
+    {
+      "type": "statement",
+      "variant": "revise/editorial-statement",
+      "data": {
+        "eyebrow": "System",
+        "heading": "Renderer defines geometry. Revise defines character.",
+        "body": "The theme can change color, type, motion, surfaces and interaction treatment without becoming the CMS, the commerce backend or the asset authority."
+      },
+      "preset": "revise/editorial-statement"
+    }
+  ]
+}

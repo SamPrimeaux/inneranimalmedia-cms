@@ -1,0 +1,18 @@
+{
+  "site": {
+    "id": "revise-neutral",
+    "name": "Revise Neutral",
+    "theme": "revise"
+  },
+  "brand": {
+    "name": "Field Notes",
+    "tagline": "Objects, ideas, and useful detail."
+  },
+  "media": {
+    "home.hero.primary": {
+      "key": "home.hero.primary",
+      "type": "image",
+      "alt": "Abstract folded paper study"
+    }
+  }
+}

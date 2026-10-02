@@ -1,0 +1,55 @@
+[data-theme="revise"] {
+  color: var(--revise-text-primary);
+  background: var(--revise-surface-canvas);
+  font-family: var(--revise-font-body);
+  font-size: var(--revise-text-md);
+  line-height: var(--revise-leading-copy);
+  text-rendering: optimizeLegibility;
+}
+
+[data-theme="revise"] *,
+[data-theme="revise"] *::before,
+[data-theme="revise"] *::after {
+  box-sizing: border-box;
+}
+
+[data-theme="revise"] :where(h1, h2, h3, p, figure) {
+  margin-block-start: 0;
+}
+
+[data-theme="revise"] :where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--revise-focus);
+  outline-offset: 3px;
+}
+
+[data-theme="revise"] .iam-action {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--revise-space-4);
+  border: 1px solid var(--revise-border-strong);
+  border-radius: var(--revise-radius-pill);
+  text-decoration: none;
+  font-size: var(--revise-text-sm);
+  font-weight: 650;
+  transition:
+    transform var(--revise-dur-feedback) var(--revise-ease-enter),
+    background var(--revise-dur-feedback) var(--revise-ease-standard),
+    color var(--revise-dur-feedback) var(--revise-ease-standard);
+}
+
+[data-theme="revise"] .iam-action:active {
+  transform: scale(0.985);
+}
+
+[data-theme="revise"] .iam-action--primary {
+  color: var(--revise-action-primary-text);
+  background: var(--revise-action-primary);
+  border-color: var(--revise-action-primary);
+}
+
+[data-theme="revise"] .iam-action--secondary {
+  color: inherit;
+  background: color-mix(in srgb, var(--revise-surface-elevated) 84%, transparent);
+}

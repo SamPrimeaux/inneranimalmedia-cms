@@ -1,0 +1,15 @@
+:root,
+[data-theme="revise"] {
+  --revise-space-1: clamp(4px, 0.5vw, 8px);
+  --revise-space-2: clamp(8px, 0.8vw, 12px);
+  --revise-space-3: clamp(12px, 1.2vw, 18px);
+  --revise-space-4: clamp(18px, 1.8vw, 28px);
+  --revise-space-5: clamp(26px, 2.8vw, 44px);
+  --revise-space-6: clamp(38px, 4vw, 64px);
+  --revise-space-7: clamp(56px, 6vw, 96px);
+  --revise-space-8: clamp(78px, 9vw, 144px);
+
+  --iam-section-y-sm: clamp(48px, 7vw, 80px);
+  --iam-section-y-md: clamp(64px, 9vw, 120px);
+  --iam-section-y-lg: clamp(80px, 11vw, 160px);
+}

@@ -1,0 +1,21 @@
+:root,
+[data-theme="revise"] {
+  --revise-font-display: var(--brand-font-display, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  --revise-font-body: var(--brand-font-body, Inter, ui-sans-serif, system-ui, sans-serif);
+  --revise-font-mono: var(--brand-font-mono, "SFMono-Regular", Consolas, monospace);
+
+  --revise-text-xs: clamp(0.72rem, 0.69rem + 0.12vw, 0.8rem);
+  --revise-text-sm: clamp(0.84rem, 0.8rem + 0.18vw, 0.94rem);
+  --revise-text-md: clamp(1rem, 0.95rem + 0.25vw, 1.12rem);
+  --revise-text-lg: clamp(1.18rem, 1.06rem + 0.55vw, 1.52rem);
+
+  --revise-display-sm: clamp(2rem, 1.62rem + 1.8vw, 3.1rem);
+  --revise-display-md: clamp(2.7rem, 1.9rem + 3.5vw, 4.8rem);
+  --revise-display-lg: clamp(3.4rem, 2rem + 5.8vw, 7rem);
+  --revise-display-xl: clamp(4rem, 2rem + 8vw, 9.5rem);
+
+  --revise-leading-tight: 0.94;
+  --revise-leading-copy: 1.62;
+  --revise-tracking-display: -0.045em;
+  --revise-tracking-label: 0.13em;
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@inneranimalmedia/revise-theme",
+  "version": "0.1.0",
+  "description": "Revise: framework-independent cinematic editorial commerce theme grammar for InnerAnimalMedia CMS.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "*.css",
+    "./dist/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./register": {
+      "types": "./dist/runtime/register.d.ts",
+      "default": "./dist/runtime/register.js"
+    },
+    "./theme.json": "./dist/theme.json",
+    "./capabilities.json": "./dist/capabilities.json",
+    "./compatibility.json": "./dist/compatibility.json",
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./presets/foundation": "./dist/presets/foundation.json",
+    "./presets/sections/media-hero/sticky-curtain": "./dist/presets/media-hero.sticky-curtain.json",
+    "./presets/sections/statement/editorial": "./dist/presets/statement.editorial.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build-assets.mjs",
+    "test": "vitest run",
+    "pack:check": "npm pack --dry-run"
+  },
+  "dependencies": {
+    "@inneranimalmedia/site-contracts": "*"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  }
+}

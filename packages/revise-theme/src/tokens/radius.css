@@ -1,0 +1,7 @@
+:root,
+[data-theme="revise"] {
+  --revise-radius-sm: 6px;
+  --revise-radius-md: 12px;
+  --revise-radius-lg: 22px;
+  --revise-radius-pill: 999px;
+}

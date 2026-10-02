@@ -1,0 +1,55 @@
+[data-theme="revise"] .revise-announcement {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  padding-inline: var(--revise-gutter);
+  background: var(--revise-surface-inverse);
+  color: var(--revise-text-inverse);
+  font-size: var(--revise-text-xs);
+  letter-spacing: var(--revise-tracking-label);
+  text-transform: uppercase;
+}
+
+[data-theme="revise"] .revise-header {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: var(--revise-space-4);
+  padding:
+    max(10px, env(safe-area-inset-top))
+    var(--revise-gutter)
+    10px;
+  position: sticky;
+  top: 0;
+  z-index: var(--revise-layer-header);
+  background: color-mix(in srgb, var(--revise-surface-canvas) 86%, transparent);
+  border-bottom: 1px solid var(--revise-border-subtle);
+  backdrop-filter: blur(18px);
+}
+
+[data-theme="revise"] .revise-header__brand {
+  color: inherit;
+  font-family: var(--revise-font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-decoration: none;
+}
+
+[data-theme="revise"] .revise-header__nav {
+  display: flex;
+  gap: var(--revise-space-4);
+  margin-left: auto;
+}
+
+[data-theme="revise"] .revise-header__nav a {
+  color: inherit;
+  font-size: var(--revise-text-sm);
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  [data-theme="revise"] .revise-header__nav a:not(:last-child) {
+    display: none;
+  }
+}

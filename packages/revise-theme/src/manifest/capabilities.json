@@ -1,0 +1,19 @@
+{
+  "contractVersion": 1,
+  "implemented": [
+    "semantic-theme-tokens",
+    "fluid-layout-mapping",
+    "safe-area-aware-layout",
+    "reduced-motion-foundation",
+    "media-hero-variant",
+    "statement-variant"
+  ],
+  "planned": [
+    "commerce",
+    "scroll-scenes",
+    "drawers",
+    "horizontal-rails",
+    "hotspots",
+    "story-viewer"
+  ]
+}

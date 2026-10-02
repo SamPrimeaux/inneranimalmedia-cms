@@ -1,0 +1,11 @@
+{
+  "contractVersion": 1,
+  "requires": {
+    "@inneranimalmedia/site-contracts": ">=0.1.0",
+    "@inneranimalmedia/section-library": ">=0.1.0"
+  },
+  "framework": "independent",
+  "module": "esm",
+  "css": "native",
+  "javascriptEnhancement": "optional"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "revise/editorial-statement",
+  "type": "statement",
+  "variant": "revise/editorial-statement",
+  "layout": {
+    "width": "reading",
+    "bleed": "none",
+    "gutters": {
+      "mode": "fluid"
+    },
+    "spacing": {
+      "block": "lg"
+    }
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "containerQuery": true
+  },
+  "touch": {
+    "minimumTarget": 44
+  },
+  "safeArea": {
+    "enabled": true
+  },
+  "motion": {
+    "reducedMotionSafe": true
+  },
+  "data": {}
+}

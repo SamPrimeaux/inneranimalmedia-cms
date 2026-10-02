@@ -1,0 +1,29 @@
+{
+  "id": "revise/sticky-curtain",
+  "type": "media-hero",
+  "variant": "revise/sticky-curtain",
+  "layout": {
+    "width": "full",
+    "bleed": "media",
+    "gutters": {
+      "mode": "none"
+    },
+    "spacing": {
+      "block": "none"
+    }
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "containerQuery": true
+  },
+  "touch": {
+    "minimumTarget": 44
+  },
+  "safeArea": {
+    "enabled": true
+  },
+  "motion": {
+    "reducedMotionSafe": true
+  },
+  "data": {}
+}

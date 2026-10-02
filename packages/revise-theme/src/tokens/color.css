@@ -1,0 +1,21 @@
+:root,
+[data-theme="revise"] {
+  --revise-surface-canvas: #f1eee7;
+  --revise-surface-elevated: #faf8f3;
+  --revise-surface-muted: #e4dfd5;
+  --revise-surface-inverse: #11110f;
+
+  --revise-text-primary: #151512;
+  --revise-text-secondary: #646159;
+  --revise-text-inverse: #f8f5ee;
+
+  --revise-border-subtle: rgba(21, 21, 18, 0.14);
+  --revise-border-strong: rgba(21, 21, 18, 0.34);
+
+  --revise-action-primary: var(--brand-color-primary, #151512);
+  --revise-action-primary-text: var(--brand-color-on-primary, #f8f5ee);
+  --revise-action-soft: rgba(21, 21, 18, 0.08);
+
+  --revise-scrim: rgba(9, 9, 8, 0.36);
+  --revise-focus: var(--brand-color-accent, #6b72ff);
+}

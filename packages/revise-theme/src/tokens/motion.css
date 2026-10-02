@@ -1,0 +1,13 @@
+:root,
+[data-theme="revise"] {
+  --revise-ease-enter: cubic-bezier(.22, 1, .36, 1);
+  --revise-ease-travel: cubic-bezier(.65, 0, .35, 1);
+  --revise-ease-cinematic: cubic-bezier(.7, 0, .3, 1);
+  --revise-ease-standard: cubic-bezier(.4, 0, .2, 1);
+
+  --revise-dur-feedback: 220ms;
+  --revise-dur-control: 360ms;
+  --revise-dur-panel: 620ms;
+  --revise-dur-cinematic: 700ms;
+  --revise-dur-scene: 1100ms;
+}

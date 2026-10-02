@@ -1,0 +1,15 @@
+{
+  "name": "@inneranimalmedia/revise-foundation-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@inneranimalmedia/revise-theme": "*",
+    "@inneranimalmedia/section-library": "*",
+    "@inneranimalmedia/site-contracts": "*"
+  }
+}

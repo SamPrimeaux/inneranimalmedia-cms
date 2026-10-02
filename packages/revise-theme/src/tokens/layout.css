@@ -1,0 +1,14 @@
+:root,
+[data-theme="revise"] {
+  --revise-layout-max: 1440px;
+  --revise-layout-wide: 1320px;
+  --revise-layout-content: 1200px;
+  --revise-layout-reading: 760px;
+  --revise-gutter: clamp(16px, 4vw, 56px);
+
+  --iam-layout-max: var(--revise-layout-max);
+  --iam-layout-wide: var(--revise-layout-wide);
+  --iam-layout-content: var(--revise-layout-content);
+  --iam-layout-reading: var(--revise-layout-reading);
+  --iam-layout-gutter: var(--revise-gutter);
+}

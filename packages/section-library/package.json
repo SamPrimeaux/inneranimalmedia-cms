@@ -1,0 +1,25 @@
+{
+  "name": "@inneranimalmedia/section-library",
+  "version": "0.1.0",
+  "description": "Generic semantic section renderers and shared layout geometry. Themes provide character; apps provide data.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./layout.css": "./dist/layout.css"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build-assets.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@inneranimalmedia/site-contracts": "*"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": { "access": "public" }
+}

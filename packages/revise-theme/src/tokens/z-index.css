@@ -1,0 +1,9 @@
+:root,
+[data-theme="revise"] {
+  --revise-layer-content: 1;
+  --revise-layer-sticky: 20;
+  --revise-layer-header: 40;
+  --revise-layer-scrim: 80;
+  --revise-layer-overlay: 100;
+  --revise-layer-toast: 120;
+}

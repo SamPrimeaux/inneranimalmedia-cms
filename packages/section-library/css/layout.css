@@ -1,0 +1,75 @@
+/* Shared geometry only. Theme packages map character onto these roles. */
+:root {
+  --iam-layout-max: 1440px;
+  --iam-layout-wide: 1320px;
+  --iam-layout-content: 1200px;
+  --iam-layout-reading: 760px;
+  --iam-layout-gutter: clamp(16px, 4vw, 56px);
+
+  --iam-section-y-sm: clamp(48px, 7vw, 80px);
+  --iam-section-y-md: clamp(64px, 9vw, 120px);
+  --iam-section-y-lg: clamp(80px, 11vw, 160px);
+
+  --iam-touch-min: 44px;
+}
+
+.iam-layout-max,
+.iam-layout-wide,
+.iam-layout-content,
+.iam-layout-reading {
+  width: min(100% - (var(--iam-layout-gutter) * 2), var(--iam-layout-width));
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.iam-layout-max { --iam-layout-width: var(--iam-layout-max); }
+.iam-layout-wide { --iam-layout-width: var(--iam-layout-wide); }
+.iam-layout-content { --iam-layout-width: var(--iam-layout-content); }
+.iam-layout-reading { --iam-layout-width: var(--iam-layout-reading); }
+.iam-layout-full { width: 100%; min-width: 0; }
+
+.iam-section-space-sm { padding-block: var(--iam-section-y-sm); }
+.iam-section-space-md { padding-block: var(--iam-section-y-md); }
+.iam-section-space-lg { padding-block: var(--iam-section-y-lg); }
+
+.iam-safe-inline {
+  padding-left: max(0px, calc(env(safe-area-inset-left) - var(--iam-layout-gutter)));
+  padding-right: max(0px, calc(env(safe-area-inset-right) - var(--iam-layout-gutter)));
+}
+
+[data-section] {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.iam-touch-target {
+  min-width: var(--iam-touch-min);
+  min-height: var(--iam-touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+img,
+video,
+canvas,
+model-viewer {
+  max-width: 100%;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+  }
+}
