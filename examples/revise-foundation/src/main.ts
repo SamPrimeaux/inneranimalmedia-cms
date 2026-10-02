@@ -11,6 +11,12 @@ import {
   reviseShowcaseHome,
   reviseShowcasePresets,
 } from "@inneranimalmedia/revise-theme";
+import {
+  completefulCommerceSectionData,
+  completefulDemoOffers,
+  completefulDemoProducts,
+  completefulMedia,
+} from "./fixtures/completeful-merch.js";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (!app) throw new Error("Missing #app");
@@ -76,7 +82,17 @@ const media = new Map(
   ]),
 );
 
-const pageHtml = renderPage(reviseShowcaseHome, {
+for (const [key, url] of completefulMedia) {
+  media.set(key, url);
+}
+
+const demoPage = structuredClone(reviseShowcaseHome);
+const commerceOffers = demoPage.sections.find((section) => section.type === "commerce-offers");
+if (commerceOffers) {
+  commerceOffers.data = completefulCommerceSectionData;
+}
+
+const pageHtml = renderPage(demoPage, {
   context: {
     theme: "revise",
     resolveMedia: (key) => media.get(key) ?? null,
@@ -113,12 +129,12 @@ app.innerHTML = [
   "</main>",
   '<footer class="revise-footer">',
   '<div class="iam-layout-max iam-safe-inline revise-footer__main">',
-  '<div class="revise-footer__brand">Revise / directed commerce.</div>',
+  '<div class="revise-footer__brand">Revise / directed commerce + offer lab.</div>',
   '<div class="revise-footer__col"><strong>Explore</strong><a href="#">New volume</a><a href="#">Objects</a><a href="#">Editorial</a></div>',
   '<div class="revise-footer__col"><strong>Service</strong><a href="#">Delivery</a><a href="#">Returns</a><a href="#">Care</a></div>',
   '<div class="revise-footer__col"><strong>Studio</strong><a href="#">About</a><a href="#">Journal</a><a href="#">Contact</a></div>',
   "</div>",
-  '<div class="iam-layout-max iam-safe-inline revise-footer__bottom"><span>Theme study / neutral fixture</span><span>Framework-independent · ESM · reduced-motion safe</span></div>',
+  '<div class="iam-layout-max iam-safe-inline revise-footer__bottom"><span>Theme study + Completeful-backed merchandising fixture</span><span>Framework-independent · normalized commerce records · reduced-motion safe</span></div>',
   "</footer>",
   '<button class="revise-offer-tab" type="button" data-overlay-open="promo">Get the edit</button>',
   '<div class="revise-scrim" data-overlay-scrim data-state="closed"></div>',
@@ -139,6 +155,31 @@ if (previewOverlay) {
 
 document.addEventListener("click", (event) => {
   const target = event.target as HTMLElement | null;
+  const offerButton = target?.closest<HTMLElement>("[data-commerce-offer]");
+  if (offerButton) {
+    event.preventDefault();
+    const offer = completefulDemoOffers.find((item) => item.id === offerButton.dataset.commerceOffer);
+    if (offer) {
+      const products = offer.productIds
+        .map((id) => completefulDemoProducts.find((product) => product.id === id))
+        .filter(Boolean);
+      const bag = document.querySelector<HTMLElement>(".revise-cart-empty");
+      if (bag) {
+        bag.classList.add("revise-cart-offer");
+        bag.innerHTML = [
+          '<p class="iam-section-head__eyebrow">Bundle preview</p>',
+          '<h3>' + offer.title + '</h3>',
+          '<ul>' + products.map((product) => '<li><span>' + product!.title + '</span><small>' + product!.role + '</small></li>').join("") + '</ul>',
+          '<div class="revise-cart-offer__price"><span>Bundle</span><strong>$' + (offer.offerPriceCents / 100).toFixed(offer.offerPriceCents % 100 ? 2 : 0) + '</strong></div>',
+          '<button class="iam-action iam-action--primary" type="button">Continue with bundle</button>',
+          '<button class="iam-action iam-action--secondary" type="button" data-overlay-close>Keep browsing</button>',
+        ].join("");
+      }
+      revise.overlays.open("bag", { trigger: offerButton });
+      return;
+    }
+  }
+
   if (target?.closest(".iam-product-card__quick") || target?.closest('a[href="#bag"]')) {
     event.preventDefault();
     revise.overlays.open("bag", { trigger: target });

@@ -34,7 +34,7 @@ describe("Revise foundation", () => {
   });
 
   it("ships a directed multi-act showcase instead of a two-section token demo", () => {
-    expect(reviseShowcaseHome.sections.length).toBeGreaterThanOrEqual(23);
+    expect(reviseShowcaseHome.sections.length).toBeGreaterThanOrEqual(24);
     expect(reviseShowcasePresets.map((preset) => preset.variant)).toEqual(
       expect.arrayContaining([
         "revise/sticky-curtain",
@@ -45,6 +45,7 @@ describe("Revise foundation", () => {
         "revise/parallax-diptych",
         "revise/hotspot-lookbook",
         "revise/pinned-pdp",
+        "revise/merch-lab",
         "revise/commerce-marquee",
         "revise/newsletter",
       ]),

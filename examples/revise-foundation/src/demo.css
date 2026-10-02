@@ -211,3 +211,57 @@ body {
 .revise-promo-card:focus {
   outline: none;
 }
+
+
+.revise-cart-offer {
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  place-items: stretch;
+  text-align: left;
+}
+
+.revise-cart-offer h3 {
+  margin: 0 0 var(--revise-space-3);
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-display-sm);
+  line-height: 1;
+  letter-spacing: var(--revise-tracking-display);
+}
+
+.revise-cart-offer ul {
+  display: grid;
+  gap: 0;
+  margin: 0 0 var(--revise-space-4);
+  padding: 0;
+  border-top: 1px solid var(--revise-border-subtle);
+  list-style: none;
+}
+
+.revise-cart-offer li {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--revise-border-subtle);
+}
+
+.revise-cart-offer li small {
+  margin-left: auto;
+  color: var(--revise-text-secondary);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.revise-cart-offer__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--revise-space-4);
+}
+
+.revise-cart-offer__price strong {
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-display-sm);
+}

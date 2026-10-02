@@ -15,6 +15,7 @@ describe("section library", () => {
       "campaign-teaser",
       "collection-split-media",
       "collection-track",
+      "commerce-offers",
       "cta-band",
       "editorial-grid",
       "editorial-posts",
@@ -95,4 +96,54 @@ describe("section library", () => {
     expect(html).toContain("From page");
     expect(html).not.toContain(">Default<");
   });
+
+  it("renders normalized merchandising offers with optional economics", () => {
+    const html = renderSection({
+      type: "commerce-offers",
+      variant: "revise/merch-lab",
+      layout: {
+        width: "max",
+        bleed: "none",
+        gutters: { mode: "fluid" },
+        spacing: { block: "lg" },
+      },
+      data: {
+        heading: "Offer lab",
+        showEconomics: true,
+        products: [
+          {
+            id: "core",
+            title: "Core",
+            role: "Hero SKU",
+            fulfillmentCostCents: 1000,
+            proposedRetailCents: 3000,
+          },
+          {
+            id: "add",
+            title: "Add-on",
+            role: "Upsell",
+            fulfillmentCostCents: 400,
+            proposedRetailCents: 1600,
+          },
+        ],
+        offers: [
+          {
+            id: "bundle",
+            title: "Bundle",
+            productIds: ["core", "add"],
+            compareAtCents: 4600,
+            offerPriceCents: 3900,
+            fulfillmentCostCents: 1400,
+          },
+        ],
+      },
+    }, context);
+
+    expect(html).toContain("Offer lab");
+    expect(html).toContain("$39");
+    expect(html).toContain("Est. gross margin 64%");
+    expect(html).toContain("Hero SKU");
+    expect(html).toContain('data-commerce-offer="bundle"');
+  });
+
 });

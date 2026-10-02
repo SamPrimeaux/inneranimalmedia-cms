@@ -78,3 +78,31 @@ overlay choreography.
 
 The showcase now uses roughly the same seven-act shape as the reference evidence
 without carrying donor identity or provider authority into Revise.
+
+## Completeful-backed merchandising fixture
+
+The Revise demo now includes a commerce-offers / merch-lab acceptance slice.
+
+Source evidence was read from the Fuel & Free Time remote D1
+completeful_catalog_products mirror on 2026-10-02, limited to currently
+available catalog rows. The demo fixture keeps provider-specific product IDs,
+source names, fulfillment baselines and catalog image URLs in the example only.
+
+The publishable @inneranimalmedia/revise-theme and
+@inneranimalmedia/section-library packages receive normalized records and contain
+no Completeful, F&FT, Supabase catalog URL or other provider authority.
+
+The initial demo fixture uses safe, broadly reusable catalog families such as
+DTG apparel, mugs/drinkware, engraved accessories, pet personalization, small
+decor and bookmarks. Alcohol/cigar-oriented catalog items were intentionally not
+used.
+
+Demo retail and bundle prices are merchandising proposals, not Completeful
+pricing. Displayed estimated gross margin is calculated only against the
+mirrored fulfillment baseline and intentionally excludes shipping, payment
+fees, tax, discounts and returns.
+
+The reusable bundle-offer surface supports product role, compare-at total,
+bundle price, savings, optional fulfillment economics and an actionable
+data-commerce-offer hook. The demo uses that hook to preview the chosen bundle
+inside the shared bag overlay.

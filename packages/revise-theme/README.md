@@ -21,6 +21,7 @@ stack of components.
 - immersive media/product scene;
 - split-media diptych;
 - hotspot lookbook;
+- reusable commerce-offer / merchandising lab presentation with optional economics;
 - sticky bundle summary;
 - pinned product-detail composition;
 - ambient marquee;

@@ -355,6 +355,134 @@ export function renderTrustRow(instance: SectionInstance): string {
 }
 
 
+
+type CommerceIdea = {
+  id: string;
+  title: string;
+  sourceLabel?: string;
+  role?: string;
+  body?: string;
+  mediaKey?: string;
+  mediaAlt?: string;
+  fulfillmentCostCents?: number;
+  proposedRetailCents?: number;
+};
+
+type CommerceOffer = {
+  id: string;
+  badge?: string;
+  title: string;
+  body?: string;
+  productIds: string[];
+  compareAtCents?: number;
+  offerPriceCents: number;
+  fulfillmentCostCents?: number;
+  ctaLabel?: string;
+};
+
+function money(cents: number | undefined, currency = "USD"): string {
+  if (cents === undefined || cents === null) return "";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: cents % 100 === 0 ? 0 : 2,
+  }).format(cents / 100);
+}
+
+export function renderCommerceOffers(
+  instance: SectionInstance,
+  context: RenderContext,
+): string {
+  const data = instance.data as {
+    eyebrow?: string;
+    heading: string;
+    body?: string;
+    products: CommerceIdea[];
+    offers: CommerceOffer[];
+    showEconomics?: boolean;
+    sourceNote?: string;
+    anchor?: string;
+    currency?: string;
+  };
+
+  const productsById = new Map((data.products ?? []).map((product) => [product.id, product]));
+  const productCards = (data.products ?? []).map((product) => {
+    return [
+      '<article class="iam-commerce-idea">',
+      '<figure class="iam-commerce-idea__media">',
+      resolveImage(context, product.mediaKey, product.mediaAlt ?? product.title, "iam-commerce-idea__image"),
+      product.role ? '<span class="iam-commerce-idea__role">' + escapeHtml(product.role) + "</span>" : "",
+      "</figure>",
+      '<div class="iam-commerce-idea__copy">',
+      product.sourceLabel ? '<p class="iam-commerce-idea__source">' + escapeHtml(product.sourceLabel) + "</p>" : "",
+      '<h3>' + escapeHtml(product.title) + "</h3>",
+      product.body ? '<p>' + escapeHtml(product.body) + "</p>" : "",
+      '<div class="iam-commerce-idea__prices">',
+      product.proposedRetailCents !== undefined
+        ? '<span><small>Demo retail</small><strong>' + money(product.proposedRetailCents, data.currency) + "</strong></span>"
+        : "",
+      data.showEconomics && product.fulfillmentCostCents !== undefined
+        ? '<span><small>Fulfillment</small><strong>' + money(product.fulfillmentCostCents, data.currency) + "</strong></span>"
+        : "",
+      "</div>",
+      "</div></article>",
+    ].join("");
+  }).join("");
+
+  const offerCards = (data.offers ?? []).map((offer) => {
+    const attached = offer.productIds
+      .map((id) => productsById.get(id))
+      .filter((value): value is CommerceIdea => Boolean(value));
+    const savings = offer.compareAtCents !== undefined
+      ? Math.max(0, offer.compareAtCents - offer.offerPriceCents)
+      : 0;
+    const gross = offer.fulfillmentCostCents !== undefined
+      ? offer.offerPriceCents - offer.fulfillmentCostCents
+      : undefined;
+    const margin = gross !== undefined && offer.offerPriceCents > 0
+      ? Math.round((gross / offer.offerPriceCents) * 100)
+      : undefined;
+
+    return [
+      '<article class="iam-offer-card">',
+      '<div class="iam-offer-card__top">',
+      offer.badge ? '<span class="iam-offer-card__badge">' + escapeHtml(offer.badge) + "</span>" : "",
+      '<h3>' + escapeHtml(offer.title) + "</h3>",
+      offer.body ? '<p>' + escapeHtml(offer.body) + "</p>" : "",
+      "</div>",
+      '<ul class="iam-offer-card__items">',
+      attached.map((product) => '<li><span>' + escapeHtml(product.title) + '</span><small>' +
+        (product.role ? escapeHtml(product.role) : "Item") + "</small></li>").join(""),
+      "</ul>",
+      '<div class="iam-offer-card__pricing">',
+      offer.compareAtCents !== undefined
+        ? '<span><small>À la carte</small><s>' + money(offer.compareAtCents, data.currency) + "</s></span>"
+        : "",
+      '<span class="iam-offer-card__price"><small>Bundle</small><strong>' + money(offer.offerPriceCents, data.currency) + "</strong></span>",
+      savings > 0 ? '<span><small>Save</small><strong>' + money(savings, data.currency) + "</strong></span>" : "",
+      "</div>",
+      data.showEconomics && offer.fulfillmentCostCents !== undefined
+        ? '<div class="iam-offer-card__economics"><span>Fulfillment ' + money(offer.fulfillmentCostCents, data.currency) +
+          '</span><span>Gross ' + money(gross, data.currency) + '</span><span>Est. gross margin ' + margin + "%</span></div>"
+        : "",
+      '<button type="button" class="iam-action iam-action--primary" data-commerce-offer="' +
+      escapeHtml(offer.id) + '">' +
+      escapeHtml(offer.ctaLabel ?? "Add bundle") + "</button>",
+      "</article>",
+    ].join("");
+  }).join("");
+
+  const anchor = data.anchor ? ' id="' + escapeHtml(data.anchor) + '"' : "";
+  return [
+    '<div class="iam-commerce-offers"' + anchor + '>',
+    sectionHead(data.eyebrow, data.heading, data.body),
+    data.sourceNote ? '<p class="iam-commerce-offers__source-note">' + escapeHtml(data.sourceNote) + "</p>" : "",
+    '<div class="iam-commerce-offers__ideas">', productCards, "</div>",
+    '<div class="iam-commerce-offers__bundles">', offerCards, "</div>",
+    "</div>",
+  ].join("");
+}
+
 export function renderBundleBuilder(
   instance: SectionInstance,
   context: RenderContext,
@@ -544,6 +672,7 @@ registerSection("cta-band", renderCtaBand);
 registerSection("faq", renderFaq);
 registerSection("trust-row", renderTrustRow);
 
+registerSection("commerce-offers", renderCommerceOffers);
 registerSection("bundle-builder", renderBundleBuilder);
 registerSection("collection-split-media", renderCollectionSplitMedia);
 registerSection("brand-film", renderBrandFilm);

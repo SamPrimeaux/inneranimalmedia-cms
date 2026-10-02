@@ -1318,3 +1318,255 @@
     animation: none;
   }
 }
+
+[data-theme="revise"] [data-variant="revise/merch-lab"] {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--revise-surface-muted) 42%, transparent), transparent 38%),
+    var(--revise-surface-canvas);
+}
+
+[data-theme="revise"] .iam-commerce-offers__source-note {
+  max-width: 76ch;
+  margin: calc(var(--revise-space-4) * -1) 0 var(--revise-space-5);
+  color: var(--revise-text-secondary);
+  font-size: var(--revise-text-xs);
+  line-height: 1.5;
+}
+
+[data-theme="revise"] .iam-commerce-offers__ideas {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 300px);
+  gap: var(--revise-space-3);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: var(--revise-space-4);
+}
+
+[data-theme="revise"] .iam-commerce-idea {
+  min-width: 0;
+  scroll-snap-align: start;
+  background: var(--revise-surface-elevated);
+  border: 1px solid var(--revise-border-subtle);
+}
+
+[data-theme="revise"] .iam-commerce-idea__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 65% 22%, rgba(255,255,255,.28), transparent 34%),
+    var(--revise-surface-muted);
+}
+
+[data-theme="revise"] .iam-commerce-idea__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  transition: transform var(--revise-dur-cinematic) var(--revise-ease-enter);
+}
+
+[data-theme="revise"] .iam-commerce-idea:hover .iam-commerce-idea__image {
+  transform: scale(1.025);
+}
+
+[data-theme="revise"] .iam-commerce-idea__role {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 6px 8px;
+  border-radius: var(--revise-radius-pill);
+  background: color-mix(in srgb, var(--revise-surface-inverse) 88%, transparent);
+  color: var(--revise-text-inverse);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+[data-theme="revise"] .iam-commerce-idea__copy {
+  padding: var(--revise-space-3);
+}
+
+[data-theme="revise"] .iam-commerce-idea__source {
+  min-height: 2.6em;
+  margin: 0 0 8px;
+  color: var(--revise-text-secondary);
+  font-size: .67rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+[data-theme="revise"] .iam-commerce-idea__copy h3 {
+  min-height: 2.2em;
+  margin-bottom: 8px;
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-text-lg);
+  line-height: 1.05;
+}
+
+[data-theme="revise"] .iam-commerce-idea__copy > p:not(.iam-commerce-idea__source) {
+  min-height: 5.1em;
+  margin-bottom: var(--revise-space-3);
+  color: var(--revise-text-secondary);
+  font-size: var(--revise-text-sm);
+  line-height: 1.45;
+}
+
+[data-theme="revise"] .iam-commerce-idea__prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-top: var(--revise-space-3);
+  border-top: 1px solid var(--revise-border-subtle);
+}
+
+[data-theme="revise"] .iam-commerce-idea__prices span,
+[data-theme="revise"] .iam-offer-card__pricing span {
+  display: grid;
+  gap: 2px;
+}
+
+[data-theme="revise"] .iam-commerce-idea__prices small,
+[data-theme="revise"] .iam-offer-card__pricing small {
+  color: var(--revise-text-secondary);
+  font-size: .67rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+[data-theme="revise"] .iam-commerce-offers__bundles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--revise-space-3);
+  margin-top: var(--revise-space-7);
+}
+
+[data-theme="revise"] .iam-offer-card {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 42px);
+  border: 1px solid var(--revise-border-strong);
+  background: var(--revise-surface-elevated);
+}
+
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) {
+  background: var(--revise-surface-inverse);
+  color: var(--revise-text-inverse);
+}
+
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) .iam-offer-card__pricing,
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) .iam-offer-card__items,
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) .iam-offer-card__economics {
+  border-color: rgba(255,255,255,.18);
+}
+
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) small,
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) .iam-offer-card__economics,
+[data-theme="revise"] .iam-offer-card:nth-child(4n + 1) .iam-offer-card__top > p {
+  color: color-mix(in srgb, var(--revise-text-inverse) 65%, transparent);
+}
+
+[data-theme="revise"] .iam-offer-card__badge {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: var(--revise-space-3);
+  padding: 6px 9px;
+  border: 1px solid currentColor;
+  border-radius: var(--revise-radius-pill);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+[data-theme="revise"] .iam-offer-card__top h3 {
+  max-width: 10ch;
+  margin-bottom: var(--revise-space-2);
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-display-sm);
+  line-height: .98;
+  letter-spacing: var(--revise-tracking-display);
+}
+
+[data-theme="revise"] .iam-offer-card__top > p {
+  max-width: 52ch;
+  color: var(--revise-text-secondary);
+  font-size: var(--revise-text-sm);
+}
+
+[data-theme="revise"] .iam-offer-card__items {
+  display: grid;
+  gap: 0;
+  margin: var(--revise-space-4) 0;
+  padding: 0;
+  border-top: 1px solid var(--revise-border-subtle);
+  list-style: none;
+}
+
+[data-theme="revise"] .iam-offer-card__items li {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--revise-border-subtle);
+}
+
+[data-theme="revise"] .iam-offer-card__items small {
+  margin-left: auto;
+  color: var(--revise-text-secondary);
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+[data-theme="revise"] .iam-offer-card__pricing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--revise-space-3);
+  padding-block: var(--revise-space-3);
+  border-block: 1px solid var(--revise-border-subtle);
+}
+
+[data-theme="revise"] .iam-offer-card__price strong {
+  font-family: var(--revise-font-display);
+  font-size: var(--revise-text-lg);
+}
+
+[data-theme="revise"] .iam-offer-card__economics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: var(--revise-space-4);
+  padding-block: 10px;
+  border-bottom: 1px solid var(--revise-border-subtle);
+  color: var(--revise-text-secondary);
+  font-size: .72rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+[data-theme="revise"] .iam-offer-card > .iam-action {
+  width: 100%;
+  margin-top: auto;
+}
+
+@media (max-width: 767px) {
+  [data-theme="revise"] .iam-commerce-offers__ideas {
+    grid-auto-columns: 78vw;
+  }
+
+  [data-theme="revise"] .iam-commerce-offers__bundles {
+    grid-template-columns: 1fr;
+  }
+
+  [data-theme="revise"] .iam-offer-card {
+    min-height: auto;
+  }
+}
