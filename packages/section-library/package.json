@@ -12,14 +12,18 @@
     },
     "./layout.css": "./dist/layout.css"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build-assets.mjs",
     "test": "vitest run"
   },
   "dependencies": {
-    "@inneranimalmedia/site-contracts": "*"
+    "@inneranimalmedia/site-contracts": "^0.1.0"
   },
   "license": "UNLICENSED",
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  }
 }

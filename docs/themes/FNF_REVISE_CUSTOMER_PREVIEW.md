@@ -1,5 +1,21 @@
 # Fuel & Free Time — Revise customer concept preview
 
+## Product/customer relationship
+
+Fuel & Free Time is **customer #1 and the first paying purchaser** of the
+@inneranimalmedia/ecommerce-cms-agentsam product. It is not a donor project.
+
+The ecommerce/CMS product is being hardened and packaged from capabilities proven
+while serving that customer, but F&FT brand identity, products, campaigns,
+customer media, credentials, provider selections and business data remain
+customer-specific installation state.
+
+Revise is an independently packaged theme option installed into that product
+alongside the customer's existing theme system. This preview proves that a
+customer installation can host multiple theme/design/section vocabularies
+without turning customer-specific content into package authority.
+
+
 This demo is intentionally split into two layers:
 
 - the publishable Revise theme and section library remain customer/provider neutral;
