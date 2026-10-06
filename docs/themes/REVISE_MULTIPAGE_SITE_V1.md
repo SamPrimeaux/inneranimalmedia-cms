@@ -46,15 +46,15 @@ A consuming site must provide its own content and media resolver and may use any
 - `http://127.0.0.1:4319/?fixture=fnf` — previous F&FT concept, preserved
 - `http://127.0.0.1:4319/?fixture=neutral` — previous neutral Revise proof, preserved
 
-## Editor acceptance
+## Authoring boundary — updated October 6
 
-Click **Edit site** from a page. Changes persist to `localStorage["revise-site-document-v1"]` on that browser/port; **Export site JSON** downloads the current `SiteDocument`. Reset explicitly restores the fixture. No silent remote or production save occurs.
+The standalone Revise site is **read-only source/design preview**, not the merchant editor. The rejected **Edit Site** slide-in drawer and browser-local authoring path have been removed. Do not reinstate them or use localStorage to impersonate persisted customer drafts.
 
-- Global Header: change sticky mode/announcements, reorder existing blocks, add an internal nav link, remove non-brand blocks.
-- Page Template: change title, reorder/remove sections, change section heading/background/media key, add sections from the current theme catalog, reorder/add/remove existing list-based section blocks.
-- Global Footer: choose surface, reorder blocks, add menu/newsletter/social/legal blocks and links.
-- Shared overlays: Menu, Search (local page indexing), Discover and Bag use Revise's existing accessible overlay lifecycle.
-- Host behavior: browser history + direct URL entry; path navigation keeps a site-wide header/footer and independent page content.
+- The canonical CMS Studio and FNF's existing ecommerce theme editor own authenticated authoring through real persistence adapters.
+- SiteDocument v1 and the real Revise renderer packages remain usable source and composition contracts; they do not imply a completed Metaobject/content model, route publisher, or server-backed Stories template.
+- Shared announcement/header/footer exist as distinct visual/global layers, outside the four body section instances.
+- Menu, Search, Discover, Bag and browser history remain read-only storefront interactions backed by existing accessible overlay management.
+- For Shopify-backed research, versioned model boundaries and acceptance gates, see [Shopify architecture audit](../architecture/SHOPIFY_METAOBJECTS_TEMPLATES_SECTION_ARCHITECTURE_20261006.md) and [Stories eight-layer inventory](../architecture/STORIES_EIGHT_LAYER_INVENTORY_20261006.md).
 
 ## Background ownership fix
 
