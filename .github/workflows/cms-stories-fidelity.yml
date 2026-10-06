@@ -40,5 +40,7 @@ jobs:
         run: npm run test:site
       - name: Validate the eight-layer Stories composition
         run: npx vitest run examples/revise-foundation/tests/stories-composition.test.ts examples/revise-foundation/tests/site-data.test.ts
+      - name: Verify real typed source, versioned templates and renderer fidelity
+        run: npx vitest run examples/revise-foundation/tests/typed-template-rendering.test.ts
       - name: Confirm four responsive layouts in real Chrome
         run: node scripts/smoke-stories-fidelity.mjs
