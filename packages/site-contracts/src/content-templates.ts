@@ -40,6 +40,8 @@ export interface CmsTemplateRegistry {
   siteId: string;
   templates: CmsPageTemplate[];
   assignments: CmsTemplateAssignment[];
+  /** Exact version/integrity of donor renderers installed in another theme. */
+  rendererLocks?: RendererLock[];
 }
 const idPattern = /^[a-zA-Z][a-zA-Z0-9._:-]{0,127}$/;
 const slotPattern = /^[a-z][a-zA-Z0-9_]*$/;
