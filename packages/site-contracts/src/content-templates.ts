@@ -114,6 +114,13 @@ export function assertTemplateAlignment(
     const template = registry.templates.find(t =>
       t.id === assigned.templateId && t.version === assigned.templateVersion);
     if (!template) fail("Template/version not installed");
+    if (template.sourceTheme !== site.theme) {
+      for (const section of template.sections) {
+        const lock = registry.rendererLocks?.find(lock => lock.id === section.preset);
+        if (!lock) fail("Cross-theme renderer not pinned: " + section.preset);
+        assertRendererLock(lock);
+      }
+    }
     if (page.sections.length !== template.sections.length) {
       fail("Template layout differs; explicit approved migration required");
     }
