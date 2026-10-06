@@ -1,0 +1,44 @@
+name: CMS Stories contracts and visual fidelity
+on:
+  pull_request:
+    paths:
+      - "docs/architecture/**"
+      - "packages/site-contracts/**"
+      - "packages/section-library/**"
+      - "packages/revise-theme/**"
+      - "examples/revise-foundation/**"
+      - "scripts/smoke-stories-fidelity.mjs"
+      - "package*.json"
+      - ".github/workflows/cms-stories-fidelity.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/site-contracts/**"
+      - "packages/section-library/**"
+      - "packages/revise-theme/**"
+      - "examples/revise-foundation/**"
+      - "scripts/smoke-stories-fidelity.mjs"
+      - "package*.json"
+
+jobs:
+  source-fidelity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install locked project dependencies
+        run: npm ci --ignore-scripts --no-audit
+      - name: Build actual source and portable section packages
+        run: npm run build:site
+      - name: Run original site and renderer contract tests
+        run: npm run test:site
+      - name: Validate the eight-layer Stories composition
+        run: npx vitest run examples/revise-foundation/tests/stories-composition.test.ts examples/revise-foundation/tests/site-data.test.ts
+      - name: Confirm four responsive layouts in real Chrome
+        run: node scripts/smoke-stories-fidelity.mjs
