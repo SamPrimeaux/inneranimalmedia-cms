@@ -61,6 +61,16 @@ describe("merged typed content + original Stories template alignment",()=>{
     changed.templates[0].bindings.push({...changed.templates[0].bindings[0]});
     expect(()=>assertTemplateAlignment(source,changed,entries,definitions)).toThrow(/Duplicate source slot/);
   });
+  it("refuses unpinned cross-theme source sections even on an existing page",()=>{
+    const consumingSite={...source,theme:"heuristic"};
+    expect(()=>assertTemplateAlignment(consumingSite,registry,entries,definitions))
+      .toThrow(/Cross-theme renderer not pinned/);
+    const locks=[...new Set(template.sections.map(s=>s.preset))].map(id=>({
+      id,package:"@inneranimalmedia/revise-theme",version:"1.0.0",
+      integrity:"sha256-"+ "b".repeat(64),supportedOverrides:[]}));
+    expect(()=>assertTemplateAlignment(consumingSite,{...registry,rendererLocks:locks},entries,definitions))
+      .not.toThrow();
+  });
   it("creates routes explicitly, rejects collision and requires pinned cross-theme renderers",()=>{
     const page={id:"helicopter-story",path:"/projects/helicopter/",title:"Helicopter",description:"Restoration"};
     const created=instantiatePageTemplate(source,template,page);
