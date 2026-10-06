@@ -100,15 +100,13 @@ try {
     }
     await page.close();
   });
-  await check("site editor can open the atlas", async () => {
+  await check("the source gallery stays discoverable without mounting a public site editor", async () => {
     const page = await browser.newPage({ viewport: { width: 1440, height: 950 } });
-    await page.goto(base + "/", { waitUntil: "domcontentloaded" });
-    await page.locator("[data-editor-toggle]").first().click();
-    await page.locator(".revise-site__editor.is-open").waitFor();
-    await page.locator(".revise-site__editor-open-library").click();
-    await page.waitForURL("**/library/");
+    await page.goto(base + "/stories/", { waitUntil: "domcontentloaded" });
+    assert(await page.locator("[data-editor-toggle],#site-editor").count() === 0, "Rejected drawer returned");
+    await page.goto(base + "/library/", { waitUntil: "domcontentloaded" });
     await page.locator(".atlas-card").first().waitFor({ timeout: 12000 });
-    assert(await page.locator(".atlas-card").count() >= 85, "Editor did not navigate to the library");
+    assert(await page.locator(".atlas-card").count() >= 85, "Source library is missing");
     await page.close();
   });
   await check("responsive gallery widths", async () => {

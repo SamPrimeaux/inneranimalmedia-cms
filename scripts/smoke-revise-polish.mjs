@@ -49,8 +49,8 @@ try {
       assert(metrics.modal === "true", "Search must be modal");
       await page.waitForFunction(() =>
         document.activeElement === document.querySelector("[data-site-search-input]"), { timeout: 1000 });
-      assert(await page.locator(".revise-site__edit-trigger").isHidden(),
-        "Editor button is on top of search");
+      assert(await page.locator(".revise-site__edit-trigger,[data-editor-toggle]").count() === 0,
+        "A rejected source editor was reintroduced");
       await page.keyboard.press("Escape");
       await page.waitForTimeout(260);
       assert(await dialog.getAttribute("data-state") === "closed", "Escape didn't close search");

@@ -97,13 +97,6 @@
 }
 
 /* Editing controls never sit on top of a customer-facing modal or search surface. */
-.revise-site:has([data-overlay][data-state="opening"]) .revise-site__edit-trigger,
-.revise-site:has([data-overlay][data-state="open"]) .revise-site__edit-trigger,
-.revise-site:has([data-overlay][data-state="closing"]) .revise-site__edit-trigger {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
 
 /* Real inspection behavior for incomplete commerce/story destinations:
    preview the existing media and metadata rather than navigating to '#'. */
