@@ -33,9 +33,6 @@ function bootSite() {
   const route = (path: string) => path === "/" ? "/" : "/" + path.split("/").filter(Boolean).join("/") + "/";
   const pageForPath = () => site.pages.find((p) => p.path === route(location.pathname)) ?? site.pages[0];
   const isLocalHref = (href: string) => href.startsWith("/") && !href.startsWith("//");
-  function persist() {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(site));
-  }
   function link(label: string, href: string, classes = "") {
     return '<a class="' + classes + '" href="' + esc(href) + '">' + esc(label) + "</a>";
   }
