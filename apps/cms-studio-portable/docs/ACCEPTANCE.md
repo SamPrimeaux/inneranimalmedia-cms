@@ -25,12 +25,12 @@ Executed and passing:
 
 Limits:
 
-- Cloud-browser responsive/keyboard/touch checks not executed: required control-browser capability absent. No screenshot or browser certification is fabricated.
+- Local Chrome/Playwright checks now pass at nine sizes (360–1920px), including portrait and landscape: editing retains focus and updates the preview, panels never overlap, expand/close/panel switching preserve the canvas, reduced motion and horizontal overflow checks pass. VisualViewport keyboard-height reduction is simulated; physical iOS keyboard and touch-device QA remain outstanding. Run tests/mobile-layout.mjs with PLAYWRIGHT_PACKAGE and REVISE_CHROME configured after building Studio evidence.
 - Overall starter tsc reports existing Cloudflare ambient types missing; the changed Studio has its own passing tsconfig.studio.json check.
 - Media context is session-only. Originals are never materialized into derivatives.
 - Customer publish is disabled. Inquiry, newsletter, commerce and header actions require authorized host adapters.
 - Original donor CRM contacts, media colors, template wireframes, collaborator count, mock history, successful upload notices and publish notices were demonstration data; they are preserved as candidate source and are not represented as real backend functionality.
 - Rechecked current canonical repository portability audit: 47 blocking findings remain (26 critical, 21 high), with none attributed to this contribution.
-- GitHub branch/PR creation failed through both connected links with NOT_FOUND. Remote terminal also failed with owner_gcp_cwd_unresolved. The import-ready source contribution is preserved; no PR or merge is claimed.
+- GitHub contribution is pushed through the local device terminal on feat/canonical-cms-studio-20261006. No PR or merge is claimed.
 
 Readiness remains SiteDocument-bound with tested content portability, not publish-ready.
