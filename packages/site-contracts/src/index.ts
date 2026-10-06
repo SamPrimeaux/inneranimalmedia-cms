@@ -211,3 +211,5 @@ export function validateThemeManifest(manifest: unknown, path = "theme"): Valida
 export * from "./site-document.js";
 
 export * from "./section-fields.js";
+
+export * from "./content-bindings.js";

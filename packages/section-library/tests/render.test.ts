@@ -22,6 +22,7 @@ describe("section library", () => {
       "faq",
       "featured-product",
       "fullscreen-media-product",
+      "gallery.filterable-grid",
       "logo-track",
       "marquee",
       "media-gallery",
