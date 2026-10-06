@@ -1,0 +1,6 @@
+{
+  "name": "RADIAN — Autumn / Winter 26",
+  "description": "High-fashion luxury direct-to-consumer flagship storefront with sticky curtains, pinned PDP rails, shoppable lookbooks, and choreographed micro-interactions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
