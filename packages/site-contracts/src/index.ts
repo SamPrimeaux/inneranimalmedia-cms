@@ -214,3 +214,4 @@ export * from "./page-composition.js";
 export * from "./section-fields.js";
 
 export * from "./content-bindings.js";
+export * from "./content-templates.js";
