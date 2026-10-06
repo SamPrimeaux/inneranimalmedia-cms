@@ -209,5 +209,6 @@ export function validateThemeManifest(manifest: unknown, path = "theme"): Valida
 }
 
 export * from "./site-document.js";
+export * from "./page-composition.js";
 
 export * from "./section-fields.js";
