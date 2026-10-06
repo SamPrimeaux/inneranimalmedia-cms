@@ -212,3 +212,5 @@ export * from "./site-document.js";
 export * from "./page-composition.js";
 
 export * from "./section-fields.js";
+
+export * from "./content-bindings.js";

@@ -1,6 +1,7 @@
 import "./sections/media-hero.js";
 import "./sections/statement.js";
 import "./sections/showcase.js";
+import "./sections/gallery-filterable.js";
 
 export type { RenderContext } from "./context.js";
 export {
@@ -27,3 +28,5 @@ export {
 export * from "./sections/showcase.js";
 
 export { renderSiteSection } from "./site.js";
+
+export { renderFilterableGallery, defineFilterableGalleryElement, type FilterableGalleryData, type FilterableGalleryItem } from "./sections/gallery-filterable.js";
