@@ -63,7 +63,7 @@ Previously the sticky hero could visually remain behind subsequent transparent s
 ## Release constraints / follow-up
 
 1. **Not commerce-ready:** cart/checkout and subscription writes are intentionally unavailable in this review, with explicit UI labels rather than simulated success. Campaign/product source distinctions remain in the source fixture.
-2. **Not yet a server-backed CMS:** localStorage + JSON export are the first editable document checkpoint. A real persistence/approval adapter and editor integration into the ecommerce CMS are still required.
+2. **Not itself a server-backed CMS:** this read-only source does not save customer edits. Authenticated FNF/Studio persistence, resource bindings, template routing and approval workflows must be proven through their production adapters.
 3. **Static hosting requires SPA route fallback** (or pre-rendered route pages) for direct `/products/`, `/stories/`, etc. Vite dev handles these locally; this is not a deployment claim.
 4. **Browser-level visual and responsive QA required** across narrow/mobile/tablet/desktop/wide screens, including image loading, focus, tab order, contrast, and overflow. Build/tests alone do not prove this.
 5. Future themes must reuse the document and section contract without adopting Revise's visual identity.
