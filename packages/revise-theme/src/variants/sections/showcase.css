@@ -1117,6 +1117,17 @@
   object-fit: cover;
 }
 
+/* The image-surface teaser's source colors were unreadable on the dark split.
+   Scope the fix to this renderer + surface; preserve its typography, media,
+   grid proportions and the customer's chosen background. */
+[data-theme="revise"] .iam-site-section[data-surface="image"] .iam-campaign-teaser__copy h2,
+[data-theme="revise"] .iam-site-section[data-surface="image"] .iam-campaign-teaser__copy .iam-section-head__eyebrow {
+  color: #f8f6f0;
+}
+[data-theme="revise"] .iam-site-section[data-surface="image"] .iam-campaign-teaser__copy p:not(.iam-section-head__eyebrow) {
+  color: #dedbd3;
+}
+
 [data-theme="revise"] .iam-before-after__stage {
   min-height: min(820px, 64vw);
   position: relative;
