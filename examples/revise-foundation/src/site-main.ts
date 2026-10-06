@@ -299,7 +299,7 @@ function bootSite() {
       '<a class="revise-site__skip" href="#main-content">Skip to content</a>' +
       renderHeader() + pageContent(page) + renderFooter() +
       '<div class="revise-scrim" data-overlay-scrim data-state="closed"></div>' +
-      menuMarkup() + searchMarkup() + bagMarkup() + previewMarkup() + discoverMarkup() + editorMarkup(page) +
+      menuMarkup() + searchMarkup() + bagMarkup() + previewMarkup() + discoverMarkup() +
       '</div>';
     enhancement = enhanceRevise(document);
     root.querySelectorAll<HTMLButtonElement>(".iam-product-card__quick").forEach((button) => {
