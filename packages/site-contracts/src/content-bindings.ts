@@ -127,6 +127,7 @@ export function bindSiteDocument(
   if (entryById.size !== entries.length) fail("Duplicate content entry IDs");
   if (definitionById.size !== definitions.length) fail("Duplicate content definition IDs");
   for (const entry of entries) {
+    if (entry.siteId && entry.siteId !== site.id) fail("Cross-site content entry " + entry.id);
     const definition = definitionById.get(entry.definitionId);
     if (!definition) throw new ContentContractError(`Unknown definition for ${entry.id}`);
     validateContentEntry(entry, definition);
