@@ -27,6 +27,8 @@ export interface ContentDefinition {
 
 export interface ContentEntry {
   id: string;
+  /** Legacy fixtures can omit this; durable multi-tenant stores must supply it. */
+  siteId?: string;
   definitionId: string;
   definitionVersion: number;
   fields: Record<string, ContentValue>;
