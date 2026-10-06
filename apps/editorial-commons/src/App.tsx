@@ -3,6 +3,7 @@ import { EditorialScene } from './portable/EditorialScene';
 import { EditorialSceneGallery } from './portable/EditorialSceneGallery';
 import { EditorialHostProvider } from './portable/EditorialHost';
 import { fieldworkSite, fieldworkMedia } from './portable/fieldwork-site';
+import { coveSite, coveMedia } from './portable/cove-site';
 import { SectionWorkbench } from './portable/SectionWorkbench';
 
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
@@ -199,7 +200,11 @@ export default function App() {
   if (params.has('workbench')) return <SectionWorkbench />;
   const selectedScene = params.get('scene');
   if (selectedScene) {
-    const fixture = params.get('fixture') === 'fieldwork' ? fieldworkSite : null;
+    const fixtureName = params.get('fixture');
+    const fixture = fixtureName === 'fieldwork' ? fieldworkSite :
+      fixtureName === 'cove' ? coveSite : null;
+    const media = fixtureName === 'fieldwork' ? fieldworkMedia :
+      fixtureName === 'cove' ? coveMedia : null;
     const section = fixture?.pages[0]?.sections.find((candidate) =>
       candidate.preset === 'commons/' + selectedScene);
     return <EditorialScene id={selectedScene}
@@ -207,7 +212,7 @@ export default function App() {
         params.has('brand') ? { name: params.get('brand') ?? 'FORM / 26' } : undefined}
       section={section}
       tokens={fixture?.design}
-      resolveMedia={fixture ? (key: string) => fieldworkMedia.get(key) ?? null : undefined} />;
+      resolveMedia={media ? (key: string) => media.get(key) ?? null : undefined} />;
   }
   if (params.has('gallery')) return <EditorialSceneGallery />;
   return (

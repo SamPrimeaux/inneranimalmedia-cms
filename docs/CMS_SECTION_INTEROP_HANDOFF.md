@@ -31,7 +31,7 @@ Do not unify visual appearance across brands. Unify data and lifecycle contracts
 | HTML renderer/registry | `packages/section-library/src/registry.ts`, `render.ts`, `site.ts` | `registerSection` / `getSection`, `presetLibraryFrom`, `renderSiteSection` |
 | A distinct theme implementation | `packages/revise-theme/` | Preserve styling as an independent package |
 | Editable HTML CMS example | `examples/revise-foundation/src/site-main.ts` and `site-data.ts` | Page routing, editor, blocks, surfaces and local draft updates |
-| Existing React visual donors | `apps/editorial-commons/` | 39 inspectable original scenes; only four currently accept canonical `SiteSection` content |
+| Existing React visual donors | `apps/editorial-commons/` | 39 inspectable original scenes; seven now accept canonical `SiteSection` content |
 | React authoring proof | `apps/editorial-commons/src/portable/SectionWorkbench.tsx` | Multi-page, local draft, JSON import/export; **not a publisher** |
 | Cross-brand fixture | `apps/editorial-commons/src/portable/fieldwork-site.ts` | Same React scene rendered with alternate brand and media keys |
 | Visual catalog / source evidence | `examples/revise-foundation/src/editorial-atlas.ts`, `library-main.ts` | Source links, maturity indicators, isolated preview URLs |
@@ -168,7 +168,12 @@ The current `validateSiteDocument` checks required identity, supported schema ve
 
 The current HTML `renderSiteSection(section, { context, presets })` adapts a `SiteSection` to the older `PagePreset`/`SectionInstance` renderer, mapping `section.blocks[].data` to `data.items`. It resolves `backgroundMediaKey` through the provided context. The preset library must contain the requested pair `type + preset` or rendering will fail.
 
-The current React `EditorialScene` renders a named source-backed React scene, optionally receiving `section: SiteSection`, `brand`, `tokens` and `resolveMedia`. Four scene IDs are currently `site-document-bound`: `curtain-hero`, `wardrobe-gallery`, `split-media` and `editorial-statement`. The other 35 entries are **preview candidates**, not yet uniformly editable CMS sections.
+The current React `EditorialScene` renders a named source-backed React scene, optionally receiving `section: SiteSection`, `brand`, `tokens` and `resolveMedia`. Seven scene IDs are now `site-document-bound`: `curtain-hero`, `wardrobe-gallery`, `split-media`, `editorial-statement`, `collection-carousel`, `lookbook-hotspots`, `faq-trust`. The other 32 entries are **preview candidates**, not yet uniformly editable CMS sections.
+Two independent canonical customer fixtures, FIELDWORK and COVE / PAPER, now
+exercise the collection carousel, lookbook hotspots and FAQ block adapters.
+Neither fixture is production commerce data; the original donor visual remains
+independently previewable. This is stronger integration evidence than comparing
+a bound customer scene only against an unbound donor demonstration.
 
 **PROPOSED adapter rule:** Every donor renderer should expose one conversion:
 
@@ -385,6 +390,7 @@ npm run build:editorial-evidence
 # With a running CMS demo and Chrome/Playwright paths configured:
 npm run smoke:universal
 npm run smoke:editorial:workbench
+npm run smoke:editorial:bound
 # For the donor's original 39-scene acceptance:
 EDITORIAL_PREVIEW_URL=http://127.0.0.1:4319/library/evidence/editorial-commons/index.html npm --prefix apps/editorial-commons run smoke:editorial
 ```

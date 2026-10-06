@@ -70,6 +70,24 @@ describe("universal SiteDocument section content editing", () => {
     expect(source.secondaryAction.href).toBe("/stories/");
   });
 
+  it("edits customer collection labels and validates bounded lookbook marker positions", () => {
+    const block = {
+      group: "Stories", priceLabel: "From the archive",
+      hotspotX: 35, hotspotY: 62, title: "Journeys",
+    };
+    expect(editableSectionFields(block).map((field) => field.key)).toEqual(
+      expect.arrayContaining(["group", "priceLabel", "hotspotX", "hotspotY"]));
+    expect(applySectionFieldEdit(block, "group", "Travel").ok).toBe(true);
+    expect(applySectionFieldEdit(block, "priceLabel", "View collection").ok).toBe(true);
+    expect(applySectionFieldEdit(block, "hotspotX", "79").ok).toBe(true);
+    expect(applySectionFieldEdit(block, "hotspotY", "100").ok).toBe(false);
+    expect(applySectionFieldEdit(block, "hotspotX", "-10").ok).toBe(false);
+    expect(applySectionFieldEdit(block, "hotspotX", "Infinity").ok).toBe(false);
+    expect(block).toEqual({
+      group: "Travel", priceLabel: "View collection", hotspotX: 79, hotspotY: 62, title: "Journeys",
+    });
+  });
+
   it("preserves types and rejects invalid numeric input", () => {
     const source = { count: 3, speed: 1.5, autoplay: false };
     expect(applySectionFieldEdit(source, "count", "4").ok).toBe(true);

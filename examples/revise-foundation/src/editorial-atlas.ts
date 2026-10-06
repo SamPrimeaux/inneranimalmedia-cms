@@ -52,6 +52,9 @@ export const editorialAtlasItems: EditorialAtlasItem[] = [
     ["wardrobe-gallery", "wardrobe", "Category gallery"],
     ["split-media", "diptych", "Media diptych"],
     ["editorial-statement", "statement", "Editorial statement"],
+    ["collection-carousel", "collection", "Collection carousel"],
+    ["lookbook-hotspots", "lookbook", "Interactive lookbook"],
+    ["faq-trust", "faq", "FAQ accordion"],
   ] as const).map(([scene, id, title]): EditorialAtlasItem => ({
     id: "commons-fieldwork-" + id,
     kind: "section",
@@ -64,6 +67,22 @@ export const editorialAtlasItems: EditorialAtlasItem[] = [
     sourcePath: "apps/editorial-commons/src/portable/fieldwork-site.ts",
     maturity: "SiteDocument-bound React scene · local authoring",
   })),
+  ...([
+    ["collection-carousel", "collection", "Collection carousel"],
+    ["lookbook-hotspots", "lookbook", "Interactive lookbook"],
+    ["faq-trust", "faq", "FAQ accordion"],
+  ] as const).map(([scene, id, title]): EditorialAtlasItem => ({
+    id: "commons-cove-" + id,
+    kind: "section",
+    title: title + " / Independent Cove site",
+    family: "Editorial Commons · Second SiteDocument consumer",
+    description: "The same renderer displays COVE / PAPER with different blocks, media, routes and brand tokens from a separate SiteDocument.",
+    previewUrl: root + "?scene=" + scene + "&fixture=cove",
+    pages: [],
+    ...provenance,
+    sourcePath: "apps/editorial-commons/src/portable/cove-site.ts",
+    maturity: "SiteDocument-bound React scene · dual consumer tested",
+  })),
   ...EDITORIAL_SCENES.map((scene): EditorialAtlasItem => ({
     id: "commons-" + scene.id,
     kind: scene.kind === "section" ? "section" :
@@ -71,9 +90,11 @@ export const editorialAtlasItems: EditorialAtlasItem[] = [
     title: scene.title,
     family: "Editorial Commons · " + scene.act,
     description: "Real component preview. " +
-      (scene.status === "adapted-catalog"
-        ? "Content can be injected through the donor React host; section schema normalization is underway."
-        : "Legacy interaction; review before promoting into a customer-facing CMS renderer."),
+      (scene.status === "site-document-bound"
+        ? "Uses canonical SiteDocument data and blocks; edit it through the integrated workbench."
+        : scene.status === "adapted-catalog"
+          ? "Catalog injection exists; full section-field normalization is still underway."
+          : "Legacy interaction; review before promoting into a customer-facing CMS renderer."),
     previewUrl: root + "?scene=" + encodeURIComponent(scene.id),
     pages: [],
     ...provenance,

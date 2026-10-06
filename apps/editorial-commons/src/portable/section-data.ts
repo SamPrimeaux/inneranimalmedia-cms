@@ -30,4 +30,19 @@ export const SCENE_PRESETS = Object.freeze({
   wardrobe: "commons/wardrobe-gallery",
   diptych: "commons/split-media",
   statement: "commons/editorial-statement",
+  collection: "commons/collection-carousel",
+  lookbook: "commons/lookbook-hotspots",
+  faq: "commons/faq-trust",
 } as const);
+
+/** Section-level surfaces are independent of donor page backgrounds. */
+export function sceneSurface(
+  section: SiteSection | undefined, fallback: "paper" | "inverse" = "paper",
+): { background: string; dark: boolean } {
+  const surface = section?.settings.surface ?? fallback;
+  const dark = surface === "inverse" || surface === "image";
+  const background = dark ? "#111111" :
+    surface === "canvas" ? "var(--editorial-canvas)" :
+    surface === "muted" ? "#e8e8e2" : "var(--editorial-paper)";
+  return { background, dark };
+}

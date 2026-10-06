@@ -33,6 +33,7 @@
     "smoke:revise:polish": "node scripts/smoke-revise-polish.mjs",
     "smoke:universal": "node scripts/smoke-universal-sections.mjs",
     "smoke:editorial:workbench": "node scripts/smoke-editorial-workbench.mjs",
+    "smoke:editorial:bound": "node scripts/smoke-bound-editorial.mjs",
     "build:editorial-evidence": "node scripts/build-editorial-evidence.mjs",
     "test:universal": "vitest run packages/site-contracts/tests/section-fields.test.ts examples/revise-foundation/tests/editorial-atlas.test.ts",
     "verify:universal": "npm run verify:atlas && npm run test:universal"

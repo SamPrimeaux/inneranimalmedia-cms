@@ -14,6 +14,9 @@ const kinds = [
   ["wardrobe-gallery", SCENE_PRESETS.wardrobe, "Category wardrobe"],
   ["split-media", SCENE_PRESETS.diptych, "Media diptych"],
   ["editorial-statement", SCENE_PRESETS.statement, "Editorial statement"],
+  ["collection-carousel", SCENE_PRESETS.collection, "Collection carousel"],
+  ["lookbook-hotspots", SCENE_PRESETS.lookbook, "Interactive lookbook"],
+  ["faq-trust", SCENE_PRESETS.faq, "Questions & answers"],
 ] as const;
 const mediaKeys = new Set(fieldworkMedia.keys());
 const mediaOptions = [...fieldworkMedia.keys()];
@@ -56,12 +59,37 @@ function newSection(id: string): SiteSection {
     id: "scene-hero-" + suffix, type: "media-hero", preset: SCENE_PRESETS.hero,
     settings: { ...shared, surface: "image", minHeight: "screen" },
     data: { eyebrow: "NEW STORY", heading: "Make this your own.", body: "Introduce the story behind your brand.",
-      mediaKey: "fieldwork.hero", ctaLabel: "Explore", ctaHref: "/stories/" },
+      mediaKey: "", ctaLabel: "Explore", ctaHref: "/stories/" },
   };
   if (id === "editorial-statement") return {
     id: "scene-statement-" + suffix, type: "statement", preset: SCENE_PRESETS.statement,
     settings: shared,
     data: { body: "A meaningful sentence about what matters.", ctaLabel: "Read the journal", ctaHref: "/journal/" },
+  };
+  if (id === "collection-carousel") return {
+    id: "scene-collection-" + suffix, type: "showcase", preset: SCENE_PRESETS.collection,
+    settings: { ...shared },
+    data: { eyebrow: "THE COLLECTION", heading: "Explore our edit", body: "Discover more from the collection." },
+    blocks: [{ id: "item-" + suffix, type: "item",
+      data: { title: "Collection card", label: "New", group: "Featured", badge: "",
+        mediaKey: "", href: "/collections/", alt: "Editorial collection" } }],
+  };
+  if (id === "lookbook-hotspots") return {
+    id: "scene-lookbook-" + suffix, type: "showcase", preset: SCENE_PRESETS.lookbook,
+    settings: { ...shared, surface: "inverse" },
+    data: { eyebrow: "INSIDE THE EDITORIAL", heading: "Discover the details",
+      body: "Select a marker to see more.", mediaKey: "", alt: "Editorial image" },
+    blocks: [{ id: "item-" + suffix, type: "item",
+      data: { title: "Featured detail", body: "A closer look at a product or story.",
+        hotspotX: 35, hotspotY: 44, badge: "", href: "/stories/", ctaLabel: "Explore" } }],
+  };
+  if (id === "faq-trust") return {
+    id: "scene-faq-" + suffix, type: "showcase", preset: SCENE_PRESETS.faq,
+    settings: { ...shared },
+    data: { eyebrow: "HELP & SUPPORT", heading: "Common questions", body: "",
+      ctaLabel: "Get in touch", ctaHref: "/contact/" },
+    blocks: [{ id: "item-" + suffix, type: "text",
+      data: { title: "How does this work?", body: "Add an accurate, customer-owned answer." } }],
   };
   return {
     id: "scene-" + id + "-" + suffix, type: "showcase",
@@ -71,22 +99,38 @@ function newSection(id: string): SiteSection {
     blocks: [{
       id: "item-" + suffix, type: "item",
       data: id === "wardrobe-gallery"
-        ? { title: "New collection", caption: "Selected objects", mediaKey: "fieldwork.journeys",
+        ? { title: "New collection", caption: "Selected objects", mediaKey: "",
             href: "/stories/", alt: "Collection image" }
         : { eyebrow: "SCENE 01", title: "A new perspective", body: "Add your own editorial copy.",
-            mediaKey: "fieldwork.evening", href: "/stories/", ctaLabel: "Explore", alt: "Panel image" },
+            mediaKey: "", href: "/stories/", ctaLabel: "Explore", alt: "Panel image" },
     }],
   };
 }
 function nextBlock(section: SiteSection): SiteContentBlock {
-  const sample = structuredClone(section.blocks?.at(-1)?.data ?? (
+  const fallback = section.preset === SCENE_PRESETS.collection
+    ? { title: "New card", label: "Collection", group: "Featured", mediaKey: "",
+        href: "/collections/", alt: "Collection image" }
+    : section.preset === SCENE_PRESETS.lookbook
+      ? { title: "New hotspot", body: "Description", hotspotX: 50, hotspotY: 50,
+          badge: "", href: "/stories/", ctaLabel: "Explore" }
+      : section.preset === SCENE_PRESETS.faq
+        ? { title: "A new question", body: "Add a helpful answer." }
+        : null;
+  const sample = structuredClone(section.blocks?.at(-1)?.data ?? fallback ?? (
     section.preset === SCENE_PRESETS.diptych
       ? { eyebrow: "NEW PANEL", title: "New direction", body: "Describe this direction.",
           mediaKey: "", href: "/stories/", ctaLabel: "Explore", alt: "New panel" }
       : { title: "New category", caption: "Description", mediaKey: "", href: "/stories/", alt: "Category" }
   ));
+  if (section.preset === SCENE_PRESETS.lookbook) {
+    // Newly duplicated hotspot content must not sit directly on the last marker.
+    sample.hotspotX = Math.min(90, Math.max(10,
+      (typeof sample.hotspotX === "number" ? sample.hotspotX : 35) + 18));
+    sample.hotspotY = Math.min(90, Math.max(10,
+      (typeof sample.hotspotY === "number" ? sample.hotspotY : 35) + 12));
+  }
   return { id: "block-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 6),
-    type: "item", data: sample };
+    type: section.preset === SCENE_PRESETS.faq ? "text" : "item", data: sample };
 }
 function download(document: SiteDocument) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(document, null, 2) + "\n"],

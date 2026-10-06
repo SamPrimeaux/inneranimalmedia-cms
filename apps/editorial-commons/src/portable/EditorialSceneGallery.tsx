@@ -93,12 +93,19 @@ export function EditorialSceneGallery() {
                 aria-pressed={viewport==="mobile"} className={"px-4 py-2 rounded-full " +
                   (viewport==="mobile"?"bg-white shadow-sm":"")}>Mobile</button>
             </div>
-            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement"].includes(selected) &&
+            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement",
+              "collection-carousel", "lookbook-hotspots", "faq-trust"].includes(selected) &&
               <a href={entryPath+"?scene="+encodeURIComponent(selected)+"&fixture=fieldwork"}
               target="_blank" rel="noopener"
               className="px-4 py-3 rounded-full border border-[#161a18] text-[#161a18] no-underline font-semibold">
               Second brand ↗</a>}
-            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement"].includes(selected) &&
+            {["collection-carousel", "lookbook-hotspots", "faq-trust"].includes(selected) &&
+              <a href={entryPath+"?scene="+encodeURIComponent(selected)+"&fixture=cove"}
+                target="_blank" rel="noopener"
+                className="px-4 py-3 rounded-full border border-[#41687d] text-[#284e65] no-underline font-semibold">
+                Another customer ↗</a>}
+            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement",
+              "collection-carousel", "lookbook-hotspots", "faq-trust"].includes(selected) &&
               <a href={entryPath+"?workbench=1"} target="_blank" rel="noopener"
                 className="px-4 py-3 rounded-full bg-[#d7fe83] text-black no-underline font-semibold">Edit sections ↗</a>}
             <a href={entryPath+"?scene="+encodeURIComponent(selected)} target="_blank" rel="noopener"

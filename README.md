@@ -70,11 +70,14 @@ history preserved. The combined Design Atlas shows these real previews alongside
 Revise, with one additional FIELDWORK cross-brand section demonstration.
 
 The shared SiteDocument editor exposes typed text, media, CTA and card fields
-instead of only headings. Four original React scenes now consume that same
-SiteDocument contract: curtain hero, category wardrobe, split media, and editorial
-statement. A local multipage authoring workbench edits real section data, blocks,
-brand color tokens and backgrounds; other donor scenes remain visual candidates
-pending adapter and provider integration.
+instead of only headings. Seven original React scenes now consume that same
+SiteDocument contract: curtain hero, category wardrobe, split media, editorial
+statement, collection carousel, interactive lookbook, and FAQ. A local
+multipage workbench edits actual section data, repeatable blocks, collection
+groups, hotspot positions, brand color tokens and backgrounds. Other donor
+scenes remain visual candidates pending adapter and provider integration.
+The collection, lookbook and FAQ are also browser-verified with two independent
+customer SiteDocuments (FIELDWORK and COVE), not just the original donor sample.
 
 Browse the editable workbench at /library/evidence/editorial-commons/index.html?workbench=1.
 

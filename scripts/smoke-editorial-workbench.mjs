@@ -65,7 +65,7 @@ try {
   await page.getByLabel("Href").first().press("Tab");
   assert((await page.getByRole("status").innerText()).includes("Invalid href"),"bad URL not caught");
   await page.getByRole("button",{name:"Full page"}).click();
-  assert(await page.locator("[data-workbench-preview] [data-editorial-scene]").count()===4,"full page");
+  assert(await page.locator("[data-workbench-preview] [data-editorial-scene]").count()===7,"full page");
   await page.reload({waitUntil:"networkidle"});
   await page.getByRole("button",{name:"Full page"}).click();
   assert((await page.locator("[data-workbench-preview]").textContent()).includes("Categories made to travel"),"persistence");

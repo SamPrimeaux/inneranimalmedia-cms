@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Eye, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useEditorialData } from '../portable/EditorialHost';
+import { useEditorialData, useEditorialHost } from '../portable/EditorialHost';
+import { BoundCollectionCarousel } from '../portable/BoundCollectionCarousel';
 import { Product } from '../types';
 
 export const CollectionCarousel: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundCollectionCarousel /> : <LegacyCollectionCarousel />;
+};
+
+const LegacyCollectionCarousel: React.FC = () => {
   const { PRODUCTS } = useEditorialData();
   const { addToCart, setQuickViewProduct, formatPrice, setActiveProductPage } = useCart();
   const [activeTab, setActiveTab] = useState<'NEW' | 'BEST' | 'SALE'>('NEW');

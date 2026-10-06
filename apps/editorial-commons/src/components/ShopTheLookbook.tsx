@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { ShoppingBag, X, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useEditorialData } from '../portable/EditorialHost';
+import { useEditorialData, useEditorialHost } from '../portable/EditorialHost';
+import { BoundLookbook } from '../portable/BoundLookbook';
 
 export const ShopTheLookbook: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundLookbook /> : <LegacyLookbook />;
+};
+
+const LegacyLookbook: React.FC = () => {
   const { LOOKBOOK_IMAGE, PRODUCTS } = useEditorialData();
   const { addToCart, setQuickViewProduct, formatPrice } = useCart();
   const [activeSpot, setActiveSpot] = useState<string | null>('spot-dress');

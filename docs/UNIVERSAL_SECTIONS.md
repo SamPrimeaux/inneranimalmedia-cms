@@ -18,9 +18,9 @@ The existing FNF editor is now based on the shared exports editableSectionFields
 
 Edits update actual SiteSection.data and SiteSection.blocks data, persist in the local draft, and re-render the page. Header, footer, page arrangement, background surfaces and section order remain separate controls. Complex nested tabs and product variants require explicit schemas in a later pass.
 
-## React cross-brand acceptance: four independently configurable scenes
+## React cross-brand acceptance: seven independently configurable scenes
 
-Four original React components now consume canonical SiteSection records, and
+Seven original React components now consume canonical SiteSection records, and
 none copies a component just to change the brand:
 
 | Scene | Content and editing boundary |
@@ -29,6 +29,9 @@ none copies a component just to change the brand:
 | Category wardrobe | Section eyebrow/heading; variable category blocks with title, caption, media, alt and per-card link |
 | Media diptych | Variable panel blocks with title, eyebrow, body, media, alt, CTA label and link |
 | Editorial statement | Body, CTA label and destination (without inherited donor product quick-view) |
+| Collection carousel | Section heading/eyebrow/body; variable item blocks with groups, title, label, badge, host-owned media, destination and optional descriptive price label; no synthetic purchase actions |
+| Interactive lookbook | Section imagery, heading/copy, repeatable positioned hotspot blocks with story details and links; no inherited buy buttons, catalog or discounts |
+| FAQ and answers | Section heading/intro/contact link; repeatable accessible disclosure blocks from customer-owned questions and answers; no inherited service promises |
 
 Each section can be added, reordered, customized or removed independently.
 The host resolves media keys; an unresolved image displays a neutral missing-media
@@ -42,15 +45,24 @@ canvas, paper, ink) with six-digit hexadecimal validation. Migrated scenes use
 these CSS variables and honor per-section surface settings. This is a
 nonbreaking, optional contract addition, not a new competing theme system.
 
-FIELDWORK / STUDIO remains an illustrative, unrelated SiteDocument fixture with
-its own brand, color tokens, media registry and four section records.
-The original FORM / 26 gallery and its interactions remain preserved.
+FIELDWORK / STUDIO is an illustrative SiteDocument fixture with its own brand,
+color tokens, media registry and seven section records. COVE / PAPER is a
+second, independently defined SiteDocument with different content, media keys,
+routes, layout surfaces and visual tokens for collection, lookbook and FAQ.
+The source-backed browser suite verifies both consumers without cloning the
+original React components. The original FORM / 26 gallery remains preserved.
 
 - Original visual reference: /library/evidence/editorial-commons/index.html?gallery=1
 - Cross-brand hero: /library/evidence/editorial-commons/index.html?scene=curtain-hero&fixture=fieldwork
 - Cross-brand categories: /library/evidence/editorial-commons/index.html?scene=wardrobe-gallery&fixture=fieldwork
 - Cross-brand split media: /library/evidence/editorial-commons/index.html?scene=split-media&fixture=fieldwork
 - Cross-brand statement: /library/evidence/editorial-commons/index.html?scene=editorial-statement&fixture=fieldwork
+- Cross-brand collection: /library/evidence/editorial-commons/index.html?scene=collection-carousel&fixture=fieldwork
+- Cross-brand lookbook: /library/evidence/editorial-commons/index.html?scene=lookbook-hotspots&fixture=fieldwork
+- Cross-brand FAQ: /library/evidence/editorial-commons/index.html?scene=faq-trust&fixture=fieldwork
+- Independent Cove collection: /library/evidence/editorial-commons/index.html?scene=collection-carousel&fixture=cove
+- Independent Cove lookbook: /library/evidence/editorial-commons/index.html?scene=lookbook-hotspots&fixture=cove
+- Independent Cove FAQ: /library/evidence/editorial-commons/index.html?scene=faq-trust&fixture=cove
 
 ## Editable multipage SiteDocument workbench
 
@@ -72,8 +84,8 @@ will not silently replace them with donor assets. A real CMS installation must
 supply the customer's media resolver and persistence adapter.
 
 The combined Design Atlas now contains 39 donor scenes, their full gallery,
-four cross-brand scene examples, and this workbench, all source-backed.
-**Only the four explicitly labeled SiteDocument-bound scenes have this
+seven FIELDWORK examples, three independent COVE examples and this workbench,
+all source-backed. **Only the seven labeled SiteDocument-bound scenes have this
 direct React editing adapter.** The HTML site renderer's installed Revise
 sections remain separate; broader framework-independent mounting has
 not yet been completed.
@@ -102,6 +114,7 @@ For browser acceptance, set PLAYWRIGHT_PACKAGE and REVISE_CHROME, and run:
 
     npm run smoke:universal
     npm run smoke:editorial:workbench
+    npm run smoke:editorial:bound
 
 To check all 39 original scenes, the standalone React smoke can target the
 embedded source-backed build instead of requiring another dev server:

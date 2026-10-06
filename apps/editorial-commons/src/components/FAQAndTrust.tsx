@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Plus, Minus, Headphones, Truck, Award } from 'lucide-react';
-import { useEditorialData } from '../portable/EditorialHost';
+import { useEditorialData, useEditorialHost } from '../portable/EditorialHost';
+import { BoundFAQ } from '../portable/BoundFAQ';
 
 export const FAQAndTrust: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundFAQ /> : <LegacyFAQAndTrust />;
+};
+
+const LegacyFAQAndTrust: React.FC = () => {
   const { FAQS } = useEditorialData();
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 

@@ -17,7 +17,7 @@ export interface EditableSectionField {
 const FIELD_KEYS = new Set([
   "eyebrow", "heading", "subheading", "body", "description", "text", "caption",
   "kicker", "title", "label", "subtitle", "note", "author", "role", "badge",
-  "price", "compareAtPrice", "ctaLabel", "ctaHref", "secondaryCtaLabel",
+  "price", "priceLabel", "compareAtPrice", "group", "hotspotX", "hotspotY", "ctaLabel", "ctaHref", "secondaryCtaLabel",
   "secondaryCtaHref", "buttonLabel", "href", "mediaKey", "imageKey",
   "posterKey", "alt", "mediaAlt", "quote", "placeholder", "videoUrl", "alignment",
   "open", "enabled", "autoplay", "reverse", "speed", "count",
@@ -25,7 +25,7 @@ const FIELD_KEYS = new Set([
 const MEDIA_FIELDS = new Set(["mediaKey", "imageKey", "posterKey"]);
 const URL_FIELDS = new Set(["href", "ctaHref", "secondaryCtaHref", "videoUrl"]);
 const LONG_FIELDS = new Set(["body", "description", "text", "quote", "note"]);
-const NUMBER_FIELDS = new Set(["speed", "count"]);
+const NUMBER_FIELDS = new Set(["speed", "count", "hotspotX", "hotspotY"]);
 const BOOL_FIELDS = new Set(["open", "enabled", "autoplay", "reverse"]);
 const ACTION_ROOTS = ["primaryAction", "secondaryAction", "action", "cta"] as const;
 const ACTION_LEAVES = new Set(["label", "href"]);
@@ -124,7 +124,10 @@ export function applySectionFieldEdit(
   }
   if (field.kind === "number") {
     const value = Number(raw);
-    if (raw.trim() === "" || !Number.isFinite(value)) return { ok: false, reason: "invalid-number" };
+    if (raw.trim() === "" || !Number.isFinite(value) ||
+      ((key === "hotspotX" || key === "hotspotY") && (value < 5 || value > 95))) {
+      return { ok: false, reason: "invalid-number" };
+    }
     target[targetKey] = value;
   } else if (field.kind === "boolean") {
     target[targetKey] = typeof input === "boolean" ? input : raw === "true";
