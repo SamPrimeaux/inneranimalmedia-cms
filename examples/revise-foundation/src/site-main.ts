@@ -22,21 +22,10 @@ if (location.pathname.startsWith("/library")) {
 function bootSite() {
   const root = document.querySelector<HTMLDivElement>("#app");
   if (!root) throw new Error("Missing #app");
-  const DRAFT_KEY = "revise-site-document-v1";
-  function load(): SiteDocument {
-    try {
-      const stored = localStorage.getItem(DRAFT_KEY);
-      if (stored) {
-        const candidate = JSON.parse(stored);
-        if (validateSiteDocument(candidate).length === 0) return refineFnfCopy(candidate);
-      }
-    } catch { /* A corrupt local draft never breaks the published fixture. */ }
-    return structuredClone(initialSite);
-  }
-  let site = load();
-  let editorOpen = false;
+  // Public storefront previews are read-only; merchant editing is handled by
+  // the canonical CMS Studio through authenticated server-backed adapters.
+  const site = refineFnfCopy(structuredClone(initialSite));
   let enhancement: ReturnType<typeof enhanceRevise> | null = null;
-  let editScroll = 0;
   const presets = presetLibraryFrom(reviseShowcasePresets);
 
   const esc = (value: unknown) => String(value ?? "").replace(/&/g, "&amp;")
