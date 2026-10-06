@@ -161,3 +161,4 @@ body { overflow-x: clip; }
 .revise-site__editor-link button { height: 40px; border: 1px solid #d8d3ca; background: #eeeae2; }
 .revise-site__editor-footer-block form { margin-top: 12px; }
 .revise-site__editor-footer-block form .revise-site__editor-add { margin-top: 5px; }
+.revise-site__editor-open-library { display: block; text-align: center; text-decoration: none; }

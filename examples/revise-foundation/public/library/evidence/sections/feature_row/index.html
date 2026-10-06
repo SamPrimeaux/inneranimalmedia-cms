@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Feature Row — archived section</title><style>*{box-sizing:border-box}body{margin:0;background:#ebe8e2;color:#151a1c;font:16px system-ui,sans-serif}
+      .provenance{padding:12px 18px;display:flex;gap:15px;flex-wrap:wrap;align-items:center;background:#161b1d;color:#fff;font-size:12px}
+      .provenance span{opacity:.68}.preview{overflow:hidden}
+      section{min-height:180px;padding:clamp(24px,5vw,64px)}h1,h2{line-height:1.07;letter-spacing:-.04em}
+      h1{font-size:clamp(2.8rem,7vw,5.5rem)}h2{font-size:clamp(2rem,4vw,4.3rem)}
+      a,button{cursor:pointer}img{max-width:100%;height:auto}p{line-height:1.6}
+      .mx-auto{margin-left:auto;margin-right:auto}.w-full{width:100%}.max-w-screen-xl-tight{max-width:1180px}
+      .px-6{padding-left:24px;padding-right:24px}.text-center{text-align:center}.bg-white{background:#fff}
+      .flex{display:flex}.flex-col{flex-direction:column}.grid{display:grid}.items-center{align-items:center}
+      .justify-center{justify-content:center}.gap-12{gap:48px}.relative{position:relative}
+      .absolute{position:absolute}.inset-0{inset:0}.rounded-\[32px\]{border-radius:32px}
+      .overflow-hidden{overflow:hidden}.font-bold{font-weight:800}.mb-4{margin-bottom:16px}
+      .text-brand-navy{color:#172d39}.text-brand-muted{color:#6a7176}.bg-brand-dark{background:#182934}
+      .py-24{padding-top:96px;padding-bottom:96px}.text-4xl{font-size:2.25rem}.text-lg{font-size:1.125rem}
+      @media(min-width:768px){.md\:flex-row{flex-direction:row}.md\:text-5xl{font-size:3rem}}</style></head><body><div class="provenance"><strong>Legacy section · inspection harness</strong><span>Layout dependencies, live data, and media are not normalized. Source preserved as evidence.</span></div><main class="preview"><!-- CMS section: feature_row — reusable stagger row for /games (light or dark theme) -->
+<section
+  class="py-24 md:py-32"
+  data-cms-section="{{section_name}}"
+  data-cms-type="feature_row"
+  data-section-theme="{{theme}}"
+  id="{{section_dom_id}}"
+>
+  <div class="w-full max-w-screen-xl-tight px-6 mx-auto">
+    <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16 group {{layout_class}}">
+      <div class="md:w-1/2 {{text_order_class}}">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 {{title_class}}" id="{{title_id}}">{{title}}</h2>
+        <p class="text-lg leading-relaxed mb-6 {{body_class}}" id="{{body_id}}">{{body}}</p>
+        <span class="text-xs font-bold px-3 py-1.5 rounded-lg tracking-wide uppercase {{badge_class}}" id="{{badge_id}}">{{badge_label}}</span>
+      </div>
+      <div class="md:w-1/2 {{visual_order_class}}">
+        <div class="{{card_class}}">
+          <img src="{{image_url}}" alt="{{image_alt}}" class="{{image_class}}" id="{{image_id}}">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main></body></html>

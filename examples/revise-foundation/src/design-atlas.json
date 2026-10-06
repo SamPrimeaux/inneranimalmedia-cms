@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "purpose": "review-only historical design evidence; not an installable registry",
+  "sourceCommits": {
+    "agentsam-sdk": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+    "inneranimalmedia": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+    "AgentSam-BrowserShell": "268cda57fd340e023a55c97ef05d9fa680a9a04c"
+  },
+  "items": [
+    {
+      "id": "theme-cypress",
+      "kind": "theme",
+      "title": "Cypress",
+      "family": "Community",
+      "description": "A welcoming home for events, groups, giving, and the stories that bring a community together.",
+      "previewUrl": "/library/evidence/themes/cypress/index.html",
+      "pages": [
+        {
+          "name": "Beliefs",
+          "path": "/library/evidence/themes/cypress/beliefs.html"
+        },
+        {
+          "name": "Community",
+          "path": "/library/evidence/themes/cypress/community.html"
+        },
+        {
+          "name": "Connect",
+          "path": "/library/evidence/themes/cypress/connect.html"
+        },
+        {
+          "name": "Donate",
+          "path": "/library/evidence/themes/cypress/donate.html"
+        },
+        {
+          "name": "Groups",
+          "path": "/library/evidence/themes/cypress/groups.html"
+        },
+        {
+          "name": "Help",
+          "path": "/library/evidence/themes/cypress/help.html"
+        },
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/cypress/index.html"
+        },
+        {
+          "name": "Mensgroup",
+          "path": "/library/evidence/themes/cypress/mensgroup.html"
+        },
+        {
+          "name": "Mission",
+          "path": "/library/evidence/themes/cypress/mission.html"
+        },
+        {
+          "name": "Womansgroup",
+          "path": "/library/evidence/themes/cypress/womansgroup.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-cypress/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-violet",
+      "kind": "theme",
+      "title": "Violet",
+      "family": "Campaign",
+      "description": "Bold campaign pages pair impact proof and human stories with clear ways to give, share, volunteer, and join in.",
+      "previewUrl": "/library/evidence/themes/violet/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/violet/index.html"
+        },
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/violet/pages/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-violet/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-grove",
+      "kind": "theme",
+      "title": "Grove",
+      "family": "Home services",
+      "description": "A tactile, gallery-led home-services site that puts materials, finished projects, and estimate requests in clear view.",
+      "previewUrl": "/library/evidence/themes/grove/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/grove/index.html"
+        },
+        {
+          "name": "Contact",
+          "path": "/library/evidence/themes/grove/pages/contact.html"
+        },
+        {
+          "name": "Gallery",
+          "path": "/library/evidence/themes/grove/pages/gallery.html"
+        },
+        {
+          "name": "Privacy",
+          "path": "/library/evidence/themes/grove/pages/privacy.html"
+        },
+        {
+          "name": "Process",
+          "path": "/library/evidence/themes/grove/pages/process.html"
+        },
+        {
+          "name": "Services",
+          "path": "/library/evidence/themes/grove/pages/services.html"
+        },
+        {
+          "name": "Terms",
+          "path": "/library/evidence/themes/grove/pages/terms.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-grove/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-ember",
+      "kind": "theme",
+      "title": "Ember",
+      "family": "Commerce",
+      "description": "A story-first storefront for bold drops, lived-in brand worlds, and product discovery beyond the grid.",
+      "previewUrl": "/library/evidence/themes/ember/index.html",
+      "pages": [
+        {
+          "name": "About",
+          "path": "/library/evidence/themes/ember/about.html"
+        },
+        {
+          "name": "Community",
+          "path": "/library/evidence/themes/ember/community.html"
+        },
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/ember/index.html"
+        },
+        {
+          "name": "Shop",
+          "path": "/library/evidence/themes/ember/shop.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-ember/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-forge",
+      "kind": "theme",
+      "title": "Forge",
+      "family": "Local services",
+      "description": "A sharp local-services prebuild with upfront estimate capture, clear service areas, project proof, and trust signals that hold up on mobile.",
+      "previewUrl": "/library/evidence/themes/forge/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/forge/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-forge/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-harbor",
+      "kind": "theme",
+      "title": "Harbor",
+      "family": "Professional",
+      "description": "Clear service stories, thoughtful proof, and reassuring lead capture—with an editorial feel beyond corporate blue.",
+      "previewUrl": "/library/evidence/themes/harbor/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/harbor/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-harbor/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-summit",
+      "kind": "theme",
+      "title": "Summit",
+      "family": "Portfolio",
+      "description": "An editorial portfolio prebuild for expertise that travels well.",
+      "previewUrl": "/library/evidence/themes/summit/index.html",
+      "pages": [
+        {
+          "name": "Adventures",
+          "path": "/library/evidence/themes/summit/adventures.html"
+        },
+        {
+          "name": "Business Card",
+          "path": "/library/evidence/themes/summit/business-card.html"
+        },
+        {
+          "name": "Gallery",
+          "path": "/library/evidence/themes/summit/gallery.html"
+        },
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/summit/index.html"
+        },
+        {
+          "name": "About",
+          "path": "/library/evidence/themes/summit/pages/about.html"
+        },
+        {
+          "name": "Contact",
+          "path": "/library/evidence/themes/summit/pages/contact.html"
+        },
+        {
+          "name": "Dashboard",
+          "path": "/library/evidence/themes/summit/pages/dashboard.html"
+        },
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/summit/pages/index.html"
+        },
+        {
+          "name": "Services",
+          "path": "/library/evidence/themes/summit/pages/services.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-summit/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "theme-resolve",
+      "kind": "theme",
+      "title": "Resolve",
+      "family": "Commerce",
+      "description": "Cinematic scroll, shoppable stories, and a purchase rail that stays in step.",
+      "previewUrl": "/library/evidence/themes/resolve/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/themes/resolve/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/agentsam-sdk",
+      "sourcePath": "packages/theme-resolve/site",
+      "sourceCommit": "87ff81e40bf2a92ff9ee1f54afcb17598e227cef",
+      "maturity": "packaged preview",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "lab-loading-states",
+      "kind": "lab",
+      "title": "Loading States",
+      "family": "UI and interaction study",
+      "description": "Original UI/interaction experiment, preserved for refinement.",
+      "previewUrl": "/library/evidence/labs/loading-states/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/labs/loading-states/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "static/templates/ui/agent-sam-loading-states-lab",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "historical experiment",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "lab-loading-clean",
+      "kind": "lab",
+      "title": "Loading Clean",
+      "family": "UI and interaction study",
+      "description": "Original UI/interaction experiment, preserved for refinement.",
+      "previewUrl": "/library/evidence/labs/loading-clean/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/labs/loading-clean/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "static/templates/ui/agent-sam-loading-states-clean-lab",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "historical experiment",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "lab-offline-runner",
+      "kind": "lab",
+      "title": "Offline Runner",
+      "family": "UI and interaction study",
+      "description": "Original UI/interaction experiment, preserved for refinement.",
+      "previewUrl": "/library/evidence/labs/offline-runner/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/labs/offline-runner/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "static/templates/ui/iam-offline-runner",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "historical experiment",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "lab-scroll-fx",
+      "kind": "lab",
+      "title": "Scroll Fx",
+      "family": "UI and interaction study",
+      "description": "Original UI/interaction experiment, preserved for refinement.",
+      "previewUrl": "/library/evidence/labs/scroll-fx/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/labs/scroll-fx/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "static/templates/ui/iam-scroll-fx/demo",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "historical experiment",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "lab-browser-promo",
+      "kind": "lab",
+      "title": "AgentSam Browser Promo",
+      "family": "Experimental browser product",
+      "description": "Original multi-section BrowserShell promo site, with its own styling and assets.",
+      "previewUrl": "/library/evidence/labs/browser-promo/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/labs/browser-promo/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/AgentSam-BrowserShell",
+      "sourcePath": "apps/agentsam-browser-site/dist",
+      "sourceCommit": "268cda57fd340e023a55c97ef05d9fa680a9a04c",
+      "maturity": "built promo experiment",
+      "importMethod": "derived build snapshot"
+    },
+    {
+      "id": "template-starter-page",
+      "kind": "template",
+      "title": "Starter Page",
+      "family": "CMS page template",
+      "description": "Original simple HTML starting point.",
+      "previewUrl": "/library/evidence/templates/starter-page/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/templates/starter-page/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/templates/starter-page",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "legacy starter",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "template-blank-canvas",
+      "kind": "template",
+      "title": "Blank Canvas",
+      "family": "CMS page template",
+      "description": "Original simple HTML starting point.",
+      "previewUrl": "/library/evidence/templates/blank-canvas/index.html",
+      "pages": [
+        {
+          "name": "Home",
+          "path": "/library/evidence/templates/blank-canvas/index.html"
+        }
+      ],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/templates/blank-canvas",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "legacy starter",
+      "importMethod": "derived snapshot"
+    },
+    {
+      "id": "section-feature_row",
+      "kind": "section",
+      "title": "Feature Row",
+      "family": "Legacy HTML section",
+      "description": "Historical section in a neutral harness; original runtime dependencies may be missing.",
+      "previewUrl": "/library/evidence/sections/feature_row/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/sections/games/feature_row.html",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "needs normalization",
+      "importMethod": "source + neutral harness"
+    },
+    {
+      "id": "section-interactive_systems_hero",
+      "kind": "section",
+      "title": "Interactive Systems Hero",
+      "family": "Legacy HTML section",
+      "description": "Historical section in a neutral harness; original runtime dependencies may be missing.",
+      "previewUrl": "/library/evidence/sections/interactive_systems_hero/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/sections/games/interactive_systems_hero.html",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "needs normalization",
+      "importMethod": "source + neutral harness"
+    },
+    {
+      "id": "section-london_dream_railway",
+      "kind": "section",
+      "title": "London Dream Railway",
+      "family": "Legacy HTML section",
+      "description": "Historical section in a neutral harness; original runtime dependencies may be missing.",
+      "previewUrl": "/library/evidence/sections/london_dream_railway/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/sections/games/london_dream_railway.html",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "needs normalization",
+      "importMethod": "source + neutral harness"
+    },
+    {
+      "id": "section-meauxchess_hero",
+      "kind": "section",
+      "title": "Meauxchess Hero",
+      "family": "Legacy HTML section",
+      "description": "Historical section in a neutral harness; original runtime dependencies may be missing.",
+      "previewUrl": "/library/evidence/sections/meauxchess_hero/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/sections/games/meauxchess_hero.html",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "needs normalization",
+      "importMethod": "source + neutral harness"
+    },
+    {
+      "id": "section-agentsam_platform_services",
+      "kind": "section",
+      "title": "Agentsam Platform Services",
+      "family": "Legacy HTML section",
+      "description": "Historical section in a neutral harness; original runtime dependencies may be missing.",
+      "previewUrl": "/library/evidence/sections/agentsam_platform_services/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/sections/homepage/agentsam_platform_services.html",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "needs normalization",
+      "importMethod": "source + neutral harness"
+    },
+    {
+      "id": "palette-iam-antiocean-full",
+      "kind": "palette",
+      "title": "Iam Antiocean Full",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/iam-antiocean-full/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/iam-antiocean-full",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-iam-desert-field",
+      "kind": "palette",
+      "title": "Iam Desert Field",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/iam-desert-field/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/iam-desert-field",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-iam-forest-recon",
+      "kind": "palette",
+      "title": "Iam Forest Recon",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/iam-forest-recon/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/iam-forest-recon",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-iam-ghost-tactical",
+      "kind": "palette",
+      "title": "Iam Ghost Tactical",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/iam-ghost-tactical/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/iam-ghost-tactical",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-inner-animal-ocean",
+      "kind": "palette",
+      "title": "Inner Animal Ocean",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/inner-animal-ocean/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/inner-animal-ocean",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-kimbie-dark",
+      "kind": "palette",
+      "title": "Kimbie Dark",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/kimbie-dark/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/kimbie-dark",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    },
+    {
+      "id": "palette-solarized-dark",
+      "kind": "palette",
+      "title": "Solarized Dark",
+      "family": "CMS token palette",
+      "description": "Legacy CSS variable set on a common UI surface; not a complete theme site.",
+      "previewUrl": "/library/evidence/palettes/solarized-dark/index.html",
+      "pages": [],
+      "sourceRepo": "SamPrimeaux/inneranimalmedia",
+      "sourcePath": "cms/themes/solarized-dark",
+      "sourceCommit": "2c51eda1214211d319764d5af89ef6d6dea0d556",
+      "maturity": "token study",
+      "importMethod": "tokens + comparison harness"
+    }
+  ]
+}

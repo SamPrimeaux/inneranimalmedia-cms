@@ -9,7 +9,9 @@ import { validateSiteDocument, type SiteDocument, type SiteHeaderBlock, type Sit
 import { initialSite, sectionCatalog, sectionFromCatalog, siteMedia } from "./site-data.js";
 
 const params = new URLSearchParams(location.search);
-if (params.has("legacy") || params.has("fixture") || params.has("overlay") || params.has("section")) {
+if (location.pathname.startsWith("/library")) {
+  void import("./library-main.js");
+} else if (params.has("legacy") || params.has("fixture") || params.has("overlay") || params.has("section")) {
   void import("./main.js");
 } else {
   bootSite();
@@ -187,7 +189,12 @@ function bootSite() {
         !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey &&
         anchor.target !== "_blank") {
       event.preventDefault();
-      navigate(anchor.getAttribute("href") ?? "/");
+      const href = anchor.getAttribute("href") ?? "/";
+      if (href.startsWith("/library/")) {
+        window.location.assign(href);
+        return;
+      }
+      navigate(href);
       return;
     }
     if (target.closest("[data-editor-toggle]")) {
@@ -314,6 +321,9 @@ function bootSite() {
       option("legal","Policies and legal","menu") + option("newsletter","Newsletter","menu") +
       '</select></label>' +
       '<button class="revise-site__editor-add" type="submit">+ Add menu block</button></form></div>' +
+      '<div class="revise-site__editor-group"><h3>Design library</h3>' +
+      '<p class="revise-site__editor-note">Browse historical themes, reusable sections and archived experiments before adding a new design direction.</p>' +
+      '<a class="revise-site__editor-add revise-site__editor-open-library" href="/library/">Open visual library ↗</a></div>' +
       '<div class="revise-site__editor-group"><button type="button" data-edit-action="export">Export site JSON ↓</button>' +
       '<button type="button" data-edit-action="reset">Reset local draft</button></div>' +
       '</div></aside>';

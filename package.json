@@ -26,7 +26,10 @@
     "pack:check": "npm pack --dry-run",
     "build:site": "npm run build -w @inneranimalmedia/site-contracts && npm run build -w @inneranimalmedia/section-library && npm run build -w @inneranimalmedia/revise-theme && npm run build -w @inneranimalmedia/revise-foundation-demo",
     "test:site": "npm run test -w @inneranimalmedia/site-contracts && npm run test -w @inneranimalmedia/section-library && npm run test -w @inneranimalmedia/revise-theme",
-    "verify:revise": "npm run build:site && npm run test:site && npm run pack:check -w @inneranimalmedia/revise-theme"
+    "verify:revise": "npm run build:site && npm run test:site && npm run pack:check -w @inneranimalmedia/revise-theme",
+    "test:atlas": "vitest run examples/revise-foundation/tests/site-data.test.ts examples/revise-foundation/tests/design-atlas.test.ts",
+    "verify:atlas": "npm run build:site && npm run test:site && npm run test:atlas",
+    "smoke:atlas": "node scripts/smoke-design-atlas.mjs"
   },
   "engines": {
     "node": ">=22.5"

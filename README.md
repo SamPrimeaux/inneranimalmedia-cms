@@ -62,6 +62,31 @@ uv run pywrangler dev --port 8788
 curl -s http://127.0.0.1:8788/health
 ```
 
+## Visual design atlas (review and remaster lane)
+
+The Revise example is a real, locally editable five-page F&FT concept site with an
+independent **Design Atlas** of historical themes, their actual HTML pages,
+section presets, palette studies, and UI experiments. It does **not** provision
+a customer website or commit production commerce changes.
+
+```bash
+npm install --ignore-scripts
+npm run verify:atlas
+npm run dev -w @inneranimalmedia/revise-foundation-demo -- --host 127.0.0.1 --port 4319
+```
+
+Open:
+
+- [Site](http://127.0.0.1:4319/)
+- [Design Atlas](http://127.0.0.1:4319/library/)
+- [Example archived theme](http://127.0.0.1:4319/library/themes/cypress/)
+- [Example reusable section](http://127.0.0.1:4319/library/sections/revise-sticky-curtain/)
+
+Source origins, review maturity, import commands, and acceptance gates:
+[Design Atlas inventory](docs/themes/DESIGN_ATLAS_INVENTORY_V1.md).
+Preview source snapshots are checked into this repo for deterministic viewing;
+their original packages remain authoritative in their respective repos.
+
 ## Docs
 
 - [Python agentic pipeline](docs/PYTHON_CMS_AGENTIC.md)
