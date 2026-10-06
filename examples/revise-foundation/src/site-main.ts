@@ -298,8 +298,6 @@ function bootSite() {
     root.innerHTML = '<div class="revise-site revise-demo" data-theme="revise">' +
       '<a class="revise-site__skip" href="#main-content">Skip to content</a>' +
       renderHeader() + pageContent(page) + renderFooter() +
-      '<button class="revise-site__edit-trigger" data-editor-toggle type="button" aria-expanded="' + editorOpen +
-      '" aria-controls="site-editor">Edit site <span>✦</span></button>' +
       '<div class="revise-scrim" data-overlay-scrim data-state="closed"></div>' +
       menuMarkup() + searchMarkup() + bagMarkup() + previewMarkup() + discoverMarkup() + editorMarkup(page) +
       '</div>';
