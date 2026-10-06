@@ -49,47 +49,22 @@ try {
     }
   });
 
-  await check("CMS section and block editing persists using the shared typed-field contract", async () => {
+  await check("standalone Stories keeps actual portable renderers and never mounts an authoring drawer", async () => {
     const page = await browser.newPage({ viewport: { width: 1150, height: 900 } });
     const errors = [];
-    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("pageerror", error => errors.push(error.message));
+    await page.goto(base + "/stories/", { waitUntil: "networkidle" });
+    assert(await page.locator("[data-editor-toggle],#site-editor").count() === 0, "Legacy editor is not allowed");
+    for (const preset of ["campaign-teaser", "sticky-card-deck", "full-bleed-grid", "brand-film"]) {
+      assert(await page.locator('[data-site-preset="revise/' + preset + '"]').count() === 1,
+        "Missing source renderer: " + preset);
+    }
     await page.goto(base + "/campaigns/", { waitUntil: "networkidle" });
-    await page.locator("[data-editor-toggle]").first().click();
-    const heading = page.locator('[data-editor-content][data-editor-key="heading"]').first();
-    assert(await heading.count() > 0, "No typed section heading field");
-    await heading.fill("A section you can move and reuse");
-    await heading.press("Tab");
-    assert((await page.locator("main").innerText()).includes("A section you can move and reuse"),
-      "Editing heading did not update section rendering");
-    const blockBody = page.locator('[data-editor-block-content][data-editor-key="body"]').first();
-    assert(await blockBody.count() > 0, "No typed block copy field");
-    await blockBody.fill("Data-driven copy works independently of the visual theme.");
-    await blockBody.press("Tab");
-    assert((await page.locator("main").innerText()).includes("Data-driven copy works independently"),
-      "Editing a block did not update its rendered content");
-    await page.reload({ waitUntil: "networkidle" });
-    const saved = await page.locator("main").innerText();
-    assert(saved.includes("A section you can move and reuse") &&
-      saved.includes("Data-driven copy works independently"),
-      "Typed edits did not persist in the SiteDocument local draft");
-    await page.goto(base + "/", { waitUntil: "networkidle" });
-    await page.locator("[data-editor-toggle]").first().click();
-    const cta = page.locator('[data-editor-content][data-editor-key="primaryAction.label"]').first();
-    assert(await cta.count() > 0, "Existing FNF nested CTA labels are not editable");
-    await cta.fill("Open the latest collection");
-    await cta.press("Tab");
-    assert((await page.locator("main").innerText()).includes("Open the latest collection"),
-      "Nested CTA label was not propagated to the actual renderer");
-    const href = page.locator('[data-editor-content][data-editor-key="primaryAction.href"]').first();
-    await href.fill("/products/");
-    await href.press("Tab");
-    await page.reload({ waitUntil: "networkidle" });
-    assert((await page.locator("main").innerText()).includes("Open the latest collection"),
-      "CTA edits were not persisted");
-    assert(errors.length === 0, "Editor JavaScript errors: " + errors.join("; "));
+    assert(await page.locator('[data-site-preset="revise/before-after"]').count() === 1,
+      "The real comparison renderer disappeared");
+    assert(errors.length === 0, "Source JavaScript errors: " + errors.join("; "));
     await page.close();
   });
-
   await check("combined Design Atlas exposes donor scenes and cross-brand source preview", async () => {
     const page = await browser.newPage({ viewport: { width: 1180, height: 900 } });
     await page.goto(base + "/library/", { waitUntil: "networkidle" });
