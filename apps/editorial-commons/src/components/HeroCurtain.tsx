@@ -1,3 +1,4 @@
+import { BoundHero } from "../portable/BoundHero";
 import { useEditorialBrand, useEditorialHost } from '../portable/EditorialHost';
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, ArrowRight, X, Sparkles } from 'lucide-react';
@@ -5,6 +6,11 @@ import { useCart } from '../context/CartContext';
 import { useEditorialData } from '../portable/EditorialHost';
 
 export const HeroCurtain: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundHero /> : <LegacyHeroCurtain />;
+};
+
+const LegacyHeroCurtain: React.FC = () => {
   const brand = useEditorialBrand();
   const { section, resolveMedia } = useEditorialHost();
   const sectionData = section?.data;

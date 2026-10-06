@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { publishLocalEditorial } from './cms-editorial-publish.mjs';
+import { installLocalEditorial } from './cms-editorial-install.mjs';
 
 const BIN_DIR = path.dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = path.resolve(BIN_DIR, '..');
@@ -19,12 +21,15 @@ function readPackageVersion() {
 }
 
 function parseArgs(argv) {
-  const out = { command: argv[0] ?? 'help', root: process.cwd(), json: false, project: null };
+  const out = { command: argv[0] ?? 'help', root: process.cwd(), json: false, project: null, page: null, preset: null, id: null };
   for (let i = 1; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--json') out.json = true;
     else if (arg === '--root') out.root = path.resolve(argv[++i] ?? '.');
     else if (arg === '--project') out.project = argv[++i] ?? null;
+    else if (arg === '--page') out.page = argv[++i] ?? null;
+    else if (arg === '--preset') out.preset = argv[++i] ?? null;
+    else if (arg === '--id') out.id = argv[++i] ?? null;
     else if (arg === '--help' || arg === '-h') out.command = 'help';
     else throw new Error(`unknown argument: ${arg}`);
   }
@@ -186,6 +191,8 @@ Usage:
   cms-runtime doctor [--root PATH] [--json]
   cms-runtime tools [--root PATH]
   cms-runtime skills [--root PATH]
+  cms-runtime install-editorial --page PAGE_ID --preset PRESET [--id SECTION_ID] [--root PATH] [--json]
+  cms-runtime publish-editorial --page PAGE_ID [--root PATH] [--json]
 
 Typical clean-machine flow:
   mkdir my-site && cd my-site
@@ -209,6 +216,12 @@ async function main() {
       break;
     case 'skills':
       await catalog(options, 'skills');
+      break;
+    case 'install-editorial':
+      print(installLocalEditorial({ root: options.root, pageId: options.page, preset: options.preset, id: options.id }), options.json);
+      break;
+    case 'publish-editorial':
+      print(publishLocalEditorial({ root: options.root, pageId: options.page }), options.json);
       break;
     case 'help':
       help();

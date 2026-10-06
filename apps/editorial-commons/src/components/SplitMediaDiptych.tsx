@@ -1,3 +1,4 @@
+import { BoundDiptych } from "../portable/BoundDiptych";
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { useEditorialData, useEditorialHost } from "../portable/EditorialHost";
@@ -5,6 +6,11 @@ import { sceneBlocks, sceneHref, sceneMedia, sceneText } from "../portable/secti
 
 /** Panel content is a SiteContentBlock: copy, media and link are host-owned. */
 export const SplitMediaDiptych: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundDiptych /> : <LegacySplitMediaDiptych />;
+};
+
+const LegacySplitMediaDiptych: React.FC = () => {
   const { SPLIT_COTTON_IMAGE, SPLIT_LEATHER_IMAGE } = useEditorialData();
   const { section, resolveMedia } = useEditorialHost();
   const panels = section ? sceneBlocks(section).map((block) => ({

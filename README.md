@@ -83,6 +83,14 @@ Browse the editable workbench at /library/evidence/editorial-commons/index.html?
 
 See docs/UNIVERSAL_SECTIONS.md for ownership, acceptance and next steps.
 
+The main CMS PageEditor now installs seven canonical React sections using its
+existing CMS API, with editable fields and isolated draft preview. The local
+publisher creates versioned HTML/React publications from the same CMS SQLite
+tables. A host-neutral R2/Worker adapter is provided for production integration;
+the hosted Worker route is **not deployed**.
+See docs/CMS_EDITORIAL_INSTALL_PUBLISH.md for acceptance and host requirements.
+
+
 Build the integrated preview:
 
     npm ci --prefix apps/editorial-commons --ignore-scripts

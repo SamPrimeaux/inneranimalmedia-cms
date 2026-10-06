@@ -25,3 +25,26 @@ export async function cmsApi<T = unknown>(path: string, opts: CmsApiOptions = {}
   }
   return res.json() as Promise<T>;
 }
+
+
+/** Host-injectable CMS endpoints; the existing same-origin default remains opt-in
+ * for legacy hosts until they provide a runtime config object. */
+export interface CmsRuntimeConfig {
+  apiBaseUrl?: string;
+  editorialAssetBaseUrl?: string;
+}
+function runtimeConfig(): CmsRuntimeConfig {
+  if (typeof window === 'undefined') return {};
+  return (window as Window & { __IAM_CMS_RUNTIME_CONFIG__?: CmsRuntimeConfig })
+    .__IAM_CMS_RUNTIME_CONFIG__ ?? {};
+}
+export function cmsEndpoint(resource: string): string {
+  if (!/^[a-z0-9/_-]+$/i.test(resource) || resource.includes('..')) {
+    throw new Error('Invalid CMS endpoint');
+  }
+  const base = runtimeConfig().apiBaseUrl || '/api/cms';
+  return base.replace(/\/$/, '') + '/' + resource.replace(/^\//, '');
+}
+export function cmsEditorialAssetBaseUrl(): string {
+  return (runtimeConfig().editorialAssetBaseUrl || '/cms/editorial').replace(/\/$/, '');
+}

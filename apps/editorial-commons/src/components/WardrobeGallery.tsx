@@ -1,3 +1,4 @@
+import { BoundWardrobe } from "../portable/BoundWardrobe";
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useEditorialData, useEditorialHost } from "../portable/EditorialHost";
@@ -5,6 +6,11 @@ import { sceneBlocks, sceneHref, sceneMedia, sceneText } from "../portable/secti
 
 /** One visual renderer; donor categories are only a standalone preview fixture. */
 export const WardrobeGallery: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundWardrobe /> : <LegacyWardrobeGallery />;
+};
+
+const LegacyWardrobeGallery: React.FC = () => {
   const { CATEGORIES_WARDROBE } = useEditorialData();
   const { section, resolveMedia } = useEditorialHost();
   const inverse = section?.settings.surface === "inverse" || section?.settings.surface === "image";

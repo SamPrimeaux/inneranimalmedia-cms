@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEditorialHost } from "./EditorialHost";
+import { useBoundSection } from "./BoundSectionContext";
 import { sceneBlocks, sceneHref, sceneMedia, sceneText, sceneSurface } from "./section-data";
 
 /**
@@ -9,7 +9,7 @@ import { sceneBlocks, sceneHref, sceneMedia, sceneText, sceneSurface } from "./s
  * separate authorized adapter; no donor cart/catalog data crosses this lane.
  */
 export function BoundCollectionCarousel() {
-  const { section, resolveMedia } = useEditorialHost();
+  const { section, resolveMedia } = useBoundSection();
   const surface = sceneSurface(section);
   const cards = useMemo(() => sceneBlocks(section).map((block) => ({
     id: block.id,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowRight, MapPin, X } from "lucide-react";
-import { useEditorialHost } from "./EditorialHost";
+import { useBoundSection } from "./BoundSectionContext";
 import { sceneBlocks, sceneHref, sceneMedia, sceneText, sceneSurface } from "./section-data";
 
 function percent(value: unknown, fallback: number): number {
@@ -13,7 +13,7 @@ function percent(value: unknown, fallback: number): number {
  * donor products, discounts or commerce events when supplied customer content.
  */
 export function BoundLookbook() {
-  const { section, resolveMedia } = useEditorialHost();
+  const { section, resolveMedia } = useBoundSection();
   const surface = sceneSurface(section, "inverse");
   const [openId, setOpenId] = useState<string | null>(null);
   const hotspots = sceneBlocks(section).map((block, i) => ({

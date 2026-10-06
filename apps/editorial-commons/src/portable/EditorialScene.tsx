@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { CartProvider, useCart } from "../context/CartContext";
 import { EditorialHostProvider, useEditorialData } from "./EditorialHost";
+import { BoundSectionProvider } from "./BoundSectionContext";
 import { getEditorialScene, type EditorialSceneSpec } from "./scene-manifest";
 import type { EditorialBrand, EditorialCatalog, EditorialCommerceAdapter } from "./EditorialHost";
 import type { SiteSection, SiteDesignTokens } from "../../../../packages/site-contracts/src/site-document.js";
@@ -75,6 +76,7 @@ export function EditorialScene({
   }
   return <EditorialHostProvider brand={brand} catalog={catalog} commerce={commerce}
     section={section} resolveMedia={resolveMedia} mode={mode}>
+    <BoundSectionProvider section={section} resolveMedia={resolveMedia}>
     <CartProvider>
       <div
         data-editorial-scene={scene.id}
@@ -97,5 +99,6 @@ export function EditorialScene({
         {showSupportOverlays && <ExistingSupport active={scene.id} />}
       </div>
     </CartProvider>
+    </BoundSectionProvider>
   </EditorialHostProvider>;
 }

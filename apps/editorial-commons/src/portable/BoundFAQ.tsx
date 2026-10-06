@@ -1,11 +1,11 @@
 import React, { useId, useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import { useEditorialHost } from "./EditorialHost";
+import { useBoundSection } from "./BoundSectionContext";
 import { sceneBlocks, sceneHref, sceneText, sceneSurface } from "./section-data";
 
 /** Brand-neutral, block-backed FAQ. No unverified shipping or trust claims. */
 export function BoundFAQ() {
-  const { section } = useEditorialHost();
+  const { section } = useBoundSection();
   const surface = sceneSurface(section);
   const id = useId().replaceAll(":", "-");
   const [openId, setOpenId] = useState<string | null>(null);

@@ -9,11 +9,17 @@
   "exports": {
     "./manifest-schema": "./schemas/cms-package.v2.schema.json",
     "./sqlite-schema": "./schemas/sqlite/cms-local-runtime.v1.sql",
+    "./editorial-publisher": "./integration/host-adapters/cms-editorial-publisher.js",
     "./examples/local": "./manifests/cms-package.v2.local.example.json",
     "./examples/cloudflare": "./manifests/cms-package.v2.cloudflare.example.json"
   },
   "files": [
     "bin/cms-runtime.mjs",
+    "bin/cms-editorial-publish.mjs",
+    "bin/cms-editorial-install.mjs",
+    "integration/host-adapters/cms-editorial-publisher.js",
+    "integration/host-adapters/cms-editorial-publisher.d.ts",
+    "integration/host-adapters/editorial-assets/",
     "schemas/cms-package.v2.schema.json",
     "schemas/sqlite/cms-local-runtime.v1.sql",
     "manifests/cms-package.v2.local.example.json",
@@ -34,7 +40,9 @@
     "smoke:universal": "node scripts/smoke-universal-sections.mjs",
     "smoke:editorial:workbench": "node scripts/smoke-editorial-workbench.mjs",
     "smoke:editorial:bound": "node scripts/smoke-bound-editorial.mjs",
+    "smoke:editorial:publishing": "node scripts/smoke-cms-editorial-publishing.mjs",
     "build:editorial-evidence": "node scripts/build-editorial-evidence.mjs",
+    "build:editorial-runtime": "node scripts/build-editorial-runtime.mjs",
     "test:universal": "vitest run packages/site-contracts/tests/section-fields.test.ts examples/revise-foundation/tests/editorial-atlas.test.ts",
     "verify:universal": "npm run verify:atlas && npm run test:universal"
   },

@@ -1,3 +1,4 @@
+import { BoundStatement } from "../portable/BoundStatement";
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -6,6 +7,11 @@ import { sceneHref, sceneText } from "../portable/section-data";
 
 /** A standalone editorial statement, with an optional host-owned navigation CTA. */
 export const DressBlurb: React.FC = () => {
+  const { section } = useEditorialHost();
+  return section ? <BoundStatement /> : <LegacyDressBlurb />;
+};
+
+const LegacyDressBlurb: React.FC = () => {
   const { section } = useEditorialHost();
   const inverse = section?.settings.surface === "inverse" || section?.settings.surface === "image";
   const surface = !section ? undefined : inverse ? "#111111" :

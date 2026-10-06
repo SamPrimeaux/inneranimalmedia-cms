@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { cmsApi } from './cmsApi';
+import { cmsApi, cmsEndpoint, cmsEditorialAssetBaseUrl } from './cmsApi';
+import {
+  EDITORIAL_PRESETS, createCmsEditorialInstall, defaultEditorialSection,
+  extractCmsEditorialSection, renderCmsEditorialSection, cmsEditorialRuntimeScript,
+} from '../../integration/host-adapters/cms-editorial-publisher.js';
+import { applySectionFieldEdit, editableSectionFields } from '@inneranimalmedia/site-contracts';
+
 import { resolveStorefrontUrl, storefrontDisplayHost } from './cmsStorefrontUrl';
 import { StorefrontPreview } from './StorefrontPreview';
 import type { CmsBootstrapData, CmsBootstrapPage, CmsBootstrapSection } from './cmsTypes';
@@ -99,6 +105,77 @@ export function PageEditor({
   );
   const [form, setForm] = useState({ title: '', seo_title: '', meta_description: '', robots: 'index,follow' });
   const [sectionJson, setSectionJson] = useState('{}');
+  const [newEditorialPreset, setNewEditorialPreset] = useState('commons/collection-carousel');
+  const [addingEditorial, setAddingEditorial] = useState(false);
+  const editorialMedia = useMemo(() => {
+    const result: Record<string, string> = {};
+    for (const item of data?.assets ?? []) {
+      if (!item || typeof item !== 'object') continue;
+      const asset = item as Record<string, unknown>;
+      let metadata: Record<string, unknown> = {};
+      try {
+        metadata = typeof asset.metadata_json === 'string'
+          ? JSON.parse(asset.metadata_json) : (asset.metadata_json as Record<string, unknown>) ?? {};
+      } catch { /* Invalid asset metadata is not an authority. */ }
+      const key = asset.logical_key ?? metadata.logical_key;
+      const url = asset.url;
+      if (typeof key === 'string' && /^[a-z0-9_.-]+$/i.test(key) &&
+        typeof url === 'string' && (url.startsWith('/') && !url.startsWith('//') || /^https:\/\//i.test(url))) {
+        result[key] = url;
+      }
+    }
+    return result;
+  }, [data?.assets]);
+  const activeEditorial = useMemo(() => {
+    if (!activeSection) return null;
+    try { return extractCmsEditorialSection({ section_data: JSON.parse(sectionJson) }); }
+    catch { return null; }
+  }, [activeSection?.id, sectionJson]);
+  const updateEditorialField = (key: string, raw: string, blockIndex?: number) => {
+    if (!activeEditorial) return;
+    const candidate = structuredClone(activeEditorial);
+    const target = blockIndex === undefined ? candidate.data : candidate.blocks?.[blockIndex]?.data;
+    if (!target) return;
+    const result = applySectionFieldEdit(target, key, raw, {
+      mediaKeys: new Set(Object.keys(editorialMedia)),
+    });
+    if (!result.ok) return;
+    setSectionJson(JSON.stringify({
+      schema_id: 'inneranimalmedia.cms-editorial-section.v1',
+      renderer: 'editorial-react',
+      section: candidate,
+    }, null, 2));
+  };
+  const addEditorialSection = async () => {
+    if (!pageId) return;
+    setAddingEditorial(true);
+    try {
+      const section = defaultEditorialSection(newEditorialPreset,
+        'editorial-' + crypto.randomUUID().slice(0, 8));
+      await cmsApi(cmsEndpoint('sections'), {
+        method: 'POST',
+        body: createCmsEditorialInstall(pageId, section),
+      });
+      showToast('Editorial section installed');
+      reload();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : String(error));
+    } finally { setAddingEditorial(false); }
+  };
+  const editorialPreview = useMemo(() => {
+    if (!activeEditorial) return '';
+    try {
+      const content = JSON.parse(sectionJson);
+      const html = renderCmsEditorialSection({ section_data: content }, {
+        assetBaseUrl: cmsEditorialAssetBaseUrl(),
+        brand: { name: data?.tenant?.name || projectSlug || 'Site' },
+        media: editorialMedia,
+      });
+      return '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0">' +
+        html + cmsEditorialRuntimeScript(cmsEditorialAssetBaseUrl()) + '</body></html>';
+    } catch { return ''; }
+  }, [sectionJson, activeEditorial, data?.tenant?.name, projectSlug, editorialMedia]);
+
 
   useEffect(() => {
     if (page) setForm({ title: page.title || '', seo_title: page.seo_title || '', meta_description: page.meta_description || '', robots: page.robots || 'index,follow' });
@@ -137,8 +214,18 @@ export function PageEditor({
     if (!pageId || !window.confirm('Publish this page to production?')) return;
     setSaving(true);
     try {
-      await cmsApi(`/api/cms/pages/${encodeURIComponent(pageId)}/snapshot`, { method: 'POST', body: {} }).catch(() => null);
-      await cmsApi(`/api/cms/pages/${encodeURIComponent(pageId)}/publish`, { method: 'POST', body: {} });
+      const containsEditorial = sections.some((section) => {
+        try { extractCmsEditorialSection(section); return true; } catch { return false; }
+      });
+      if (containsEditorial) {
+        // Do not report success from a legacy HTML endpoint that lacks the React runtime.
+        await cmsApi(cmsEndpoint('editorial/publish'), {
+          method: 'POST', body: { page_id: pageId, project_slug: projectSlug },
+        });
+      } else {
+        await cmsApi(cmsEndpoint('pages/' + encodeURIComponent(pageId) + '/snapshot'), { method: 'POST', body: {} }).catch(() => null);
+        await cmsApi(cmsEndpoint('pages/' + encodeURIComponent(pageId) + '/publish'), { method: 'POST', body: {} });
+      }
       showToast('Page published');
       reload();
     } catch (e) { alert(e.message); }
@@ -229,16 +316,52 @@ export function PageEditor({
                   <span className="pt-section-visibility">{s.is_visible === 0 ? 'hidden' : 'visible'}</span>
                 </button>
               ))}
+              <div className="pt-light-field" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+                <label htmlFor="cms-editorial-preset" style={{ width: '100%' }}>Install reusable React section</label>
+                <select id="cms-editorial-preset" aria-label="Reusable editorial section"
+                  value={newEditorialPreset} onChange={(event) => setNewEditorialPreset(event.target.value)}>
+                  {EDITORIAL_PRESETS.map(({ preset, title }) => <option key={preset} value={preset}>{title}</option>)}
+                </select>
+                <button type="button" className="pt-btn primary" onClick={addEditorialSection}
+                  disabled={addingEditorial || !pageId}>
+                  {addingEditorial ? 'Installing…' : 'Add to page'}
+                </button>
+              </div>
               <button
                 type="button"
                 className="pt-section-row pt-add"
                 onClick={() => onNavigatePath(withQuery(buildPath('templates', projectSlug), { add_to_page: pageId }))}
               >
-                ⊕ Add section
+                ⊕ Browse other templates
               </button>
             </div>
             {activeSection ? (
               <div className="pt-section-inspector">
+                {activeEditorial && <>
+                  <div className="pt-side-title">Reusable React section · {activeEditorial.preset}</div>
+                  <iframe title="Editorial section draft preview" srcDoc={editorialPreview}
+                    sandbox="allow-scripts allow-same-origin" style={{ width: '100%', minHeight: 350, border: '1px solid var(--line)', borderRadius: 10 }}/>
+                  <div className="pt-subtext">Draft preview. Save the section before publishing. Missing media stays unfilled until the host resolves customer assets.</div>
+                  <datalist id="cms-editorial-media-keys">
+                    {Object.keys(editorialMedia).map((key) => <option key={key} value={key}/>)}
+                  </datalist>
+                  {[{ data: activeEditorial.data, label: 'Section content' },
+                    ...(activeEditorial.blocks || []).map((block, index) => ({
+                      data: block.data, label: 'Block ' + (index + 1), blockIndex: index,
+                    }))].map((group, groupIndex) =>
+                    <fieldset key={groupIndex} className="pt-light-field" style={{ border: '1px solid var(--line)', borderRadius: 10, padding: 12 }}>
+                      <legend>{group.label}</legend>
+                      {editableSectionFields(group.data).map((field) => <label key={field.key}
+                        style={{ display: 'grid', gap: 4, marginBottom: 8 }}>
+                        {field.label}
+                        <input type={field.kind === 'number' ? 'number' : 'text'}
+                          list={field.kind === 'media' ? 'cms-editorial-media-keys' : undefined}
+                          value={String(field.value ?? '')}
+                          onChange={(event) => updateEditorialField(field.key, event.target.value, 'blockIndex' in group ? group.blockIndex : undefined)}
+                          aria-label={group.label + ': ' + field.label}/>
+                      </label>)}
+                    </fieldset>)}
+                </>}
                 <div className="pt-light-field">
                   <label>Section data JSON</label>
                   <textarea className="pt-json" value={sectionJson} onChange={(e) => setSectionJson(e.target.value)} />
