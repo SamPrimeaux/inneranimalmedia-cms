@@ -3,6 +3,7 @@ import { CartProvider, useCart } from "../context/CartContext";
 import { EditorialHostProvider, useEditorialData } from "./EditorialHost";
 import { getEditorialScene, type EditorialSceneSpec } from "./scene-manifest";
 import type { EditorialBrand, EditorialCatalog, EditorialCommerceAdapter } from "./EditorialHost";
+import type { SiteSection } from "../../../../packages/site-contracts/src/site-document.js";
 
 const modules = import.meta.glob("../components/*.tsx", { eager: true }) as Record<
   string, Record<string, React.ComponentType>
@@ -17,6 +18,8 @@ export interface EditorialSceneProps {
   catalog?: Partial<EditorialCatalog>;
   commerce?: EditorialCommerceAdapter;
   mode?: "preview" | "connected";
+  section?: SiteSection;
+  resolveMedia?: (key: string) => string | null;
   showSupportOverlays?: boolean;
 }
 
@@ -54,7 +57,8 @@ function ExistingSupport({ active }: { active: string }) {
 
 /** React consumer entry: no theme/framework singleton or FNF storefront assumptions. */
 export function EditorialScene({
-  id, brand, catalog, commerce, mode = "preview", showSupportOverlays = true,
+  id, brand, catalog, commerce, section, resolveMedia,
+  mode = "preview", showSupportOverlays = true,
 }: EditorialSceneProps) {
   const scene = getEditorialScene(id);
   if (!scene) {
@@ -68,7 +72,8 @@ export function EditorialScene({
   if (!Component) {
     return <div role="alert">Scene source missing: {scene.component}</div>;
   }
-  return <EditorialHostProvider brand={brand} catalog={catalog} commerce={commerce} mode={mode}>
+  return <EditorialHostProvider brand={brand} catalog={catalog} commerce={commerce}
+    section={section} resolveMedia={resolveMedia} mode={mode}>
     <CartProvider>
       <div
         data-editorial-scene={scene.id}

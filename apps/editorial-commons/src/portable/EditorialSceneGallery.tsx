@@ -3,6 +3,9 @@ import { EDITORIAL_SCENES } from "./scene-manifest";
 
 /** Catalogue of real mounted React scenes, not screenshots or mock panels. */
 export function EditorialSceneGallery() {
+  // Use the current Vite deployment base so the exact same preview also
+  // runs embedded in CMS Design Atlas, not only at a separate localhost port.
+  const entryPath = import.meta.env.BASE_URL + "index.html";
   const starting = new URLSearchParams(location.search).get("selected") ?? "curtain-hero";
   const [selected, setSelected] = useState(
     EDITORIAL_SCENES.some((item) => item.id === starting) ? starting : "curtain-hero"
@@ -17,16 +20,16 @@ export function EditorialSceneGallery() {
   ), [filter, query]);
   function choose(id: string) {
     setSelected(id);
-    history.replaceState(null, "", "/?gallery=1&selected=" + encodeURIComponent(id));
+    history.replaceState(null, "", entryPath + "?gallery=1&selected=" + encodeURIComponent(id));
   }
   return <div className="min-h-screen bg-[#eae9e4] text-[#161a19] font-sans">
     <header className="bg-[#161917] text-[#f8f8f1] px-5 md:px-10 py-5 flex flex-wrap justify-between items-center gap-5">
-      <a href="/" className="no-underline text-2xl font-bold tracking-[-0.07em]">FORM / 26
+      <a href={entryPath} className="no-underline text-2xl font-bold tracking-[-0.07em]">FORM / 26
         <span className="block text-[10px] tracking-[0.18em] text-white/50 uppercase mt-1">Editorial Commons · Scene Library</span>
       </a>
       <div className="flex items-center gap-7 text-xs uppercase tracking-[.1em]">
         <span>{EDITORIAL_SCENES.length} source components</span>
-        <a href="/" className="underline underline-offset-4">Full storefront ↗</a>
+        <a href={entryPath} className="underline underline-offset-4">Full storefront ↗</a>
       </div>
     </header>
     <div className="grid lg:grid-cols-[350px_minmax(0,1fr)] min-h-[calc(100svh-90px)]">
@@ -90,13 +93,17 @@ export function EditorialSceneGallery() {
                 aria-pressed={viewport==="mobile"} className={"px-4 py-2 rounded-full " +
                   (viewport==="mobile"?"bg-white shadow-sm":"")}>Mobile</button>
             </div>
-            <a href={"/?scene="+encodeURIComponent(selected)} target="_blank" rel="noopener"
+            {selected === "curtain-hero" && <a href={entryPath+"?scene=curtain-hero&fixture=fieldwork"}
+              target="_blank" rel="noopener"
+              className="px-4 py-3 rounded-full border border-[#161a18] text-[#161a18] no-underline font-semibold">
+              Second brand ↗</a>}
+            <a href={entryPath+"?scene="+encodeURIComponent(selected)} target="_blank" rel="noopener"
               className="px-4 py-3 rounded-full bg-[#161a18] text-white no-underline font-semibold">Open ↗</a>
           </div>
         </div>
         <div className="bg-[#c8cbc4] rounded-lg border border-black/10 p-2 md:p-5 flex justify-center min-w-0">
           <iframe title={current.title+" component preview"}
-            key={selected} src={"/?scene="+encodeURIComponent(selected)}
+            key={selected} src={entryPath+"?scene="+encodeURIComponent(selected)}
             className={"bg-white rounded-sm block border-none transition-[width] duration-200 " +
               (viewport==="mobile" ? "w-full max-w-[390px]" : "w-full")}
             style={{ height:"min(76svh, 880px)", minHeight:470 }}

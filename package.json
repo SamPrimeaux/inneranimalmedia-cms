@@ -30,7 +30,11 @@
     "test:atlas": "vitest run examples/revise-foundation/tests/site-data.test.ts examples/revise-foundation/tests/design-atlas.test.ts",
     "verify:atlas": "npm run build:site && npm run test:site && npm run test:atlas",
     "smoke:atlas": "node scripts/smoke-design-atlas.mjs",
-    "smoke:revise:polish": "node scripts/smoke-revise-polish.mjs"
+    "smoke:revise:polish": "node scripts/smoke-revise-polish.mjs",
+    "smoke:universal": "node scripts/smoke-universal-sections.mjs",
+    "build:editorial-evidence": "node scripts/build-editorial-evidence.mjs",
+    "test:universal": "vitest run packages/site-contracts/tests/section-fields.test.ts examples/revise-foundation/tests/editorial-atlas.test.ts",
+    "verify:universal": "npm run verify:atlas && npm run test:universal"
   },
   "engines": {
     "node": ">=22.5"

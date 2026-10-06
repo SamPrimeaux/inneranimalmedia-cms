@@ -1,4 +1,4 @@
-import { useEditorialBrand } from '../portable/EditorialHost';
+import { useEditorialBrand, useEditorialHost } from '../portable/EditorialHost';
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, ArrowRight, X, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -6,7 +6,23 @@ import { useEditorialData } from '../portable/EditorialHost';
 
 export const HeroCurtain: React.FC = () => {
   const brand = useEditorialBrand();
+  const { section, resolveMedia } = useEditorialHost();
+  const sectionData = section?.data;
+  const readText = (key: string, fallback: string) =>
+    typeof sectionData?.[key] === "string" ? sectionData[key] as string : fallback;
+  const eyebrow = readText("eyebrow", "AUTUMN / WINTER 26 CAMPAIGN");
+  const heading = readText("heading", "EFFORTLESS BY DESIGN");
+  const body = readText("body",
+    "Considered silhouettes and quiet textures engineered from 380gsm English wool crepe and glove-grade calfskin.");
+  const ctaLabel = readText("ctaLabel", "EXPLORE WARDROBE");
+  const candidateHref = readText("ctaHref", "#wardrobe");
+  const ctaHref = /^(\/(?!\/)|#[a-z0-9_-]+$|https:\/\/)/i.test(candidateHref)
+    ? candidateHref : "#wardrobe";
+  const mediaKey = readText("mediaKey", section?.settings.backgroundMediaKey ?? "");
   const { HERO_IMAGE, PRODUCTS } = useEditorialData();
+  const image = section
+    ? (mediaKey ? resolveMedia?.(mediaKey) ?? null : null)
+    : HERO_IMAGE;
   const { addToCart, setQuickViewProduct, formatPrice, setIsBagOpen } = useCart();
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
@@ -25,10 +41,11 @@ export const HeroCurtain: React.FC = () => {
   const blurPx = progress * 6;
   const opacity = 1 - progress * 0.35;
 
-  const sableBlazer = PRODUCTS.find(p => p.id === 'sable-blazer')!;
-  const merinoTurtleneck = PRODUCTS.find(p => p.id === 'merino-turtleneck')!;
+  const sableBlazer = PRODUCTS.find(p => p.id === 'sable-blazer');
+  const merinoTurtleneck = PRODUCTS.find(p => p.id === 'merino-turtleneck');
 
   const handleAddAllToCart = (e: React.MouseEvent) => {
+    if (!sableBlazer || !merinoTurtleneck || section) return;
     addToCart(sableBlazer, { event: e });
     setTimeout(() => {
       addToCart(merinoTurtleneck);
@@ -47,12 +64,13 @@ export const HeroCurtain: React.FC = () => {
           opacity: opacity
         }}
       >
-        <img
-          src={HERO_IMAGE}
-          alt={`${brand.name} ${brand.season} concept image`}
+        {image ? <img
+          src={image}
+          alt={brand.name + " " + brand.season + " editorial image"}
           className="w-full h-full object-cover object-[65%_center] sm:object-center"
           referrerPolicy="no-referrer"
-        />
+        /> : <div role="img" aria-label="Media unavailable"
+          className="w-full h-full bg-gradient-to-br from-neutral-800 to-neutral-950" />}
         {/* Editorial Vignette & Oxblood Rim-light grading overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent sm:from-black/85 sm:via-black/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-black/40" />
@@ -63,45 +81,46 @@ export const HeroCurtain: React.FC = () => {
         <div className="max-w-xl space-y-4 sm:space-y-6 pt-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#e2a8aa] font-semibold border border-white/10">
             <Sparkles className="w-3 h-3 text-[#8b181b]" />
-            <span>AUTUMN / WINTER 26 CAMPAIGN</span>
+            <span>{eyebrow}</span>
           </div>
 
           <div className="space-y-1.5 sm:space-y-2">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-light tracking-tight uppercase leading-[1.08] text-balance">
-              EFFORTLESS <br />
-              <span className="font-bold tracking-[0.08em] text-white">BY DESIGN</span>
+              {section ? heading : <>EFFORTLESS <br />
+                <span className="font-bold tracking-[0.08em] text-white">BY DESIGN</span></>}
             </h1>
             <p className="text-xs sm:text-base text-white/75 font-light leading-relaxed max-w-md pt-1 sm:pt-2">
-              Considered silhouettes and quiet textures engineered from 380gsm English wool crepe and glove-grade calfskin.
+              {body}
             </p>
           </div>
 
           {/* Primary CTA and Look Bundle (fluid on mobile) */}
           <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-            <button
+            {!section && sableBlazer && merinoTurtleneck && <button
               onClick={handleAddAllToCart}
               className="py-3.5 sm:py-4 px-6 sm:px-8 bg-white text-black hover:bg-[#8b181b] hover:text-white text-xs font-bold uppercase tracking-[0.22em] transition-all duration-300 shadow-2xl flex items-center justify-center gap-3 group cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>ADD ALL TO CART · {formatPrice(720)}</span>
+              <span>ADD ALL TO CART · {formatPrice(sableBlazer.price + merinoTurtleneck.price)}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </button>}
 
             <a
-              href="#wardrobe"
+              href={ctaHref}
               className="py-3.5 sm:py-4 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-xs font-medium uppercase tracking-[0.2em] transition-colors border border-white/15 text-center"
             >
-              EXPLORE WARDROBE
+              {ctaLabel}
             </a>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-6 pt-1 sm:pt-3 text-[10px] sm:text-[11px] text-white/50 tracking-wider uppercase">
+          {!section && <div className="flex items-center gap-4 sm:gap-6 pt-1 sm:pt-3 text-[10px] sm:text-[11px] text-white/50 tracking-wider uppercase">
             <span>Includes Sable Blazer & Merino Knit</span>
             <span>·</span>
             <span>Florence & Yorkshire</span>
-          </div>
+          </div>}
         </div>
 
+        {!section && sableBlazer && merinoTurtleneck && <>
         {/* Hotspot #1: Sable Blazer on Garment (Positioned accurately without clashing) */}
         <div className="absolute top-[38%] right-[16%] sm:top-[48%] sm:right-[30%] z-30">
           <button
@@ -204,6 +223,7 @@ export const HeroCurtain: React.FC = () => {
             </div>
           )}
         </div>
+        </>}
       </div>
     </section>
   );

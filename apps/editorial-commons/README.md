@@ -1,3 +1,9 @@
+**Canonical home:** this React source is now under apps/editorial-commons
+in SamPrimeaux/inneranimalmedia-cms. Use the main repository root to build
+its shared Design Atlas evidence with npm run build:editorial-evidence.
+The older standalone GitHub repository preserves earlier history only.
+See docs/UNIVERSAL_SECTIONS.md at the CMS repository root.
+
 # Editorial Commons — FORM / 26 Storefront and Visual Scene Library
 
 A multi-page editorial-commerce visual study with reusable React scene boundaries. Uses **React 19, TypeScript, Tailwind CSS v4, and Framer Motion**. Content and transactions are not connected to live customer backends.

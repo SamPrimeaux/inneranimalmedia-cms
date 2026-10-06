@@ -162,3 +162,23 @@ body { overflow-x: clip; }
 .revise-site__editor-footer-block form { margin-top: 12px; }
 .revise-site__editor-footer-block form .revise-site__editor-add { margin-top: 5px; }
 .revise-site__editor-open-library { display: block; text-align: center; text-decoration: none; }
+
+/* Shared content-field editor: form layout is driven by section data, not themes. */
+.revise-site__editor-group textarea {
+  padding: 11px; width: 100%; min-height: 94px; resize: vertical;
+  background: #fff; color: #151512; border: 1px solid #c9c4bc;
+  border-radius: 4px; font: inherit; font-size: 16px; line-height: 1.5;
+}
+.revise-site__section-content > small, .revise-site__block-content > small {
+  display: block; margin: 10px 0; letter-spacing: .09em;
+  text-transform: uppercase; font-size: .63rem; color: #746e65;
+}
+.revise-site .revise-site__block {
+  align-items: flex-start; padding: 13px 0; gap: 8px;
+}
+.revise-site__block-content { flex: 1; min-width: 0; }
+.revise-site__block-content label { margin-block: 10px; }
+.revise-site__section-content { border-bottom: 1px solid #e0dcd5; padding-bottom: 7px; }
+.revise-site__editor-group [aria-invalid="true"] {
+  outline: 2px solid #a63d32; outline-offset: 2px;
+}

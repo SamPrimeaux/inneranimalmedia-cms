@@ -29,11 +29,12 @@ try {
     await page.goto(base + "/library/", { waitUntil: "domcontentloaded" });
     const n = await page.locator(".atlas-card").count();
     assert(n >= 85, "Expected at least 85 gallery mounts, found " + n);
+    // Original family minimums; separate universal tests check all new scene IDs.
     const expected = { theme: 8, page: 35, section: 29, palette: 7, lab: 5, template: 2 };
     for (const [kind, count] of Object.entries(expected)) {
       await page.locator('[data-filter="' + kind + '"]').click();
       const visible = await page.locator(".atlas-card:visible").count();
-      assert(visible === count, kind + " expected " + count + " visible, got " + visible);
+      assert(visible >= count, kind + " expected at least " + count + " visible, got " + visible);
     }
     await page.locator('[data-filter="all"]').click();
     await page.locator("[data-atlas-search]").fill("cypress");
@@ -106,6 +107,7 @@ try {
     await page.locator(".revise-site__editor.is-open").waitFor();
     await page.locator(".revise-site__editor-open-library").click();
     await page.waitForURL("**/library/");
+    await page.locator(".atlas-card").first().waitFor({ timeout: 12000 });
     assert(await page.locator(".atlas-card").count() >= 85, "Editor did not navigate to the library");
     await page.close();
   });
@@ -113,7 +115,7 @@ try {
     for (const width of [390, 768, 1440, 1920]) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });
       await page.goto(base + "/library/?kind=theme", { waitUntil: "domcontentloaded" });
-      await page.locator(".atlas-grid .atlas-card").first().waitFor();
+      await page.locator(".atlas-grid .atlas-card:visible").first().waitFor();
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       assert(scrollWidth <= width + 2, width + "px has horizontal overflow: " + scrollWidth);
       await page.close();

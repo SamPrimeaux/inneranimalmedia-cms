@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo } from "react";
 import type { CartItem } from "../types";
 import * as demo from "../data/catalog";
+import type { SiteSection } from "../../../../packages/site-contracts/src/site-document.js";
 
 /**
  * A scene owns layout and interaction, never the customer catalog, brand,
@@ -30,6 +31,8 @@ export interface EditorialHostConfig {
   catalog: EditorialCatalog;
   commerce: EditorialCommerceAdapter;
   mode: "preview" | "connected";
+  section?: SiteSection;
+  resolveMedia?: (key: string) => string | null;
 }
 const DEMO_BRAND: EditorialBrand = {
   name: "FORM / 26", season: "AUTUMN / WINTER 26",
@@ -50,18 +53,24 @@ export function EditorialHostProvider({
   catalog,
   commerce,
   mode,
+  section,
+  resolveMedia,
 }: React.PropsWithChildren<{
   brand?: Partial<EditorialBrand>;
   catalog?: Partial<EditorialCatalog>;
   commerce?: EditorialCommerceAdapter;
   mode?: EditorialHostConfig["mode"];
+  section?: SiteSection;
+  resolveMedia?: (key: string) => string | null;
 }>) {
   const host = useMemo<EditorialHostConfig>(() => ({
     brand: { ...DEMO_BRAND, ...brand },
     catalog: { ...demo, ...catalog },
     commerce: commerce ?? {},
     mode: mode ?? "preview",
-  }), [brand, catalog, commerce, mode]);
+    section,
+    resolveMedia,
+  }), [brand, catalog, commerce, mode, section, resolveMedia]);
   return <HostContext.Provider value={host}>{children}</HostContext.Provider>;
 }
 

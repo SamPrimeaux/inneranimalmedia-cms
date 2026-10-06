@@ -62,6 +62,26 @@ uv run pywrangler dev --port 8788
 curl -s http://127.0.0.1:8788/health
 ```
 
+## Canonical section library and Editorial Commons
+
+All 39 original Editorial Commons React scenes and the newer multipage work now
+live under apps/editorial-commons in this one CMS repository, with donor Git
+history preserved. The combined Design Atlas shows these real previews alongside
+Revise, with one additional FIELDWORK cross-brand section demonstration.
+
+The shared SiteDocument editor now exposes typed text, media, CTA and card fields
+instead of only headings. The curtain hero is the first React scene accepting
+that same document format and customer-owned media; the remaining scenes are
+visual candidates until given typed adapters and actual provider integrations.
+
+See docs/UNIVERSAL_SECTIONS.md for ownership, acceptance and next steps.
+
+Build the integrated preview:
+
+    npm ci --prefix apps/editorial-commons --ignore-scripts
+    npm run build:editorial-evidence
+    npm run verify:universal
+
 ## Visual design atlas (review and remaster lane)
 
 The Revise example is a real, locally editable five-page F&FT concept site with an
