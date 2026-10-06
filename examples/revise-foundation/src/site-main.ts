@@ -318,8 +318,7 @@ function bootSite() {
       if (anchor.textContent?.trim() === "Read story") anchor.textContent = "Preview story ↗";
     });
     updateSearch();
-    const editPane = root.querySelector<HTMLElement>(".revise-site__editor-content");
-    if (editPane) editPane.scrollTop = editScroll;
+
   }
   const navigate = (path: string) => {
     const destination = new URL(path, location.href);
