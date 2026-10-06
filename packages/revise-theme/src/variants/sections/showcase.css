@@ -1103,6 +1103,7 @@
 }
 
 [data-theme="revise"] .iam-campaign-teaser__media {
+  position: relative;
   min-height: min(920px, 70vw);
   overflow: hidden;
   background: var(--revise-surface-muted);
