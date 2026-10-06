@@ -207,3 +207,5 @@ export function validateThemeManifest(manifest: unknown, path = "theme"): Valida
   }
   return issues;
 }
+
+export * from "./site-document.js";

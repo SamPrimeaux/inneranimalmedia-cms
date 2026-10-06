@@ -18,4 +18,11 @@
 
   --revise-scrim: rgba(9, 9, 8, 0.36);
   --revise-focus: var(--brand-color-accent, #6b72ff);
+
+  /* Shared section-library surface roles, scoped to this theme. */
+  --iam-site-surface-canvas: var(--revise-surface-canvas);
+  --iam-site-surface-paper: var(--revise-surface-elevated);
+  --iam-site-surface-muted: var(--revise-surface-muted);
+  --iam-site-surface-inverse: var(--revise-surface-inverse);
+  --iam-site-text-inverse: var(--revise-text-inverse);
 }

@@ -73,3 +73,35 @@ textarea {
     font-size: max(16px, 1rem);
   }
 }
+
+/* Portable page-section surface ownership.
+   Themes can map these semantic variables to their own palette. */
+.iam-site-section {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  background: var(--iam-site-surface-canvas, transparent);
+}
+.iam-site-section[data-surface="paper"] {
+  background: var(--iam-site-surface-paper, var(--iam-site-surface-canvas, transparent));
+}
+.iam-site-section[data-surface="muted"] {
+  background: var(--iam-site-surface-muted, var(--iam-site-surface-canvas, transparent));
+}
+.iam-site-section[data-surface="inverse"] {
+  background: var(--iam-site-surface-inverse, #171714);
+  color: var(--iam-site-text-inverse, inherit);
+}
+.iam-site-section[data-surface="image"] {
+  background: var(--iam-site-surface-inverse, #171714);
+  color: var(--iam-site-text-inverse, inherit);
+}
+.iam-site-section__background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.iam-site-section > section { position: relative; z-index: 1; }

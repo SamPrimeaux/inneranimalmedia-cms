@@ -25,3 +25,5 @@ export {
 } from "./sections/statement.js";
 
 export * from "./sections/showcase.js";
+
+export { renderSiteSection } from "./site.js";
