@@ -1,0 +1,9 @@
+import {catalog} from "../../../packages/studio-sections/src/catalog.js";
+import type {EditorialAtlasItem} from "./editorial-atlas.js";
+const root="/library/evidence/cms-studio/index.html";
+const provenance={sourceRepo:"SamPrimeaux/inneranimalmedia-cms",sourceCommit:"feat/canonical-cms-studio-20261006",importMethod:"Source-preserved Studio donor; compiled React mounting from canonical SiteDocument"};
+export const studioAtlasItems:EditorialAtlasItem[]=[
+{id:"studio-workbench",kind:"lab",title:"CMS Studio / Canonical editor",family:"Studio · Portable React",description:"Local canonical authoring, global blocks and immutable browser revision previews.",previewUrl:root,pages:[],...provenance,sourcePath:"apps/cms-studio-portable/src/Studio.tsx",maturity:"SiteDocument-bound · local authoring · host publish unavailable"},
+...catalog.flatMap(entry=>["field-studio","harbor-rescue"].map(fixture=>({id:"studio-"+entry.preset.replace("studio/","")+"-"+fixture,kind:"section" as const,title:entry.title+" / "+fixture,family:"Studio · Shared canonical section source",description:entry.description,previewUrl:root+"?preset="+encodeURIComponent(entry.preset)+"&fixture="+fixture,pages:[],...provenance,sourcePath:"packages/studio-sections/src/MountedSection.tsx",maturity:"SiteDocument-bound · cross-brand render tests · browser acceptance pending"}))),
+...["field-studio","harbor-rescue"].map(fixture=>({id:"studio-page-"+fixture,kind:"page" as const,title:fixture+" / Portable page",family:"Studio · Ordered canonical sections",description:"Global header/footer plus independently mountable hero and media diptych.",previewUrl:root+"?page=1&fixture="+fixture,pages:[],...provenance,sourcePath:"apps/cms-studio-portable/fixtures/"+fixture+".site-document.json",maturity:"Canonical page fixture · local preview"}))
+];

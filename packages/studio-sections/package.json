@@ -1,0 +1,10 @@
+{
+  "name": "@inneranimalmedia/studio-sections",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "exports": {".": "./src/MountedSection.tsx", "./catalog": "./src/catalog.ts", "./styles": "./src/sections.module.css"},
+  "peerDependencies": {"react": "^19.2.6"},
+  "devDependencies": {"@types/react": "19.2.14"}
+}

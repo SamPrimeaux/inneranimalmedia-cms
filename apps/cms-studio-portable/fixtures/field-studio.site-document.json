@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "field-studio",
+  "theme": "studio-editorial",
+  "brand": {
+    "name": "Example Field Studio",
+    "home": "/",
+    "description": "Independent field journal — sample identity"
+  },
+  "design": {
+    "accent": "#476758",
+    "accentSoft": "#DDE8DE",
+    "canvas": "#ECEFE8",
+    "paper": "#FFFFFF",
+    "ink": "#19251F"
+  },
+  "header": {
+    "settings": {
+      "sticky": true,
+      "pill": false
+    },
+    "announcement": {
+      "enabled": false,
+      "messages": []
+    },
+    "blocks": [
+      {
+        "id": "brand",
+        "type": "brand",
+        "label": "Example Field Studio",
+        "href": "/"
+      },
+      {
+        "id": "journal",
+        "type": "link",
+        "label": "Journal",
+        "href": "/journal/"
+      }
+    ]
+  },
+  "footer": {
+    "settings": {
+      "background": "inverse",
+      "copyright": "Example Field Studio"
+    },
+    "blocks": [
+      {
+        "id": "journal",
+        "type": "menu",
+        "title": "Journal",
+        "links": [
+          {
+            "id": "stories",
+            "label": "Stories",
+            "href": "/journal/"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "Home",
+      "description": "Independent journal sample",
+      "sections": [
+        {
+          "id": "intro",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto"
+          },
+          "data": {
+            "eyebrow": "THE OPEN ROAD",
+            "heading": "Follow the interesting route.",
+            "body": "Field notes for a life spent looking closer.",
+            "ctaLabel": "Read the journal",
+            "ctaHref": "/journal/",
+            "mediaKey": "field.hero",
+            "alt": "Field journal cover"
+          },
+          "blocks": []
+        },
+        {
+          "id": "stories",
+          "type": "showcase",
+          "preset": "studio/media-diptych",
+          "settings": {
+            "surface": "paper",
+            "spacing": "md"
+          },
+          "data": {
+            "eyebrow": "FIELD NOTES",
+            "heading": "Two ways to get outside.",
+            "body": ""
+          },
+          "blocks": [
+            {
+              "id": "trail",
+              "type": "item",
+              "data": {
+                "title": "On the trail",
+                "body": "Stories from longer routes.",
+                "mediaKey": "field.trail",
+                "alt": "Trail scene",
+                "ctaLabel": "Explore",
+                "href": "/journal/"
+              }
+            },
+            {
+              "id": "camp",
+              "type": "item",
+              "data": {
+                "title": "At camp",
+                "body": "Make room for a slower morning.",
+                "mediaKey": "field.camp",
+                "alt": "Camp scene",
+                "ctaLabel": "Discover",
+                "href": "/journal/"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "journal",
+      "path": "/journal/",
+      "title": "Journal",
+      "description": "Stories and field notes",
+      "sections": []
+    }
+  ]
+}

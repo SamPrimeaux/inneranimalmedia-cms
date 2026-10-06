@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "harbor-rescue",
+  "theme": "studio-editorial",
+  "brand": {
+    "name": "Example Harbor Rescue",
+    "home": "/",
+    "description": "Community animal rescue — sample identity"
+  },
+  "design": {
+    "accent": "#156D96",
+    "accentSoft": "#E2F1F7",
+    "canvas": "#F4F8FB",
+    "paper": "#FFFFFF",
+    "ink": "#142A37"
+  },
+  "header": {
+    "settings": {
+      "sticky": true,
+      "pill": false
+    },
+    "announcement": {
+      "enabled": false,
+      "messages": []
+    },
+    "blocks": [
+      {
+        "id": "brand",
+        "type": "brand",
+        "label": "Example Harbor Rescue",
+        "href": "/"
+      },
+      {
+        "id": "adopt",
+        "type": "link",
+        "label": "Adopt",
+        "href": "/adopt/"
+      }
+    ]
+  },
+  "footer": {
+    "settings": {
+      "background": "inverse",
+      "copyright": "Example Harbor Rescue"
+    },
+    "blocks": [
+      {
+        "id": "care",
+        "type": "menu",
+        "title": "Get involved",
+        "links": [
+          {
+            "id": "adopt",
+            "label": "Adoption",
+            "href": "/adopt/"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": "/",
+      "title": "Home",
+      "description": "Independent journal sample",
+      "sections": [
+        {
+          "id": "intro",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto"
+          },
+          "data": {
+            "eyebrow": "A SECOND CHANCE",
+            "heading": "Help them find their way home.",
+            "body": "Neighbors working together for animals who need care.",
+            "ctaLabel": "Meet the animals",
+            "ctaHref": "/adopt/",
+            "mediaKey": "rescue.hero",
+            "alt": "Rescue cover"
+          },
+          "blocks": []
+        },
+        {
+          "id": "stories",
+          "type": "showcase",
+          "preset": "studio/media-diptych",
+          "settings": {
+            "surface": "paper",
+            "spacing": "md"
+          },
+          "data": {
+            "eyebrow": "GET INVOLVED",
+            "heading": "Every act of care counts.",
+            "body": ""
+          },
+          "blocks": [
+            {
+              "id": "foster",
+              "type": "item",
+              "data": {
+                "title": "Become a foster",
+                "body": "Make space for a new beginning.",
+                "mediaKey": "rescue.foster",
+                "alt": "Foster scene",
+                "ctaLabel": "Foster",
+                "href": "/foster/"
+              }
+            },
+            {
+              "id": "volunteer",
+              "type": "item",
+              "data": {
+                "title": "Volunteer with us",
+                "body": "Give an hour. Make a difference.",
+                "mediaKey": "rescue.volunteer",
+                "alt": "Volunteer scene",
+                "ctaLabel": "Volunteer",
+                "href": "/volunteer/"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adopt",
+      "path": "/adopt/",
+      "title": "Adopt",
+      "description": "Adoption sample",
+      "sections": []
+    }
+  ]
+}

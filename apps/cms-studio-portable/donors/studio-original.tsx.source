@@ -1,0 +1,646 @@
+"use client";
+
+// @ts-nocheck
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+const INITIAL_THEME = {
+  "--brand-primary": "#5a7df7",
+  "--brand-secondary": "#1f97a9",
+  "--brand-accent": "#ff7619",
+  "--color-bg": "#f5f2eb",
+  "--color-surface": "#ffffff",
+  "--color-text": "#17181c",
+  "--color-muted": "#666a73",
+  "--color-border": "#dedbd3",
+  "--font-heading": "Georgia, serif",
+  "--font-body": "Arial, sans-serif",
+  "--radius-md": "12px",
+  "--radius-lg": "24px",
+  "--space-section": "88px",
+};
+
+const section = (id, name, zone, type, fields, style = {}) => ({
+  id,
+  section_name: name,
+  zone,
+  type,
+  is_visible: true,
+  fields,
+  style: {
+    backgroundType: "solid",
+    background: zone === "header" || zone === "footer" ? "#11131a" : "#ffffff",
+    textColor: zone === "header" || zone === "footer" ? "#f4f6ff" : "#17181c",
+    paddingY: zone === "header" ? 20 : 76,
+    paddingX: 48,
+    radius: 0,
+    shadow: "none",
+    opacity: 100,
+    align: "left",
+    fontSize: type === "hero" ? 64 : 40,
+    lineHeight: 1.05,
+    letterSpacing: -1.8,
+    maxWidth: 1180,
+    ...style,
+  },
+});
+
+const SITE_DATA = [
+  {
+    id: "iam",
+    name: "Inner Animal Media",
+    domain: "inneranimalmedia.com",
+    initials: "IA",
+    kind: "Agency workspace",
+    theme: { ...INITIAL_THEME },
+    pages: [
+      {
+        id: "iam-home",
+        title: "Home",
+        slug: "/",
+        status: "live",
+        updated: "4 min ago",
+        sections: [
+          section("iam-nav", "Primary navigation", "header", "navigation", { logo: "INNER ANIMAL", links: ["Work", "Studio", "Systems", "Contact"], cta: "Start a project" }),
+          section("iam-hero", "Editorial hero", "body", "hero", { eyebrow: "Independent digital studio", title: "Design with instinct. Build with intention.", body: "We create distinctive websites, tools, and digital systems for brands doing meaningful work.", primary_cta: "Explore our work", secondary_cta: "Meet the studio" }, { background: "#e9edff", textColor: "#11131a" }),
+          section("iam-services", "Capabilities", "body", "features", { eyebrow: "What we build", title: "One studio, from first idea to working system.", items: ["Brand-led websites", "Internal tools and portals", "Agentic product experiences"] }, { background: "#f7f7f3" }),
+          section("iam-proof", "Selected outcomes", "body", "metrics", { title: "Built to earn its place.", items: ["12 active products", "99.9% edge uptime", "3 connected execution lanes"] }, { background: "#171922", textColor: "#f7f7fb" }),
+          section("iam-footer", "Global footer", "footer", "footer", { title: "Make something worth remembering.", body: "Lafayette, Louisiana — working everywhere.", links: ["Instagram", "GitHub", "Contact"] }),
+        ],
+      },
+      {
+        id: "iam-studio",
+        title: "Design Studio",
+        slug: "/studio",
+        status: "draft",
+        updated: "18 min ago",
+        sections: [
+          section("studio-nav", "Primary navigation", "header", "navigation", { logo: "INNER ANIMAL", links: ["Work", "Studio", "Systems", "Contact"], cta: "Start a project" }),
+          section("studio-hero", "Studio introduction", "body", "hero", { eyebrow: "Design Studio", title: "Ideas move from sketch to system here.", body: "A visual workspace for wireframes, brand explorations, 3D concepts, and production-ready experiences.", primary_cta: "Open the studio", secondary_cta: "View capabilities" }, { background: "#dff7f2" }),
+          section("studio-process", "Promotion path", "body", "features", { eyebrow: "A connected workflow", title: "Draw, define, promote, visualize.", items: ["Sketch and wireflow", "Plan and structure", "Model and render"] }),
+          section("studio-footer", "Global footer", "footer", "footer", { title: "Move the idea forward.", body: "Start rough. Finish intentional.", links: ["Projects", "Templates", "Contact"] }),
+        ],
+      },
+      {
+        id: "iam-contact",
+        title: "Contact",
+        slug: "/contact",
+        status: "live",
+        updated: "Yesterday",
+        sections: [
+          section("contact-nav", "Primary navigation", "header", "navigation", { logo: "INNER ANIMAL", links: ["Work", "Studio", "Systems"], cta: "Contact" }),
+          section("contact-hero", "Contact introduction", "body", "hero", { eyebrow: "Start a conversation", title: "Tell us what you are building.", body: "A short note is enough. We will help shape the next useful step.", primary_cta: "Send project brief", secondary_cta: "sam@inneranimalmedia.com" }, { background: "#f9eadf" }),
+          section("contact-form", "Project inquiry form", "body", "form", { title: "Project details", fields: ["Name", "Email", "Organization", "What are you building?"], button: "Send inquiry" }),
+          section("contact-footer", "Global footer", "footer", "footer", { title: "Inner Animal Media", body: "Design, development, and connected systems.", links: ["Privacy", "Instagram", "GitHub"] }),
+        ],
+      },
+    ],
+  },
+  {
+    id: "fuel",
+    name: "Fuel & Free Time",
+    domain: "fuelnfreetime.com",
+    initials: "FF",
+    kind: "Lifestyle brand",
+    theme: { ...INITIAL_THEME, "--brand-primary": "#d85b36", "--brand-secondary": "#18251d", "--color-bg": "#f7f0e5" },
+    pages: [
+      { id: "fuel-home", title: "Home", slug: "/", status: "draft", updated: "Today", sections: [
+        section("fuel-nav", "Brand navigation", "header", "navigation", { logo: "FUEL & FREE TIME", links: ["Collection", "Story", "Journal"], cta: "Join the waitlist" }),
+        section("fuel-hero", "Launch hero", "body", "hero", { eyebrow: "The first collection is coming", title: "Built for the hours that feel like yours.", body: "An independent collection shaped around movement, outdoors, and the freedom to choose your pace.", primary_cta: "Join the waitlist", secondary_cta: "Our direction" }, { background: "#efe0cb" }),
+        section("fuel-story", "Brand direction", "body", "features", { eyebrow: "Fuel the life outside work", title: "Less noise. More time that counts.", items: ["Small-batch releases", "Field-tested essentials", "Stories from the road"] }),
+        section("fuel-footer", "Brand footer", "footer", "footer", { title: "Fuel & Free Time", body: "Collection in progress. Stay close.", links: ["Instagram", "Waitlist", "Contact"] }),
+      ] },
+      { id: "fuel-story-page", title: "Our Direction", slug: "/direction", status: "draft", updated: "2 days ago", sections: [] },
+    ],
+  },
+  {
+    id: "cpas",
+    name: "Companions of CPAS",
+    domain: "companionscpas.org",
+    initials: "CC",
+    kind: "Nonprofit",
+    theme: { ...INITIAL_THEME, "--brand-primary": "#177e89", "--brand-secondary": "#ef8354", "--color-bg": "#fbfaf6" },
+    pages: [
+      { id: "cpas-home", title: "Home", slug: "/", status: "live", updated: "Today", sections: [
+        section("cpas-nav", "Main navigation", "header", "navigation", { logo: "COMPANIONS OF CPAS", links: ["About", "Adopt", "Community", "Services"], cta: "Donate" }),
+        section("cpas-hero", "Mission hero", "body", "hero", { eyebrow: "Supporting animals in Caddo Parish", title: "More care. More homes. More second chances.", body: "We help the animals and people connected to Caddo Parish Animal Services through rescue support, fostering, and community action.", primary_cta: "Meet adoptable animals", secondary_cta: "Donate today" }, { background: "#e8f5f2" }),
+        section("cpas-actions", "Ways to help", "body", "features", { eyebrow: "Take action", title: "Every kind of help moves an animal forward.", items: ["Adopt or foster", "Sponsor urgent care", "Share available animals"] }),
+        section("cpas-footer", "Organization footer", "footer", "footer", { title: "Companions of CPAS", body: "A volunteer-led support network in Shreveport, Louisiana.", links: ["Donate", "Facebook", "Instagram"] }),
+      ] },
+      { id: "cpas-adopt", title: "Adopt", slug: "/adopt", status: "live", updated: "Yesterday", sections: [] },
+      { id: "cpas-donate", title: "Donate", slug: "/donate", status: "live", updated: "3 days ago", sections: [] },
+    ],
+  },
+];
+
+const MEDIA = [
+  ["golden-field.jpg", "Warm editorial field", "#c98f5e"], ["studio-grid.png", "Studio wireframe", "#5a7df7"],
+  ["timber-house.jpg", "Black metal home", "#3a302b"], ["dog-portrait.jpg", "Adoptable dog", "#cf8d6b"],
+  ["collection-01.jpg", "Collection detail", "#8d8173"], ["mission-team.jpg", "Volunteer team", "#287c7d"],
+  ["texture-paper.png", "Paper texture", "#d7d0c3"], ["social-cover.jpg", "Social cover", "#ef8354"],
+];
+
+const CONTACTS = [
+  ["Avery Mitchell", "avery@northline.co", "Project inquiry", "Today, 9:42 AM", "Qualified"],
+  ["Jordan Lee", "jordan@fieldhouse.la", "Waitlist", "Today, 8:16 AM", "New"],
+  ["Morgan Hayes", "morgan@cypress.org", "Volunteer form", "Yesterday", "Follow up"],
+  ["Taylor Brooks", "taylor@studiofive.co", "Contact page", "Yesterday", "New"],
+  ["Riley Chen", "riley@papertrail.dev", "Newsletter", "Jul 18", "Subscriber"],
+  ["Cameron Diaz", "cameron@riverbend.la", "Project inquiry", "Jul 17", "Qualified"],
+  ["Alexis Green", "alexis@homeward.org", "Foster form", "Jul 16", "Follow up"],
+];
+
+const TEMPLATES = [
+  ["Editorial Launch", "Landing", "Split hero, proof line, editorial story", "#dfe6fb"],
+  ["Community First", "Nonprofit", "Mission hero, impact strip, action sections", "#dff3ea"],
+  ["Quiet Portfolio", "Agency", "Statement hero, project index, compact contact", "#efe8dc"],
+  ["Product Field Guide", "Ecommerce", "Product focus, details, lifestyle gallery", "#eedfd7"],
+  ["Service Narrative", "Professional", "Problem, approach, services, proof", "#e0e3ea"],
+  ["Event Campaign", "Landing", "Event hook, schedule, speakers, registration", "#f6e1bd"],
+];
+
+const railItems = [
+  ["pages", "Pages"], ["sections", "Sections"], ["components", "Components"],
+  ["templates", "Templates"], ["media", "Media"], ["crm", "CRM"], ["settings", "Settings"],
+];
+
+const iconPaths = {
+  pages: ["M5 3h10l4 4v14H5z", "M14 3v5h5", "M8 12h8M8 16h6"],
+  sections: ["M12 3 3 8l9 5 9-5-9-5z", "m3 12 9 5 9-5", "m3 16 9 5 9-5"],
+  components: ["M8 3H3v5h5zM21 3h-5v5h5zM8 16H3v5h5zM21 16h-5v5h5z", "M10 5h4M5 10v4M19 10v4M10 19h4"],
+  templates: ["M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"],
+  media: ["M4 5h16v14H4z", "m4 16 4-4 3 3 3-3 6 5", "M16 9h.01"],
+  crm: ["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"],
+  settings: ["M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z", "M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.12 3.67-.08-.02a1.7 1.7 0 0 0-1.78-.42l-.2.08a1.7 1.7 0 0 0-1.03 1.56V22h-4.24v-.19a1.7 1.7 0 0 0-1.03-1.56l-.2-.08a1.7 1.7 0 0 0-1.78.42l-.08.02-2.12-3.67.06-.06A1.7 1.7 0 0 0 4.6 15l-.02-.18A1.7 1.7 0 0 0 3 13.75H3V9.5h.08a1.7 1.7 0 0 0 1.55-1.04l.08-.2a1.7 1.7 0 0 0-.42-1.78l-.05-.06 2.12-3.67.08.02a1.7 1.7 0 0 0 1.78.42l.2-.08A1.7 1.7 0 0 0 9.45 1.55V1.5h4.24v.05a1.7 1.7 0 0 0 1.03 1.56l.2.08a1.7 1.7 0 0 0 1.78-.42l.08-.02 2.12 3.67-.05.06a1.7 1.7 0 0 0-.42 1.78l.08.2a1.7 1.7 0 0 0 1.55 1.04h.08v4.25h-.08a1.7 1.7 0 0 0-1.55 1.04z"],
+  search: ["M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z", "m21 21-4.35-4.35"],
+  plus: ["M12 5v14M5 12h14"],
+  eye: ["M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z", "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"],
+  more: ["M5 12h.01M12 12h.01M19 12h.01"],
+  undo: ["M9 7 4 12l5 5", "M4 12h9a7 7 0 0 1 7 7"],
+  redo: ["m15 7 5 5-5 5", "M20 12h-9a7 7 0 0 0-7 7"],
+  monitor: ["M4 4h16v12H4z", "M8 20h8M12 16v4"],
+  tablet: ["M6 2h12v20H6z", "M11 18h2"],
+  phone: ["M8 2h8v20H8z", "M11 18h2"],
+  publish: ["M12 16V4", "m7 9-7-7-7 7", "M5 20h14"],
+  close: ["M6 6l12 12M18 6 6 18"],
+  code: ["m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"],
+  chevron: ["m9 18 6-6-6-6"],
+  copy: ["M8 8h11v11H8z", "M5 16H4V5h11v1"],
+};
+
+function Icon({ name, size = 18 }) {
+  const paths = iconPaths[name] || iconPaths.pages;
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths.map((d, i) => <path key={i} d={d} />)}</svg>;
+}
+
+function cn(...values) { return values.filter(Boolean).join(" "); }
+function labelize(value) { return value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()); }
+function escapeHtml(value = "") { return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]); }
+
+function canvasDocument(page, sections, theme, selectedId) {
+  const vars = Object.entries(theme).map(([k, v]) => `${k}:${v}`).join(";");
+  const visible = sections.filter((s) => s.is_visible);
+  const blocks = visible.map((s) => {
+    const f = s.fields;
+    const st = s.style;
+    const common = `background:${st.background};color:${st.textColor};padding:${st.paddingY}px ${st.paddingX}px;opacity:${st.opacity / 100};text-align:${st.align};border-radius:${st.radius}px;box-shadow:${st.shadow};`;
+    const attrs = `data-section-id="${s.id}" data-hide-phone="${!!st.hidePhone}" data-hide-tablet="${!!st.hideTablet}" data-hide-desktop="${!!st.hideDesktop}" style="${common}"`;
+    const custom = st.customCss ? `<style>${st.customCss}</style>` : "";
+    if (s.type === "navigation") return `${custom}<section class="cms-section navigation" ${attrs}><strong>${escapeHtml(f.logo)}</strong><nav>${(f.links || []).map((x) => `<a>${escapeHtml(x)}</a>`).join("")}<button>${escapeHtml(f.cta)}</button></nav></section>`;
+    if (s.type === "hero") return `${custom}<section class="cms-section hero" ${attrs}><div class="inner" style="max-width:${st.maxWidth}px"><span class="eyebrow">${escapeHtml(f.eyebrow)}</span><h1 style="font-size:${st.fontSize}px;line-height:${st.lineHeight};letter-spacing:${st.letterSpacing}px">${escapeHtml(f.title)}</h1><p>${escapeHtml(f.body)}</p><div class="actions"><button>${escapeHtml(f.primary_cta)}</button><a>${escapeHtml(f.secondary_cta)}</a></div></div></section>`;
+    if (s.type === "features") return `${custom}<section class="cms-section features" ${attrs}><div class="inner" style="max-width:${st.maxWidth}px"><span class="eyebrow">${escapeHtml(f.eyebrow)}</span><h2>${escapeHtml(f.title)}</h2><div class="feature-grid">${(f.items || []).map((x, i) => `<article><span>0${i + 1}</span><h3>${escapeHtml(x)}</h3><p>Focused capability shaped around clear outcomes and a durable working system.</p></article>`).join("")}</div></div></section>`;
+    if (s.type === "metrics") return `${custom}<section class="cms-section metrics" ${attrs}><div class="inner" style="max-width:${st.maxWidth}px"><h2>${escapeHtml(f.title)}</h2><div class="metric-grid">${(f.items || []).map((x) => `<strong>${escapeHtml(x)}</strong>`).join("")}</div></div></section>`;
+    if (s.type === "form") return `${custom}<section class="cms-section form" ${attrs}><div class="inner narrow"><h2>${escapeHtml(f.title)}</h2>${(f.fields || []).map((x) => `<label>${escapeHtml(x)}<input placeholder="${escapeHtml(x)}" /></label>`).join("")}<button>${escapeHtml(f.button)}</button></div></section>`;
+    return `${custom}<section class="cms-section footer" ${attrs}><div><h2>${escapeHtml(f.title)}</h2><p>${escapeHtml(f.body)}</p></div><nav>${(f.links || []).map((x) => `<a>${escapeHtml(x)}</a>`).join("")}</nav></section>`;
+  }).join("");
+  return `<!doctype html><html><head><meta charset="utf-8"><style>:root{${vars}}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)}button,a{font:inherit}.cms-section{position:relative;transition:outline .15s,box-shadow .15s}.cms-section.is-selected{outline:3px solid #5a7df7;outline-offset:-3px;box-shadow:inset 0 0 0 1px white}.inner{max-width:1180px;margin:auto}.narrow{max-width:760px}.navigation{display:flex;align-items:center;justify-content:space-between;min-height:72px;padding-top:0!important;padding-bottom:0!important}.navigation strong{letter-spacing:.12em;font-size:13px}.navigation nav,.footer nav{display:flex;align-items:center;gap:24px}.navigation a,.footer a{font-size:13px;opacity:.72}.navigation button,.hero button,.form button{border:0;background:var(--brand-primary);color:white;padding:12px 18px;border-radius:999px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:700;color:var(--brand-primary)}.hero h1{font-family:var(--font-heading);max-width:900px;margin:22px 0}.hero p{max-width:660px;font-size:18px;line-height:1.65;opacity:.72}.actions{display:flex;align-items:center;gap:22px;margin-top:34px}.actions a{font-weight:700;font-size:14px}.features h2,.metrics h2,.form h2,.footer h2{font-family:var(--font-heading);font-size:44px;line-height:1.08;max-width:720px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-border);margin-top:54px;border:1px solid var(--color-border)}.feature-grid article{background:var(--color-surface);padding:34px}.feature-grid article span{font-size:11px;color:var(--brand-primary)}.feature-grid h3{font-size:20px;margin:44px 0 12px}.feature-grid p{font-size:14px;line-height:1.6;color:var(--color-muted)}.metric-grid{display:flex;gap:64px;margin-top:60px}.metric-grid strong{font-family:var(--font-heading);font-size:28px}.form label{display:block;font-size:12px;font-weight:700;margin:18px 0}.form input{display:block;width:100%;margin-top:8px;padding:16px;border:1px solid var(--color-border);border-radius:10px;background:white}.footer{display:flex;justify-content:space-between;align-items:end}.footer h2{font-size:28px;margin:0 0 12px}.footer p{opacity:.62}.selected-marker{position:absolute;top:8px;left:8px;background:#5a7df7;color:white;border-radius:4px;padding:4px 7px;font:10px Arial;z-index:3}@media(max-width:1024px) and (min-width:701px){[data-hide-tablet="true"]{display:none!important}}@media(min-width:1025px){[data-hide-desktop="true"]{display:none!important}}@media(max-width:700px){[data-hide-phone="true"]{display:none!important}.navigation{padding-left:18px!important;padding-right:18px!important}.navigation a{display:none}.navigation nav{gap:8px}.cms-section{padding-left:22px!important;padding-right:22px!important}.hero h1{font-size:42px!important}.features h2,.metrics h2,.form h2{font-size:34px}.feature-grid{grid-template-columns:1fr}.metric-grid{flex-direction:column;gap:22px}.footer{align-items:start;flex-direction:column;gap:30px}.footer nav{flex-wrap:wrap}}</style></head><body>${blocks}<script>function select(id){document.querySelectorAll('.cms-section').forEach(el=>el.classList.toggle('is-selected',el.dataset.sectionId===id));}document.addEventListener('click',e=>{const section=e.target.closest('[data-section-id]');if(section){parent.postMessage({type:'cms:section-click',sectionId:section.dataset.sectionId},'*')}});window.addEventListener('message',e=>{const m=e.data||{};if(m.type==='cms:highlight')select(m.sectionId);if(m.type==='cms:deselect')select('');if(m.type==='cms:theme-vars'){Object.entries(m.vars||{}).forEach(([k,v])=>document.documentElement.style.setProperty(k,v))}if(m.type==='cms:style-update'){const el=document.querySelector('[data-section-id="'+m.sectionId+'"]');if(el){Object.entries(m.style||{}).forEach(([k,v])=>{const map={background:'background',textColor:'color',paddingY:'paddingTop',paddingX:'paddingLeft',opacity:'opacity',radius:'borderRadius',shadow:'boxShadow'};if(map[k])el.style[map[k]]=k==='opacity'?v/100:k==='paddingY'||k==='paddingX'||k==='radius'?v+'px':v})}}if(m.type==='cms:scroll-to'){document.querySelector('[data-section-id="'+m.sectionId+'"]')?.scrollIntoView({behavior:'smooth'})}});select('${selectedId || ""}');parent.postMessage({type:'cms:ready'},'*');<\/script></body></html>`;
+}
+
+function Button({ children, className, icon, ...props }) {
+  return <button className={cn("button", className)} {...props}>{icon && <Icon name={icon} size={15} />}{children}</button>;
+}
+
+function ToastStack({ toasts, dismiss }) {
+  return <div className="toast-stack">{toasts.slice(-3).map((toast) => <div key={toast.id} className={cn("toast", toast.kind)}><span className="toast-mark">{toast.kind === "success" ? "✓" : toast.kind === "error" ? "×" : "i"}</span><div><strong>{toast.title}</strong><p>{toast.message}</p></div><button onClick={() => dismiss(toast.id)}><Icon name="close" size={14} /></button><i /></div>)}</div>;
+}
+
+function EmptyState({ icon = "pages", title, body, action, onAction }) {
+  return <div className="empty-state"><span><Icon name={icon} size={22} /></span><h3>{title}</h3><p>{body}</p>{action && <Button className="secondary" onClick={onAction} icon="plus">{action}</Button>}</div>;
+}
+
+export default function Home() {
+  const [sites, setSites] = useState(SITE_DATA);
+  const [activeSiteId, setActiveSiteId] = useState("iam");
+  const activeSite = sites.find((s) => s.id === activeSiteId) || sites[0];
+  const [activePageId, setActivePageId] = useState("iam-home");
+  const activePage = activeSite.pages.find((p) => p.id === activePageId) || activeSite.pages[0];
+  const [activeSectionId, setActiveSectionId] = useState(activePage?.sections[1]?.id || activePage?.sections[0]?.id || null);
+  const activeSection = activePage?.sections.find((s) => s.id === activeSectionId) || null;
+  const [railMode, setRailMode] = useState("pages");
+  const [panelTab, setPanelTab] = useState("content");
+  const [viewport, setViewport] = useState("desktop");
+  const [zoom, setZoom] = useState(75);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [siteSwitcher, setSiteSwitcher] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const [fieldDraft, setFieldDraft] = useState(activeSection?.fields || {});
+  const [modal, setModal] = useState(null);
+  const [toasts, setToasts] = useState([]);
+  const [query, setQuery] = useState("");
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+  const iframeRef = useRef(null);
+
+  const notify = useCallback((title, message, kind = "success") => {
+    const id = Date.now() + Math.random();
+    setToasts((t) => [...t, { id, title, message, kind }]);
+    if (kind !== "error") setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), kind === "warning" ? 5000 : 3200);
+  }, []);
+
+  const updateSite = useCallback((recipe) => {
+    setSites((current) => current.map((site) => site.id === activeSiteId ? recipe(site) : site));
+  }, [activeSiteId]);
+
+  const choosePage = (page) => {
+    if (dirty && !window.confirm("You have unsaved changes. Discard them and continue?")) return;
+    setActivePageId(page.id);
+    setActiveSectionId(page.sections[1]?.id || page.sections[0]?.id || null);
+    setFieldDraft(page.sections[1]?.fields || page.sections[0]?.fields || {});
+    setDirty(false);
+    setIframeReady(false);
+  };
+
+  const chooseSection = (item) => {
+    if (dirty && activeSectionId !== item.id && !window.confirm("You have unsaved changes. Discard them and continue?")) return;
+    setActiveSectionId(item.id);
+    setFieldDraft(item.fields);
+    setDirty(false);
+    setPanelTab("content");
+    iframeRef.current?.contentWindow?.postMessage({ type: "cms:highlight", sectionId: item.id }, "*");
+    iframeRef.current?.contentWindow?.postMessage({ type: "cms:scroll-to", sectionId: item.id }, "*");
+  };
+
+  useEffect(() => {
+    const onMessage = (event) => {
+      const data = event.data || {};
+      if (data.type === "cms:ready") setIframeReady(true);
+      if (data.type === "cms:section-click") {
+        const item = activePage?.sections.find((s) => s.id === data.sectionId);
+        if (item) chooseSection(item);
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  });
+
+  const saveFields = useCallback(() => {
+    if (!activeSection) return;
+    const previous = activeSection.fields;
+    updateSite((site) => ({ ...site, pages: site.pages.map((page) => page.id === activePage.id ? { ...page, updated: "Just now", sections: page.sections.map((s) => s.id === activeSection.id ? { ...s, fields: { ...fieldDraft } } : s) } : page) }));
+    setUndoStack((stack) => [...stack.slice(-19), { pageId: activePage.id, sectionId: activeSection.id, before: previous, after: fieldDraft }]);
+    setRedoStack([]);
+    setDirty(false);
+    notify("Section saved", `${activeSection.section_name} is saved to the draft.`);
+  }, [activePage, activeSection, fieldDraft, notify, updateSite]);
+
+  const undo = () => {
+    const action = undoStack.at(-1);
+    if (!action) return;
+    updateSite((site) => ({ ...site, pages: site.pages.map((page) => page.id === action.pageId ? { ...page, sections: page.sections.map((s) => s.id === action.sectionId ? { ...s, fields: action.before } : s) } : page) }));
+    setUndoStack((s) => s.slice(0, -1));
+    setRedoStack((s) => [...s, action]);
+    if (action.sectionId === activeSectionId) setFieldDraft(action.before);
+    notify("Change undone", "The previous saved content was restored.", "warning");
+  };
+
+  const redo = () => {
+    const action = redoStack.at(-1);
+    if (!action) return;
+    updateSite((site) => ({ ...site, pages: site.pages.map((page) => page.id === action.pageId ? { ...page, sections: page.sections.map((s) => s.id === action.sectionId ? { ...s, fields: action.after } : s) } : page) }));
+    setRedoStack((s) => s.slice(0, -1));
+    setUndoStack((s) => [...s, action]);
+    if (action.sectionId === activeSectionId) setFieldDraft(action.after);
+    notify("Change restored", "The saved content change was reapplied.");
+  };
+
+  const publish = (scope = "page") => {
+    notify(scope === "all" ? "Site published" : scope === "section" ? "Section published" : "Page published", `${scope === "all" ? activeSite.name : scope === "section" ? activeSection?.section_name : activePage?.title} is live.`);
+    setModal(null);
+  };
+
+  useEffect(() => {
+    const onKey = (event) => {
+      const mod = event.metaKey || event.ctrlKey;
+      if (mod && event.key.toLowerCase() === "s") { event.preventDefault(); saveFields(); }
+      if (mod && !event.shiftKey && event.key.toLowerCase() === "z") { event.preventDefault(); undo(); }
+      if (mod && event.shiftKey && event.key.toLowerCase() === "z") { event.preventDefault(); redo(); }
+      if (mod && event.key.toLowerCase() === "p" && !event.shiftKey) { event.preventDefault(); setPreviewMode((v) => !v); }
+      if (mod && event.key.toLowerCase() === "k") { event.preventDefault(); setModal("command"); }
+      if (mod && event.key === "/") { event.preventDefault(); setModal("shortcuts"); }
+      if (event.key === "Escape") { if (previewMode) setPreviewMode(false); else if (modal) setModal(null); else setActiveSectionId(null); }
+      if (mod && /^[1-7]$/.test(event.key)) { event.preventDefault(); const item = railItems[Number(event.key) - 1]; if (item) { setRailMode(item[0]); setSidebarOpen(true); } }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [modal, previewMode, saveFields, undo, redo]);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const timer = window.setTimeout(() => {
+      saveFields();
+      notify("Auto-saved", "Your section draft was saved after 30 seconds of inactivity.");
+    }, 30000);
+    return () => window.clearTimeout(timer);
+  }, [dirty, fieldDraft, saveFields, notify]);
+
+  useEffect(() => {
+    const warn = (event) => {
+      if (!dirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  const doc = useMemo(() => canvasDocument(activePage, activePage?.sections || [], activeSite.theme, activeSectionId), [activePage, activeSite.theme, activeSectionId]);
+  const frameWidth = viewport === "phone" ? 375 : viewport === "tablet" ? 768 : 1280;
+
+  const renderSidebar = () => {
+    if (railMode === "pages") return <PageSidebar pages={activeSite.pages} activePage={activePage} query={query} setQuery={setQuery} choosePage={choosePage} setModal={setModal} />;
+    if (railMode === "sections") return <SectionSidebar sections={activePage?.sections || []} activeSection={activeSection} query={query} setQuery={setQuery} chooseSection={chooseSection} setModal={setModal} updateSite={updateSite} activePage={activePage} notify={notify} />;
+    if (railMode === "components") return <ComponentSidebar setModal={setModal} notify={notify} />;
+    if (railMode === "templates") return <TemplateSidebar setModal={setModal} />;
+    if (railMode === "media") return <MediaSidebar setModal={setModal} notify={notify} />;
+    if (railMode === "crm") return <CrmSidebar setModal={setModal} />;
+    return <SettingsSidebar site={activeSite} notify={notify} />;
+  };
+
+  if (!activePage) return <main className="fatal"><EmptyState title="No pages yet" body="Create the first page to begin shaping this site." action="Create page" onAction={() => setModal("new-page")} /></main>;
+
+  return <main className={cn("cms-app", previewMode && "preview-mode", !sidebarOpen && "sidebar-collapsed", !inspectorOpen && "inspector-collapsed")}>
+    <ToastStack toasts={toasts} dismiss={(id) => setToasts((t) => t.filter((x) => x.id !== id))} />
+    {!previewMode && <Topbar site={activeSite} page={activePage} section={activeSection} siteSwitcher={siteSwitcher} setSiteSwitcher={setSiteSwitcher} sites={sites} switchSite={(site) => { const nextPage = site.pages[0]; const nextSection = nextPage?.sections[1] || nextPage?.sections[0]; setActiveSiteId(site.id); setActivePageId(nextPage.id); setActiveSectionId(nextSection?.id || null); setFieldDraft(nextSection?.fields || {}); setDirty(false); setSiteSwitcher(false); setIframeReady(false); }} viewport={viewport} setViewport={setViewport} undo={undo} redo={redo} canUndo={undoStack.length} canRedo={redoStack.length} setModal={setModal} />}
+    {!previewMode && <Rail mode={railMode} setMode={(mode) => { if (mode === railMode) setSidebarOpen((v) => !v); else { setRailMode(mode); setSidebarOpen(true); } }} sidebarOpen={sidebarOpen} />}
+    {!previewMode && sidebarOpen && <aside className="sidebar">{renderSidebar()}</aside>}
+    <section className="canvas-shell">
+      <div className={cn("canvas", !iframeReady && "is-loading")}>
+        {!iframeReady && <div className="loading-line" />}
+        <div className="ruler"><span>0</span><i /> <span>{frameWidth}px</span><i /><span>{frameWidth}</span></div>
+        <div className="device-stage">
+          <div className={cn("device-frame", viewport)} style={{ width: frameWidth, transform: `scale(${zoom / 100})`, transformOrigin: "top center" }}>
+            <iframe ref={iframeRef} title={`${activePage.title} preview`} srcDoc={doc} onLoad={() => setIframeReady(true)} />
+          </div>
+        </div>
+        <div className="canvas-tools">
+          <button onClick={() => setZoom(50)} className={zoom === 50 ? "active" : ""}>50%</button>
+          <button onClick={() => setZoom(75)} className={zoom === 75 ? "active" : ""}>75%</button>
+          <button onClick={() => setZoom(100)} className={zoom === 100 ? "active" : ""}>100%</button>
+          <button onClick={() => setZoom(viewport === "desktop" ? 65 : 75)}>Fit</button>
+        </div>
+      </div>
+    </section>
+    {!previewMode && inspectorOpen && <Inspector site={activeSite} page={activePage} section={activeSection} tab={panelTab} setTab={setPanelTab} fieldDraft={fieldDraft} setFieldDraft={(next) => { setFieldDraft(next); setDirty(true); }} dirty={dirty} saveFields={saveFields} revert={() => { setFieldDraft(activeSection?.fields || {}); setDirty(false); }} updateSite={updateSite} notify={notify} setModal={setModal} iframeRef={iframeRef} />}
+    {!previewMode && <button className="inspector-collapse" onClick={() => setInspectorOpen((v) => !v)} aria-label="Toggle inspector"><Icon name="chevron" size={14} /></button>}
+    {!previewMode && <div className="statusbar"><span className="connection"><i /> Connected</span><span>Mock API · 42ms</span><span>{dirty ? "Unsaved changes" : "Saved just now"}</span><span>{activePage.slug}</span><span>{activePage.sections.length} sections</span><button onClick={() => setModal("shortcuts")}>⌘ / Shortcuts</button></div>}
+    {previewMode && <div className="preview-toolbar"><Button onClick={() => setPreviewMode(false)} icon="close">Exit preview</Button><ViewportButtons value={viewport} onChange={setViewport} /></div>}
+    <MobileNav mode={railMode} setMode={(mode) => { setRailMode(mode); setSidebarOpen(true); }} setModal={setModal} />
+    {modal && <Modal type={typeof modal === "string" ? modal : modal.type} modalData={typeof modal === "string" ? null : modal} close={() => setModal(null)} site={activeSite} page={activePage} section={activeSection} choosePage={choosePage} chooseSection={chooseSection} publish={publish} notify={notify} updateSite={updateSite} />}
+  </main>;
+}
+
+function ViewportButtons({ value, onChange }) {
+  return <div className="viewport-switcher">{[["phone", "Mobile"], ["tablet", "Tablet"], ["monitor", "Desktop"]].map(([icon, label]) => <button key={label} className={value === (icon === "monitor" ? "desktop" : icon) ? "active" : ""} onClick={() => onChange(icon === "monitor" ? "desktop" : icon)} title={label}><Icon name={icon} size={15} /></button>)}</div>;
+}
+
+function Topbar({ site, page, section, siteSwitcher, setSiteSwitcher, sites, switchSite, viewport, setViewport, undo, redo, canUndo, canRedo, setModal }) {
+  return <header className="topbar">
+    <div className="site-control"><button className="site-button" onClick={() => setSiteSwitcher(!siteSwitcher)}><span className="site-avatar">{site.initials}</span><span><strong>{site.name}</strong><small>{site.domain}</small></span><Icon name="chevron" size={13} /></button>{siteSwitcher && <div className="site-popover"><div className="popover-search"><Icon name="search" size={14} /><input placeholder="Find a site" /></div>{sites.map((item) => <button key={item.id} className={item.id === site.id ? "active" : ""} onClick={() => switchSite(item)}><span className="site-avatar">{item.initials}</span><span><strong>{item.name}</strong><small>{item.domain}</small></span>{item.id === site.id && <b>✓</b>}</button>)}<Button className="ghost" icon="plus">New site</Button></div>}</div>
+    <div className="breadcrumb"><span>{site.name}</span><b>/</b><strong>{page.title}</strong>{section && <><b>/</b><span>{section.section_name}</span></>}</div>
+    <div className="topbar-center"><ViewportButtons value={viewport} onChange={setViewport} /></div>
+    <div className="topbar-actions"><div className="collaborators"><span>SP</span><span>KM</span><small>2 editing</small></div><button className="icon-button" disabled={!canUndo} onClick={undo} title="Undo"><Icon name="undo" /></button><button className="icon-button" disabled={!canRedo} onClick={redo} title="Redo"><Icon name="redo" /></button><Button className="secondary compact" onClick={() => window.open(`https://${site.domain}${page.slug === "/" ? "" : page.slug}`, "_blank")}>Preview</Button><Button className="primary publish-button" icon="publish" onClick={() => setModal("publish")}>Publish</Button><button className="user-avatar">S</button></div>
+  </header>;
+}
+
+function Rail({ mode, setMode, sidebarOpen }) {
+  return <nav className="rail" aria-label="Editor tools"><div>{railItems.map(([id, label], index) => <button key={id} className={cn(mode === id && sidebarOpen && "active")} onClick={() => setMode(id)} data-tooltip={`${label}  ⌘${index + 1}`} aria-label={label}><Icon name={id} /></button>)}</div><button className="rail-bottom" onClick={() => setMode(mode)} data-tooltip={sidebarOpen ? "Collapse panel" : "Expand panel"}><Icon name="chevron" /></button></nav>;
+}
+
+function SidebarHeader({ eyebrow, title, query, setQuery, action, onAction }) {
+  return <><div className="sidebar-title"><div><small>{eyebrow}</small><h2>{title}</h2></div>{action && <button className="square-add" onClick={onAction}><Icon name="plus" /></button>}</div>{setQuery && <label className="search-field"><Icon name="search" size={14} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`Search ${title.toLowerCase()}`} />{query && <button onClick={() => setQuery("")}><Icon name="close" size={12} /></button>}</label>}</>;
+}
+
+function PageSidebar({ pages, activePage, query, setQuery, choosePage, setModal }) {
+  const filtered = pages.filter((p) => p.title.toLowerCase().includes(query.toLowerCase()));
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="Site structure" title="Pages" query={query} setQuery={setQuery} action onAction={() => setModal("new-page")} /></div><div className="sidebar-scroll"><div className="group-label"><span>Pages</span><b>{filtered.length}</b></div>{filtered.map((page) => <button key={page.id} className={cn("page-row", activePage.id === page.id && "active")} onClick={() => choosePage(page)}><span className={cn("status-dot", page.status)} /><span><strong>{page.title}</strong><small>{page.slug} · {page.updated}</small></span><Icon name="more" size={16} /></button>)}{!filtered.length && <EmptyState title="No matching pages" body="Try another page name or create a new one." action="New page" onAction={() => setModal("new-page")} />}<button className="new-folder"><Icon name="plus" size={14} /> New folder</button></div><div className="sidebar-footer"><span><i className="status-dot live" /> {pages.filter((p) => p.status === "live").length} live</span><span>{pages.filter((p) => p.status !== "live").length} drafts</span></div></>;
+}
+
+function SectionSidebar({ sections, activeSection, query, setQuery, chooseSection, setModal, updateSite, activePage, notify }) {
+  const groups = ["header", "body", "footer", "template"];
+  const toggle = (item) => { updateSite((site) => ({ ...site, pages: site.pages.map((p) => p.id === activePage.id ? { ...p, sections: p.sections.map((s) => s.id === item.id ? { ...s, is_visible: !s.is_visible } : s) } : p) })); notify(item.is_visible ? "Section hidden" : "Section visible", `${item.section_name} updated.`, "warning"); };
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow={activePage.title} title="Sections" query={query} setQuery={setQuery} action onAction={() => setModal("add-section")} /></div><div className="sidebar-scroll section-scroll">{groups.map((zone) => { const items = sections.filter((s) => s.zone === zone && s.section_name.toLowerCase().includes(query.toLowerCase())); if (!items.length && zone === "template") return null; return <div className="zone" key={zone}><div className="group-label"><span>{zone}</span><b>{items.length}</b><Icon name="chevron" size={12} /></div>{items.map((item) => <div key={item.id} className={cn("section-row", activeSection?.id === item.id && "active", !item.is_visible && "is-hidden")}><button className="drag-handle">⠿</button><button className="section-main" onClick={() => chooseSection(item)}><i style={{ background: item.style.background }} /><span><strong>{item.section_name}</strong><small>{labelize(item.type)}</small></span></button><button onClick={() => toggle(item)} title="Toggle visibility"><Icon name="eye" size={15} /></button><button><Icon name="more" size={15} /></button></div>)}</div>; })}{!sections.length && <EmptyState icon="sections" title="This page is empty" body="Add a first section or apply a page template." action="Add section" onAction={() => setModal("add-section")} />}</div><div className="sidebar-footer"><Button className="secondary wide" icon="plus" onClick={() => setModal("add-section")}>Add section</Button></div></>;
+}
+
+function ComponentSidebar({ setModal, notify }) {
+  const items = ["Editorial Hero", "Split Navigation", "Feature Index", "Testimonial Pullquote", "Conversion CTA", "Logo Marquee", "Project Gallery", "FAQ Accordion"];
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="Reusable blocks" title="Components" query="" setQuery={() => {}} /></div><div className="sidebar-scroll"><div className="filter-chips"><button className="active">All</button><button>Layout</button><button>Content</button></div><div className="component-grid">{items.map((name, i) => <article key={name}><div className={`wireframe wf-${i % 4}`}><i /><i /><i /><i /></div><small>{i < 2 ? "Layout" : i < 6 ? "Content" : "Interactive"}</small><strong>{name}</strong><Button className="secondary" onClick={() => notify("Component added", `${name} was added to the page.`)}>Add</Button></article>)}</div><Button className="ghost wide" icon="plus" onClick={() => setModal("add-section")}>Create component</Button></div></>;
+}
+
+function TemplateSidebar({ setModal }) {
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="Starting points" title="Templates" query="" setQuery={() => {}} /></div><div className="sidebar-scroll"><div className="segmented"><button className="active">Pages</button><button>Sections</button></div><div className="template-list">{TEMPLATES.map(([name, category, body, color]) => <article key={name} onClick={() => setModal("template-preview")}><div className="template-thumb" style={{ background: color }}><i /><b /><span /></div><div><small>{category}</small><strong>{name}</strong><p>{body}</p></div></article>)}</div></div></>;
+}
+
+function MediaSidebar({ setModal, notify }) {
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="Site assets" title="Media" action onAction={() => setModal("upload")} /></div><div className="sidebar-scroll"><button className="upload-zone" onClick={() => setModal("upload")}><Icon name="publish" /><strong>Drop files to upload</strong><span>Images, video, fonts, or documents</span></button><div className="media-grid">{MEDIA.map(([name, alt, color]) => <button key={name} style={{ background: color }} onClick={() => { navigator.clipboard?.writeText(`/media/${name}`); notify("URL copied", `/media/${name}`); }}><span>{name.split(".")[1].toUpperCase()}</span><small>{alt}</small></button>)}</div></div><div className="storage"><span><b>2.4 GB</b> of 10 GB</span><i><b /></i></div></>;
+}
+
+function CrmSidebar({ setModal }) {
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="People and forms" title="CRM" query="" setQuery={() => {}} /></div><div className="sidebar-scroll"><div className="crm-stats"><div><strong>248</strong><small>Contacts</small></div><div><strong>18</strong><small>This week</small></div><div><strong>7</strong><small>Today</small></div></div><div className="group-label"><span>Recent contacts</span><b>{CONTACTS.length}</b></div><div className="contact-list">{CONTACTS.map(([name, email, source, date, tag]) => <button key={email} onClick={() => setModal({ type: "contact", contact: [name, email, source, date, tag] })}><span>{name.split(" ").map((x) => x[0]).join("")}</span><div><strong>{name}</strong><small>{email}</small><em>{source} · {date}</em></div><b className={tag === "New" ? "new" : ""}>{tag}</b></button>)}</div></div><div className="sidebar-footer"><Button className="secondary wide" onClick={() => setModal("export-crm")}>Export CSV</Button></div></>;
+}
+
+function SettingsSidebar({ site, notify }) {
+  return <><div className="sidebar-fixed"><SidebarHeader eyebrow="Workspace" title="Settings" /></div><div className="sidebar-scroll settings-list"><label>Site name<input defaultValue={site.name} /></label><label>Site domain<div className="input-prefix"><span>https://</span><input defaultValue={site.domain} /></div></label><div className="settings-section"><strong>Integrations</strong>{["Analytics", "Custom fonts", "SEO defaults"].map((x, i) => <div key={x}><span>{x}<small>{i === 0 ? "Connected" : "Ready to configure"}</small></span><Toggle value={i === 0} /></div>)}</div><div className="danger-zone"><strong>Danger zone</strong><p>Deleting this site removes drafts, media, and contact records.</p><Button className="danger" onClick={() => notify("Protected action", "Type the site name to confirm deletion.", "error")}>Delete site</Button></div></div></>;
+}
+
+function Toggle({ value, onChange }) { const [internal, setInternal] = useState(!!value); const current = onChange ? value : internal; return <button type="button" className={cn("toggle", current && "on")} onClick={() => onChange ? onChange(!current) : setInternal(!current)}><i /></button>; }
+
+function Inspector({ site, page, section, tab, setTab, fieldDraft, setFieldDraft, dirty, saveFields, revert, updateSite, notify, setModal, iframeRef }) {
+  const tabs = ["content", "style", "page", "theme", "crm"];
+  return <aside className="inspector"><div className="inspector-header"><div><small>{section ? labelize(section.type) : "Page settings"}</small><h2>{section?.section_name || page.title}</h2></div><div><Button className="ghost compact" disabled={!dirty} onClick={revert}>Revert</Button><Button className="primary compact" disabled={!dirty} onClick={saveFields}>Save</Button></div></div><div className="inspector-tabs">{tabs.map((item) => <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}>{labelize(item)}</button>)}</div><div className="inspector-scroll">{tab === "content" && <ContentInspector section={section} draft={fieldDraft} setDraft={setFieldDraft} setModal={setModal} />}{tab === "style" && <StyleInspector site={site} page={page} section={section} updateSite={updateSite} iframeRef={iframeRef} notify={notify} />}{tab === "page" && <PageInspector site={site} page={page} updateSite={updateSite} setModal={setModal} />}{tab === "theme" && <ThemeInspector site={site} updateSite={updateSite} iframeRef={iframeRef} notify={notify} />}{tab === "crm" && <PageCrm />}</div></aside>;
+}
+
+function ContentInspector({ section, draft, setDraft, setModal }) {
+  if (!section) return <EmptyState icon="sections" title="Select a section" body="Choose a section in the canvas or sidebar to edit its content." />;
+  const change = (key, value) => setDraft({ ...draft, [key]: value });
+  return <div className="panel-content"><div className="panel-intro"><span>Content fields</span><p>Changes stay in draft until you save. The canvas updates as the saved section changes.</p></div>{Object.entries(draft).map(([key, value]) => <FieldControl key={key} name={key} value={value} onChange={(next) => change(key, next)} setModal={setModal} />)}<details className="raw-json"><summary>Raw fields JSON <Icon name="chevron" size={13} /></summary><pre>{JSON.stringify(draft, null, 2)}</pre><Button className="secondary compact" icon="copy" onClick={() => navigator.clipboard?.writeText(JSON.stringify(draft, null, 2))}>Copy JSON</Button></details></div>;
+}
+
+function FieldControl({ name, value, onChange, setModal }) {
+  const long = /body|description|html/i.test(name);
+  const list = Array.isArray(value);
+  return <div className="field-control"><label><span>{labelize(name)}<b title={name}>?</b></span>{list ? <div className="list-editor">{value.map((item, index) => <div key={index}><button className="drag-handle">⠿</button><input value={item} onChange={(e) => onChange(value.map((x, i) => i === index ? e.target.value : x))} /><button onClick={() => onChange(value.filter((_, i) => i !== index))}><Icon name="close" size={13} /></button></div>)}<Button className="secondary compact" icon="plus" onClick={() => onChange([...value, "New item"])}>Add item</Button></div> : long ? <textarea rows={5} value={value} onChange={(e) => onChange(e.target.value)} /> : <div className="clearable"><input value={value} onChange={(e) => onChange(e.target.value)} />{value && <button onClick={() => onChange("")}><Icon name="close" size={12} /></button>}</div>}</label>{/image/i.test(name) && <Button className="secondary compact" onClick={() => setModal("media-picker")}>Choose from media</Button>}</div>;
+}
+
+function StyleInspector({ site, page, section, updateSite, iframeRef, notify }) {
+  if (!section) return <EmptyState title="Select a section" body="Visual styling controls appear after you select a section." icon="sections" />;
+  const style = section.style;
+  const setStyle = (patch) => {
+    updateSite((current) => ({ ...current, pages: current.pages.map((p) => p.id === page.id ? { ...p, sections: p.sections.map((s) => s.id === section.id ? { ...s, style: { ...s.style, ...patch } } : s) } : p) }));
+    iframeRef.current?.contentWindow?.postMessage({ type: "cms:style-update", sectionId: section.id, style: patch }, "*");
+  };
+  const colors = [site.theme["--brand-primary"], site.theme["--brand-secondary"], site.theme["--brand-accent"], "#11131a", "#ffffff", "#f4f1e9"];
+  const backgroundType = style.backgroundType || "solid";
+  const solidColor = /^#[0-9a-f]{6}$/i.test(style.background) ? style.background : "#5a7df7";
+  const gradients = [
+    "linear-gradient(135deg,#5a7df7,#1f97a9)",
+    "linear-gradient(135deg,#ff7619,#f5c26b)",
+    "linear-gradient(135deg,#11131a,#31394e)",
+    "radial-gradient(circle at top left,#dff7f2,#e9edff)",
+  ];
+  return <div className="panel-content style-panel">
+    <div className="live-banner"><i /><span><strong>Live design controls</strong><small>No code needed · every change previews immediately</small></span></div>
+    <ControlGroup title="Background" defaultOpen>
+      <div className="background-preview" style={{ background: style.background }}><span>{labelize(backgroundType)}</span></div>
+      <div className="background-tabs">{["solid", "gradient", "image", "video"].map((item) => <button key={item} className={backgroundType === item ? "active" : ""} onClick={() => setStyle({ backgroundType: item })}>{labelize(item)}</button>)}</div>
+      {backgroundType === "solid" && <><label className="control-label">Color<div className="color-row"><input id="section-bg" type="color" value={solidColor} onChange={(e) => setStyle({ background: e.target.value })} /><input value={style.background} onChange={(e) => setStyle({ background: e.target.value })} /></div></label><small className="micro-label">Site colors</small><div className="swatches">{colors.map((color) => <button key={color} style={{ background: color }} onClick={() => setStyle({ background: color })} title={color} />)}</div></>}
+      {backgroundType === "gradient" && <><div className="gradient-stops"><label>Start<input type="color" defaultValue="#5a7df7" /></label><span>→</span><label>End<input type="color" defaultValue="#1f97a9" /></label></div><Range label="Direction" value={style.gradientAngle || 135} min={0} max={360} suffix="°" onChange={(value) => setStyle({ gradientAngle: value, background: `linear-gradient(${value}deg,#5a7df7,#1f97a9)` })} /><small className="micro-label">Curated gradients</small><div className="gradient-presets">{gradients.map((gradient) => <button key={gradient} style={{ background: gradient }} onClick={() => setStyle({ background: gradient })} />)}</div></>}
+      {backgroundType === "image" && <><button className="image-drop" onClick={() => notify("Media opened", "Choose an image from the media library to use as this background.")}><Icon name="media" /><strong>Choose from media</strong><small>or drag an image here</small></button><div className="position-grid">{Array.from({ length: 9 }).map((_, i) => <button key={i} className={i === 4 ? "active" : ""} aria-label={`Position ${i + 1}`} />)}</div><div className="button-group"><button className="active">Cover</button><button>Contain</button><button>Custom</button></div></>}
+      {backgroundType === "video" && <><label className="control-label">Video URL<input placeholder="YouTube, Vimeo, or direct MP4" /></label><button className="image-drop"><Icon name="media" /><strong>Choose fallback image</strong><small>Used on mobile and reduced-motion devices</small></button></>}
+    </ControlGroup>
+    <ControlGroup title="Typography">
+      <label className="control-label">Text color<div className="color-row"><input type="color" value={style.textColor} onChange={(e) => setStyle({ textColor: e.target.value })} /><input value={style.textColor} onChange={(e) => setStyle({ textColor: e.target.value })} /></div></label>
+      <label className="control-label">Font family<select defaultValue="theme"><option value="theme">Site heading font</option><option>DM Sans</option><option>Manrope</option><option>Space Grotesk</option><option>Playfair Display</option></select></label>
+      <Range label="Heading size" value={style.fontSize} min={24} max={110} suffix="px" onChange={(value) => setStyle({ fontSize: value })} />
+      <div className="quick-sizes"><button onClick={() => setStyle({ fontSize: 18 })}>Body</button><button onClick={() => setStyle({ fontSize: 48 })}>Heading</button><button onClick={() => setStyle({ fontSize: 78 })}>Display</button></div>
+      <Range label="Line height" value={style.lineHeight} min={0.8} max={2} step={0.05} onChange={(value) => setStyle({ lineHeight: value })} />
+      <Range label="Letter spacing" value={style.letterSpacing} min={-3} max={8} step={0.1} suffix="px" onChange={(value) => setStyle({ letterSpacing: value })} />
+      <div className="button-group"><button onClick={() => setStyle({ align: "left" })} className={style.align === "left" ? "active" : ""}>Left</button><button onClick={() => setStyle({ align: "center" })} className={style.align === "center" ? "active" : ""}>Center</button><button onClick={() => setStyle({ align: "right" })} className={style.align === "right" ? "active" : ""}>Right</button></div>
+    </ControlGroup>
+    <ControlGroup title="Spacing" defaultOpen>
+      <div className="box-model"><span>Section</span><div><b>{style.paddingY}</b><section><b>{style.paddingX}</b><em>Content</em><b>{style.paddingX}</b></section><b>{style.paddingY}</b></div></div>
+      <Range label="Vertical padding" value={style.paddingY} min={0} max={180} suffix="px" onChange={(value) => setStyle({ paddingY: value })} />
+      <Range label="Horizontal padding" value={style.paddingX} min={0} max={120} suffix="px" onChange={(value) => setStyle({ paddingX: value })} />
+      <div className="button-group"><button onClick={() => setStyle({ paddingY: 32 })}>Compact</button><button onClick={() => setStyle({ paddingY: 76 })}>Normal</button><button onClick={() => setStyle({ paddingY: 120 })}>Relaxed</button></div>
+    </ControlGroup>
+    <ControlGroup title="Size & position"><Range label="Content width" value={style.maxWidth} min={320} max={1440} suffix="px" onChange={(value) => setStyle({ maxWidth: value })} /><div className="setting-row"><span><strong>Full-width section</strong><small>Background spans the full canvas</small></span><Toggle value={true} /></div><div className="setting-row"><span><strong>Automatic height</strong><small>Grow with section content</small></span><Toggle value={true} /></div></ControlGroup>
+    <ControlGroup title="Border & shadow">
+      <Range label="Corner radius" value={style.radius} min={0} max={80} suffix="px" onChange={(value) => setStyle({ radius: value })} />
+      <div className="radius-preview" style={{ borderRadius: style.radius }} />
+      <small className="micro-label">Shadow strength</small><div className="shadow-presets"><button onClick={() => setStyle({ shadow: "none" })}>None</button><button onClick={() => setStyle({ shadow: "0 12px 30px rgba(0,0,0,.12)" })}>Subtle</button><button onClick={() => setStyle({ shadow: "0 24px 70px rgba(0,0,0,.22)" })}>Strong</button></div>
+    </ControlGroup>
+    <ControlGroup title="Visibility & effects">
+      <Range label="Opacity" value={style.opacity} min={0} max={100} suffix="%" onChange={(value) => setStyle({ opacity: value })} />
+      <div className="device-visibility"><span>Show on</span><button className={!style.hidePhone ? "active" : ""} onClick={() => setStyle({ hidePhone: !style.hidePhone })}><Icon name="phone" /></button><button className={!style.hideTablet ? "active" : ""} onClick={() => setStyle({ hideTablet: !style.hideTablet })}><Icon name="tablet" /></button><button className={!style.hideDesktop ? "active" : ""} onClick={() => setStyle({ hideDesktop: !style.hideDesktop })}><Icon name="monitor" /></button></div>
+    </ControlGroup>
+    <ControlGroup title="Entrance animation"><div className="animation-grid">{["Fade up", "Fade in", "Slide left", "Zoom in", "Blur in", "Flip up"].map((x) => <button key={x} className={style.animation === x ? "active" : ""} onClick={() => setStyle({ animation: x })}><i />{x}</button>)}</div><Range label="Duration" value={style.animationDuration || 600} min={200} max={2000} step={100} suffix="ms" onChange={(value) => setStyle({ animationDuration: value })} /><Button className="secondary wide" onClick={() => notify("Animation preview", `${style.animation || "Fade up"} is playing in the canvas.`)}>Preview animation</Button></ControlGroup>
+    <details className="custom-css"><summary><Icon name="code" size={14} /> Custom CSS <small>Advanced</small></summary><textarea rows={8} value={style.customCss || ""} onChange={(e) => setStyle({ customCss: e.target.value })} placeholder={`[data-section-id="${section.id}"] {\n  /* custom overrides */\n}`} /><div><Button className="secondary compact" onClick={() => notify("CSS formatted", "The custom CSS was formatted.")}>Format</Button><Button className="ghost compact" onClick={() => setStyle({ customCss: "" })}>Clear</Button></div></details>
+  </div>;
+}
+
+function ControlGroup({ title, children, defaultOpen = false }) { return <details className="control-group" open={defaultOpen}><summary>{title}<Icon name="chevron" size={13} /></summary><div>{children}</div></details>; }
+function Range({ label, value, min, max, step = 1, suffix = "", onChange }) { return <label className="range-control"><span>{label}<b>{value}{suffix}</b></span><input type="range" value={value} min={min} max={max} step={step} onChange={(e) => onChange(Number(e.target.value))} /></label>; }
+
+function PageInspector({ site, page, updateSite, setModal }) {
+  const update = (patch) => updateSite((current) => ({ ...current, pages: current.pages.map((p) => p.id === page.id ? { ...p, ...patch } : p) }));
+  return <div className="panel-content page-panel"><div className="panel-intro"><span>Page details</span><p>Control the URL, search appearance, publishing, and template assignment.</p></div><label className="control-label">Page title<input value={page.title} onChange={(e) => update({ title: e.target.value })} /></label><label className="control-label">Slug<div className="input-prefix"><span>/{site.domain}/</span><input value={page.slug.replace(/^\//, "")} onChange={(e) => update({ slug: `/${e.target.value.replace(/^\//, "")}` })} /></div></label><label className="control-label">Meta title<input defaultValue={`${page.title} — ${site.name}`} /><small className="count">{`${page.title} — ${site.name}`.length}/60</small></label><label className="control-label">Meta description<textarea rows={4} defaultValue={`Explore ${page.title.toLowerCase()} from ${site.name}.`} /><small className="count">48/160</small></label><div className="page-metrics"><div><strong>{page.sections.length}</strong><small>Sections</small></div><div><strong>{page.sections.reduce((n, s) => n + Object.values(s.fields).join(" ").split(" ").length, 0)}</strong><small>Words</small></div><div><strong>2 min</strong><small>Read time</small></div></div><Button className="secondary wide" onClick={() => setModal("history")}>View page history</Button></div>;
+}
+
+function ThemeInspector({ site, updateSite, iframeRef, notify }) {
+  const change = (key, value) => { const vars = { ...site.theme, [key]: value }; updateSite((current) => ({ ...current, theme: vars })); iframeRef.current?.contentWindow?.postMessage({ type: "cms:theme-vars", vars }, "*"); };
+  const groups = { "Brand colors": ["--brand-primary", "--brand-secondary", "--brand-accent"], "Site colors": ["--color-bg", "--color-surface", "--color-text", "--color-muted", "--color-border"], "Typography": ["--font-heading", "--font-body"], "Shape & spacing": ["--radius-md", "--radius-lg", "--space-section"] };
+  return <div className="panel-content theme-panel"><div className="theme-actions"><Button className="secondary compact" onClick={() => { navigator.clipboard?.writeText(`:root {\n${Object.entries(site.theme).map(([k,v]) => `  ${k}: ${v};`).join("\n")}\n}`); notify("CSS copied", "Theme variables copied to your clipboard."); }}>Copy CSS</Button><Button className="ghost compact">Export JSON</Button></div>{Object.entries(groups).map(([group, keys]) => <ControlGroup key={group} title={group} defaultOpen={group === "Brand colors"}>{keys.map((key) => <label className="theme-var" key={key}><span>{labelize(key.replace(/^--/, ""))}<small>{key}</small></span>{/color|brand/.test(key) ? <div className="color-row"><input type="color" value={site.theme[key]} onChange={(e) => change(key, e.target.value)} /><input value={site.theme[key]} onChange={(e) => change(key, e.target.value)} /></div> : <input value={site.theme[key]} onChange={(e) => change(key, e.target.value)} />}</label>)}</ControlGroup>)}</div>;
+}
+
+function PageCrm() {
+  const bars = [30, 54, 42, 78, 64, 92, 70];
+  return <div className="panel-content page-crm"><div className="page-metrics"><div><strong>38</strong><small>Submissions</small></div><div><strong>6.4%</strong><small>Conversion</small></div><div><strong>2:18</strong><small>Avg. time</small></div></div><div className="chart-card"><div><strong>Submissions</strong><small>Last 7 days</small></div><section>{bars.map((height, i) => <i key={i} style={{ height: `${height}%` }}><b>{Math.round(height / 12)}</b></i>)}</section><footer>{["M", "T", "W", "T", "F", "S", "S"].map((x, i) => <span key={i}>{x}</span>)}</footer></div><div className="group-label"><span>Recent from this page</span><b>7</b></div><div className="mini-contacts">{CONTACTS.slice(0, 5).map(([name, email, , date]) => <button key={email}><span>{name.split(" ").map((x) => x[0]).join("")}</span><div><strong>{name}</strong><small>{email}</small></div><em>{date}</em></button>)}</div></div>;
+}
+
+function MobileNav({ mode, setMode, setModal }) { return <nav className="mobile-nav"><button onClick={() => setMode("sections")} className={mode === "sections" ? "active" : ""}><Icon name="sections" /><span>Sections</span></button><button onClick={() => setMode("pages")} className={mode === "pages" ? "active" : ""}><Icon name="pages" /><span>Pages</span></button><button className="mobile-add" onClick={() => setModal("add-section")}><Icon name="plus" /></button><button onClick={() => setMode("crm")} className={mode === "crm" ? "active" : ""}><Icon name="crm" /><span>CRM</span></button><button onClick={() => setModal("inspector-mobile")}><Icon name="settings" /><span>Design</span></button></nav>; }
+
+function Modal({ type, modalData, close, site, page, section, choosePage, chooseSection, publish, notify, updateSite }) {
+  const [step, setStep] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState(TEMPLATES[0][0]);
+  const addSection = (templateName) => {
+    const seed = Date.now();
+    const lower = templateName.toLowerCase();
+    const type = lower.includes("hero") || lower.includes("launch") || lower.includes("statement") ? "hero" : lower.includes("footer") ? "footer" : lower.includes("contact") ? "form" : "features";
+    const zone = type === "footer" ? "footer" : "body";
+    const fields = type === "hero"
+      ? { eyebrow: "New section", title: templateName, body: "Shape this section with clear content and live visual controls.", primary_cta: "Primary action", secondary_cta: "Learn more" }
+      : type === "footer"
+        ? { title: templateName, body: "A concise closing statement for this page.", links: ["About", "Contact", "Privacy"] }
+        : type === "form"
+          ? { title: templateName, fields: ["Name", "Email", "Message"], button: "Send message" }
+          : { eyebrow: "New section", title: templateName, items: ["First point", "Second point", "Third point"] };
+    const created = section(`section-${seed}`, templateName, zone, type, fields, type === "hero" ? { background: "#e9edff" } : {});
+    updateSite((current) => ({ ...current, pages: current.pages.map((item) => item.id === page.id ? { ...item, updated: "Just now", sections: [...item.sections, created] } : item) }));
+    chooseSection(created);
+    notify("Section added", `${templateName} was added to ${page.title}.`);
+    close();
+  };
+  const createPage = (title) => {
+    const seed = Date.now();
+    const slug = `/${title.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "new-page"}`;
+    const created = {
+      id: `page-${seed}`,
+      title,
+      slug,
+      status: "draft",
+      updated: "Just now",
+      sections: [
+        section(`nav-${seed}`, "Primary navigation", "header", "navigation", { logo: site.name.toUpperCase(), links: ["Home", "About", "Contact"], cta: "Get started" }),
+        section(`hero-${seed}`, "Editorial hero", "body", "hero", { eyebrow: "New page", title, body: "Use the content and style inspectors to make this page your own.", primary_cta: "Primary action", secondary_cta: "Learn more" }, { background: "#e9edff" }),
+        section(`features-${seed}`, "Feature index", "body", "features", { eyebrow: "Explore", title: "A clear structure, ready to refine.", items: ["First capability", "Second capability", "Third capability"] }),
+        section(`footer-${seed}`, "Global footer", "footer", "footer", { title: site.name, body: "A concise closing statement.", links: ["Contact", "Privacy", "Social"] }),
+      ],
+    };
+    updateSite((current) => ({ ...current, pages: [...current.pages, created] }));
+    choosePage(created);
+    notify("Page created", `${title} is ready to edit.`);
+    close();
+  };
+  const title = { "add-section": "Add a section", "new-page": "Create a new page", "publish": "Publish changes", "command": "Command palette", "shortcuts": "Keyboard shortcuts", "upload": "Upload media", "media-picker": "Choose media", "template-preview": "Template preview", "history": "Page history", "inspector-mobile": "Design inspector", "contact": "Contact details", "export-crm": "Export contacts" }[type] || "Editor";
+  return <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && close()}><div className={cn("modal", `modal-${type}`)} role="dialog" aria-modal="true"><header><div><small>{site.name}</small><h2>{title}</h2></div><button onClick={close}><Icon name="close" /></button></header>{type === "add-section" && <AddSectionModal search={search} setSearch={setSearch} selected={selected} setSelected={setSelected} onAdd={addSection} />}{type === "new-page" && <NewPageModal step={step} setStep={setStep} close={close} onCreate={createPage} />}{type === "publish" && <PublishModal page={page} section={section} publish={publish} />}{type === "command" && <CommandPalette site={site} page={page} choosePage={(p) => { choosePage(p); close(); }} chooseSection={(s) => { chooseSection(s); close(); }} close={close} />}{type === "shortcuts" && <Shortcuts />}{type === "upload" && <UploadModal close={close} notify={notify} />}{type === "media-picker" && <MediaPicker close={close} notify={notify} />}{type === "template-preview" && <TemplatePreview close={close} notify={notify} />}{type === "history" && <HistoryModal />}{type === "contact" && <ContactModal contact={modalData?.contact} close={close} notify={notify} />}{type === "export-crm" && <ExportCrm close={close} notify={notify} />}{type === "inspector-mobile" && <div className="modal-body"><p>Open this project on a wider screen for the full visual inspector. Core colors, content, and publishing remain available on mobile.</p><Button className="primary wide" onClick={close}>Return to canvas</Button></div>}</div></div>;
+}
+
+function AddSectionModal({ search, setSearch, selected, setSelected, onAdd }) {
+  const categories = ["All", "Hero", "Navigation", "Feature", "Testimonial", "CTA", "Gallery", "Pricing", "FAQ", "Contact", "Footer", "Custom"];
+  const items = ["Editorial statement", "Centered launch", "Split image hero", "Feature index", "Logo proof strip", "Testimonial story", "Conversion banner", "FAQ accordion", "Contact split", "Editorial footer"];
+  return <div className="add-section-layout"><aside><label className="search-field"><Icon name="search" /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search sections" /></label>{categories.map((x) => <button key={x} className={x === "All" ? "active" : ""}>{x}<span>{Math.max(1, 10 - categories.indexOf(x))}</span></button>)}</aside><main><div className="modal-tabs"><button className="active">Library</button><button>Import from URL</button><button>Paste HTML</button></div><div className="section-template-grid">{items.filter((x) => x.toLowerCase().includes(search.toLowerCase())).map((name, i) => <button key={name} onClick={() => setSelected(name)} className={selected === name ? "selected" : ""}><div className={`section-wireframe layout-${i % 5}`}><i /><i /><i /><i /><i /></div><span><small>{i < 3 ? "Hero" : i < 6 ? "Content" : "Conversion"}</small><strong>{name}</strong></span></button>)}</div><footer><span><strong>{selected}</strong><small>Will be added to the end of this page</small></span><Button className="primary" icon="plus" onClick={() => onAdd(selected)}>Add section</Button></footer></main></div>;
+}
+
+function NewPageModal({ step, setStep, close, onCreate }) {
+  const [title, setTitle] = useState("New campaign");
+  return <div className="wizard"><div className="wizard-progress">{[1,2,3,4].map((n) => <span key={n} className={step >= n ? "active" : ""}><b>{n}</b><small>{["Type", "Template", "Details", "Confirm"][n-1]}</small></span>)}</div><div className="wizard-body">{step === 1 && <><h3>What kind of page are you building?</h3><div className="page-type-grid">{["Home", "Interior", "Landing", "Blog", "Product"].map((x, i) => <button className={i === 1 ? "active" : ""} key={x}><Icon name={i === 0 ? "monitor" : "pages"} /><strong>{x}</strong><small>{["Primary site entry", "Standard site page", "Focused campaign", "Editorial article", "Product detail"][i]}</small></button>)}</div></>}{step === 2 && <><h3>Choose a starting structure</h3><div className="wizard-templates">{TEMPLATES.slice(0,4).map(([name, cat,,color], i) => <button key={name} className={i === 0 ? "active" : ""}><div style={{background:color}}><i/><i/><i/></div><strong>{name}</strong><small>{cat}</small></button>)}</div></>}{step === 3 && <><h3>Name the page</h3><label>Page title<input value={title} onChange={(e) => setTitle(e.target.value)} autoFocus /></label><label>Slug<div className="input-prefix"><span>/</span><input value={title.toLowerCase().replace(/\s+/g,"-")} readOnly /></div></label><label>Parent page<select><option>None — top level</option><option>Home</option><option>Design Studio</option></select></label></>}{step === 4 && <div className="confirmation"><span><Icon name="pages" size={25}/></span><h3>{title}</h3><p>Interior page using the Editorial Launch template with four starter sections.</p><dl><div><dt>Route</dt><dd>/{title.toLowerCase().replace(/\s+/g,"-")}</dd></div><div><dt>Status</dt><dd>Draft</dd></div><div><dt>Sections</dt><dd>4</dd></div></dl></div>}</div><footer><Button className="ghost" onClick={step === 1 ? close : () => setStep(step - 1)}>{step === 1 ? "Cancel" : "Back"}</Button><Button className="primary" onClick={step === 4 ? () => onCreate(title) : () => setStep(step + 1)}>{step === 4 ? "Create page" : "Continue"}</Button></footer></div>;
+}
+
+function PublishModal({ page, section, publish }) {
+  const [choice, setChoice] = useState("page");
+  const [scheduled, setScheduled] = useState(false);
+  return <div className="modal-body publish-modal"><div className="publish-summary"><span><i className="status-dot live" /></span><div><strong>Ready to publish</strong><p>Changes have been checked against the current draft.</p></div></div>{[["page", "Publish this page", page.title], ["section", "Publish selected section", section?.section_name || "No section selected"], ["all", "Publish all site changes", "Pages, shell, and theme"]].map(([id, name, desc]) => <button key={id} className={choice === id ? "active" : ""} onClick={() => setChoice(id)}><span>{choice === id && "✓"}</span><div><strong>{name}</strong><small>{desc}</small></div></button>)}<div className="schedule-row"><Toggle value={scheduled} onChange={setScheduled} /><span><strong>Schedule for later</strong><small>Choose a date, time, and timezone</small></span></div>{scheduled && <div className="schedule-fields"><label>Date<input type="date" defaultValue="2026-07-24" /></label><label>Time<input type="time" defaultValue="09:00" /></label><label>Timezone<select defaultValue="America/Chicago"><option>America/Chicago</option><option>America/New_York</option><option>America/Los_Angeles</option></select></label></div>}<Button className="primary wide" icon="publish" onClick={() => publish(choice)}>{scheduled ? "Schedule publish" : "Publish now"}</Button></div>;
+}
+
+function CommandPalette({ site, page, choosePage, chooseSection, close }) {
+  const [value, setValue] = useState("");
+  const pages = site.pages.filter((p) => p.title.toLowerCase().includes(value.toLowerCase()));
+  const sections = page.sections.filter((s) => s.section_name.toLowerCase().includes(value.toLowerCase()));
+  return <div className="command-palette"><label><Icon name="search" size={22} /><input autoFocus value={value} onChange={(e) => setValue(e.target.value)} placeholder="Search pages, sections, or actions…" /><kbd>esc</kbd></label><div><small>Pages</small>{pages.map((p) => <button key={p.id} onClick={() => choosePage(p)}><Icon name="pages" /><span><strong>{p.title}</strong><em>{p.slug}</em></span><kbd>Open</kbd></button>)}<small>Sections on {page.title}</small>{sections.map((s) => <button key={s.id} onClick={() => chooseSection(s)}><Icon name="sections" /><span><strong>{s.section_name}</strong><em>{s.zone}</em></span><kbd>Select</kbd></button>)}<small>Actions</small>{[["Publish current page", "⌘⇧P"], ["Add a section", "A"], ["Open media", "⌘5"]].map(([name,key]) => <button key={name} onClick={close}><Icon name="publish"/><span><strong>{name}</strong><em>Editor action</em></span><kbd>{key}</kbd></button>)}</div><footer><span>↑↓ Navigate</span><span>↵ Select</span><span>Esc Close</span></footer></div>;
+}
+
+function Shortcuts() { const keys = [["Save active section", "⌘ S"], ["Undo", "⌘ Z"], ["Redo", "⌘ ⇧ Z"], ["Preview mode", "⌘ P"], ["Command palette", "⌘ K"], ["Publish page", "⌘ ⇧ P"], ["Switch workspace tools", "⌘ 1–7"], ["Close or deselect", "Esc"]]; return <div className="modal-body shortcuts"><p>Move through the editor without leaving the canvas.</p>{keys.map(([name,key]) => <div key={name}><span>{name}</span><kbd>{key}</kbd></div>)}</div>; }
+function UploadModal({ close, notify }) { return <div className="modal-body upload-modal"><button className="large-dropzone"><Icon name="publish" size={28}/><strong>Drop files anywhere in this window</strong><span>or click to choose images, video, documents, and fonts</span><em>Maximum file size 25 MB</em></button><div className="upload-queue"><span>Ready for upload</span><small>Files are optimized automatically when possible.</small></div><Button className="primary wide" onClick={() => { notify("Upload complete", "3 assets were added to the media library."); close(); }}>Choose files</Button></div>; }
+function MediaPicker({ close, notify }) { return <div className="modal-body"><div className="media-picker-grid">{MEDIA.map(([name,alt,color]) => <button key={name} style={{background:color}} onClick={() => { notify("Image selected", `${name} inserted into the field.`); close(); }}><span>✓</span><small>{alt}</small></button>)}</div></div>; }
+function TemplatePreview({ close, notify }) { return <div className="modal-body template-preview"><div className="large-template"><header/><section><i/><b/><i/></section><footer/></div><div><span><small>Landing template</small><h3>Editorial Launch</h3><p>A restrained, story-led page structure for a focused launch or waitlist.</p></span><Button className="primary" onClick={() => { notify("Template applied", "Editorial Launch was applied to the draft page."); close(); }}>Apply to page</Button></div></div>; }
+function ContactModal({ contact, close, notify }) {
+  const [name, email, source, date, tag] = contact || CONTACTS[0];
+  return <div className="modal-body contact-detail"><div className="contact-hero"><span>{name.split(" ").map((x) => x[0]).join("")}</span><div><h3>{name}</h3><p>{email}</p></div><b>{tag}</b></div><div className="contact-facts"><div><small>Source</small><strong>{source}</strong></div><div><small>Added</small><strong>{date}</strong></div><div><small>Owner</small><strong>Sam Primeaux</strong></div></div><label>Tags<div className="tag-editor"><span>{tag}<button>×</button></span><button>+ Add tag</button></div></label><label>Notes<textarea rows={5} defaultValue="Interested in learning more. Follow up with a concise next step and relevant project examples." /></label><div className="activity-timeline"><strong>Activity</strong><div><i/><span><b>Form submitted</b><small>{date} · {source}</small></span></div><div><i/><span><b>Contact created</b><small>Automatically from website form</small></span></div></div><footer><Button className="secondary" onClick={() => navigator.clipboard?.writeText(email)} icon="copy">Copy email</Button><Button className="primary" onClick={() => { notify("Contact updated", `${name}'s CRM record was saved.`); close(); }}>Save contact</Button></footer></div>;
+}
+function ExportCrm({ close, notify }) {
+  const [format, setFormat] = useState("csv");
+  return <div className="modal-body export-crm"><p>Export the current filtered contact list for follow-up, reporting, or migration.</p><div className="export-options">{[["csv","CSV spreadsheet"],["json","JSON records"],["emails","Email list only"]].map(([id,label]) => <button key={id} className={format === id ? "active" : ""} onClick={() => setFormat(id)}><span>{format === id ? "✓" : ""}</span><strong>{label}</strong></button>)}</div><label><input type="checkbox" defaultChecked /> Include tags and activity summary</label><Button className="primary wide" onClick={() => { notify("Export prepared", `248 contacts were prepared as ${format.toUpperCase()}.`); close(); }}>Prepare export</Button></div>;
+}
+function HistoryModal() { return <div className="modal-body history-list">{["Updated hero headline", "Changed brand colors", "Published page", "Added capability section", "Created page"].map((x,i) => <div key={x}><i/><span><strong>{x}</strong><small>{["Sam Primeaux · 12 minutes ago", "Sam Primeaux · Today, 8:14 AM", "Sam Primeaux · Yesterday", "Agent Sam · Jul 19", "Sam Primeaux · Jul 18"][i]}</small></span><Button className="ghost compact">Restore</Button></div>)}</div>; }

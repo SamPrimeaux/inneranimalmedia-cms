@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "id": "fuel",
+  "theme": "studio-editorial",
+  "brand": {
+    "name": "Fuel & Free Time",
+    "home": "/",
+    "description": "Lifestyle brand — sample content, not a connected customer site"
+  },
+  "design": {
+    "accent": "#D85B36",
+    "accentSoft": "#DCE4FF",
+    "canvas": "#F7F0E5",
+    "paper": "#FFFFFF",
+    "ink": "#17181C"
+  },
+  "header": {
+    "settings": {
+      "sticky": true,
+      "pill": false
+    },
+    "announcement": {
+      "enabled": false,
+      "messages": []
+    },
+    "blocks": [
+      {
+        "id": "brand",
+        "type": "brand",
+        "label": "Fuel & Free Time",
+        "href": "/"
+      },
+      {
+        "id": "fuel-story-page",
+        "type": "link",
+        "label": "Our Direction",
+        "href": "/direction"
+      }
+    ]
+  },
+  "footer": {
+    "settings": {
+      "background": "inverse",
+      "copyright": "Fuel & Free Time — sample draft"
+    },
+    "blocks": [
+      {
+        "id": "footer",
+        "type": "legal",
+        "title": "Explore",
+        "links": [
+          {
+            "id": "fuel-home",
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "id": "fuel-story-page",
+            "label": "Our Direction",
+            "href": "/direction"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "fuel-home",
+      "path": "/",
+      "title": "Home",
+      "description": "Sample Home page",
+      "sections": [
+        {
+          "id": "fuel-hero",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "The first collection is coming",
+            "heading": "Built for the hours that feel like yours.",
+            "body": "An independent collection shaped around movement, outdoors, and the freedom to choose your pace.",
+            "ctaLabel": "Join the waitlist",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#efe0cb",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 64,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        },
+        {
+          "id": "fuel-story",
+          "type": "showcase",
+          "preset": "studio/capability-grid",
+          "settings": {
+            "surface": "paper",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Fuel the life outside work",
+            "heading": "Less noise. More time that counts.",
+            "body": "",
+            "ctaLabel": "",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#ffffff",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": [
+            {
+              "id": "fuel-story-item-0",
+              "type": "item",
+              "data": {
+                "title": "Small-batch releases",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "fuel-story-item-1",
+              "type": "item",
+              "data": {
+                "title": "Field-tested essentials",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "fuel-story-item-2",
+              "type": "item",
+              "data": {
+                "title": "Stories from the road",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fuel-story-page",
+      "path": "/direction",
+      "title": "Our Direction",
+      "description": "Sample Our Direction page",
+      "sections": []
+    }
+  ]
+}

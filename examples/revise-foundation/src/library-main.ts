@@ -9,6 +9,7 @@ import { enhanceRevise, reviseShowcasePresets } from "@inneranimalmedia/revise-t
 import { sectionCatalog, sectionFromCatalog, siteMedia } from "./site-data.js";
 import catalog from "./design-atlas.json";
 import { editorialAtlasItems } from "./editorial-atlas.js";
+import { studioAtlasItems } from "./studio-atlas.js";
 
 interface AtlasPage { name: string; path: string }
 interface AtlasItem {
@@ -51,7 +52,7 @@ const presetItems: AtlasItem[] = sectionCatalog.map((preset) => ({
   maturity: "reusable preset",
   importMethod: "live package renderer",
 }));
-const items: AtlasItem[] = [...editorialAtlasItems, ...presetItems, ...archived, ...candidates];
+const items: AtlasItem[] = [...studioAtlasItems, ...editorialAtlasItems, ...presetItems, ...archived, ...candidates];
 const root = document.querySelector<HTMLDivElement>("#app");
 if (!root) throw new Error("Missing #app");
 const escapeHtml = (input: unknown) => String(input ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")

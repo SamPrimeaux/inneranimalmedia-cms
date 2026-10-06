@@ -44,7 +44,8 @@
     "build:editorial-evidence": "node scripts/build-editorial-evidence.mjs",
     "build:editorial-runtime": "node scripts/build-editorial-runtime.mjs",
     "test:universal": "vitest run packages/site-contracts/tests/section-fields.test.ts examples/revise-foundation/tests/editorial-atlas.test.ts",
-    "verify:universal": "npm run verify:atlas && npm run test:universal"
+    "verify:universal": "npm run verify:atlas && npm run test:universal",
+    "build:studio-evidence": "node scripts/build-studio-evidence.mjs"
   },
   "engines": {
     "node": ">=22.5"

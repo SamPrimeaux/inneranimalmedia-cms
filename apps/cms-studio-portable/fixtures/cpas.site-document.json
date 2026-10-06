@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "id": "cpas",
+  "theme": "studio-editorial",
+  "brand": {
+    "name": "Companions of CPAS",
+    "home": "/",
+    "description": "Nonprofit — sample content, not a connected customer site"
+  },
+  "design": {
+    "accent": "#177E89",
+    "accentSoft": "#DCE4FF",
+    "canvas": "#FBFAF6",
+    "paper": "#FFFFFF",
+    "ink": "#17181C"
+  },
+  "header": {
+    "settings": {
+      "sticky": true,
+      "pill": false
+    },
+    "announcement": {
+      "enabled": false,
+      "messages": []
+    },
+    "blocks": [
+      {
+        "id": "brand",
+        "type": "brand",
+        "label": "Companions of CPAS",
+        "href": "/"
+      },
+      {
+        "id": "cpas-adopt",
+        "type": "link",
+        "label": "Adopt",
+        "href": "/adopt"
+      },
+      {
+        "id": "cpas-donate",
+        "type": "link",
+        "label": "Donate",
+        "href": "/donate"
+      }
+    ]
+  },
+  "footer": {
+    "settings": {
+      "background": "inverse",
+      "copyright": "Companions of CPAS — sample draft"
+    },
+    "blocks": [
+      {
+        "id": "footer",
+        "type": "legal",
+        "title": "Explore",
+        "links": [
+          {
+            "id": "cpas-home",
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "id": "cpas-adopt",
+            "label": "Adopt",
+            "href": "/adopt"
+          },
+          {
+            "id": "cpas-donate",
+            "label": "Donate",
+            "href": "/donate"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "cpas-home",
+      "path": "/",
+      "title": "Home",
+      "description": "Sample Home page",
+      "sections": [
+        {
+          "id": "cpas-hero",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Supporting animals in Caddo Parish",
+            "heading": "More care. More homes. More second chances.",
+            "body": "We help the animals and people connected to Caddo Parish Animal Services through rescue support, fostering, and community action.",
+            "ctaLabel": "Meet adoptable animals",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#e8f5f2",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 64,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        },
+        {
+          "id": "cpas-actions",
+          "type": "showcase",
+          "preset": "studio/capability-grid",
+          "settings": {
+            "surface": "paper",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Take action",
+            "heading": "Every kind of help moves an animal forward.",
+            "body": "",
+            "ctaLabel": "",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#ffffff",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": [
+            {
+              "id": "cpas-actions-item-0",
+              "type": "item",
+              "data": {
+                "title": "Adopt or foster",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "cpas-actions-item-1",
+              "type": "item",
+              "data": {
+                "title": "Sponsor urgent care",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "cpas-actions-item-2",
+              "type": "item",
+              "data": {
+                "title": "Share available animals",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cpas-adopt",
+      "path": "/adopt",
+      "title": "Adopt",
+      "description": "Sample Adopt page",
+      "sections": []
+    },
+    {
+      "id": "cpas-donate",
+      "path": "/donate",
+      "title": "Donate",
+      "description": "Sample Donate page",
+      "sections": []
+    }
+  ]
+}

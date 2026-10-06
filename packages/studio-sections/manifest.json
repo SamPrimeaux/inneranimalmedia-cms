@@ -1,0 +1,20 @@
+{
+  "bundleVersion": "inneranimalmedia.section-bundle/v1-proposal",
+  "namespace": "studio",
+  "version": "0.1.0",
+  "contentContract": "SiteDocument v1",
+  "runtime": "react",
+  "source": "src/MountedSection.tsx",
+  "styles": "src/sections.module.css",
+  "registry": "src/catalog.ts",
+  "fixtureBuilder": "src/preview-fixture.ts",
+  "status": "site-document-bound",
+  "readiness": {
+    "crossBrandRenderTests": true,
+    "jsonRoundTripTests": true,
+    "localSQLiteProofTests": true,
+    "browserResponsiveAcceptance": false,
+    "authenticatedHostPublishing": false
+  },
+  "note": "Distribution metadata remains a proposal envelope, not a deployed runtime API. See catalog.ts for exact type/preset pairs and required capabilities."
+}

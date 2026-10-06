@@ -1,0 +1,466 @@
+{
+  "schemaVersion": 1,
+  "id": "iam",
+  "theme": "studio-editorial",
+  "brand": {
+    "name": "Inner Animal Media",
+    "home": "/",
+    "description": "Agency workspace — sample content, not a connected customer site"
+  },
+  "design": {
+    "accent": "#5A7DF7",
+    "accentSoft": "#DCE4FF",
+    "canvas": "#F5F2EB",
+    "paper": "#FFFFFF",
+    "ink": "#17181C"
+  },
+  "header": {
+    "settings": {
+      "sticky": true,
+      "pill": false
+    },
+    "announcement": {
+      "enabled": false,
+      "messages": []
+    },
+    "blocks": [
+      {
+        "id": "brand",
+        "type": "brand",
+        "label": "Inner Animal Media",
+        "href": "/"
+      },
+      {
+        "id": "iam-studio",
+        "type": "link",
+        "label": "Design Studio",
+        "href": "/studio"
+      },
+      {
+        "id": "iam-contact",
+        "type": "link",
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ]
+  },
+  "footer": {
+    "settings": {
+      "background": "inverse",
+      "copyright": "Inner Animal Media — sample draft"
+    },
+    "blocks": [
+      {
+        "id": "footer",
+        "type": "legal",
+        "title": "Explore",
+        "links": [
+          {
+            "id": "iam-home",
+            "label": "Home",
+            "href": "/"
+          },
+          {
+            "id": "iam-studio",
+            "label": "Design Studio",
+            "href": "/studio"
+          },
+          {
+            "id": "iam-contact",
+            "label": "Contact",
+            "href": "/contact"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "iam-home",
+      "path": "/",
+      "title": "Home",
+      "description": "Sample Home page",
+      "sections": [
+        {
+          "id": "iam-hero",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Independent digital studio",
+            "heading": "Design with instinct. Build with intention.",
+            "body": "We create distinctive websites, tools, and digital systems for brands doing meaningful work.",
+            "ctaLabel": "Explore our work",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#e9edff",
+              "textColor": "#11131a",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 64,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        },
+        {
+          "id": "iam-services",
+          "type": "showcase",
+          "preset": "studio/capability-grid",
+          "settings": {
+            "surface": "paper",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "What we build",
+            "heading": "One studio, from first idea to working system.",
+            "body": "",
+            "ctaLabel": "",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#f7f7f3",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": [
+            {
+              "id": "iam-services-item-0",
+              "type": "item",
+              "data": {
+                "title": "Brand-led websites",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "iam-services-item-1",
+              "type": "item",
+              "data": {
+                "title": "Internal tools and portals",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "iam-services-item-2",
+              "type": "item",
+              "data": {
+                "title": "Agentic product experiences",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            }
+          ]
+        },
+        {
+          "id": "iam-proof",
+          "type": "statement",
+          "preset": "studio/impact-strip",
+          "settings": {
+            "surface": "inverse",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "",
+            "heading": "Built to earn its place.",
+            "body": "",
+            "ctaLabel": "",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#171922",
+              "textColor": "#f7f7fb",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": [
+            {
+              "id": "iam-proof-item-0",
+              "type": "item",
+              "data": {
+                "title": "12 active products",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "iam-proof-item-1",
+              "type": "item",
+              "data": {
+                "title": "99.9% edge uptime",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "iam-proof-item-2",
+              "type": "item",
+              "data": {
+                "title": "3 connected execution lanes",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iam-studio",
+      "path": "/studio",
+      "title": "Design Studio",
+      "description": "Sample Design Studio page",
+      "sections": [
+        {
+          "id": "studio-hero",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Design Studio",
+            "heading": "Ideas move from sketch to system here.",
+            "body": "A visual workspace for wireframes, brand explorations, 3D concepts, and production-ready experiences.",
+            "ctaLabel": "Open the studio",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#dff7f2",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 64,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        },
+        {
+          "id": "studio-process",
+          "type": "showcase",
+          "preset": "studio/capability-grid",
+          "settings": {
+            "surface": "paper",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "A connected workflow",
+            "heading": "Draw, define, promote, visualize.",
+            "body": "",
+            "ctaLabel": "",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#ffffff",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": [
+            {
+              "id": "studio-process-item-0",
+              "type": "item",
+              "data": {
+                "title": "Sketch and wireflow",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "studio-process-item-1",
+              "type": "item",
+              "data": {
+                "title": "Plan and structure",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            },
+            {
+              "id": "studio-process-item-2",
+              "type": "item",
+              "data": {
+                "title": "Model and render",
+                "body": "",
+                "mediaKey": "",
+                "alt": "",
+                "href": "",
+                "ctaLabel": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iam-contact",
+      "path": "/contact",
+      "title": "Contact",
+      "description": "Sample Contact page",
+      "sections": [
+        {
+          "id": "contact-hero",
+          "type": "media-hero",
+          "preset": "studio/editorial-hero",
+          "settings": {
+            "surface": "muted",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "Start a conversation",
+            "heading": "Tell us what you are building.",
+            "body": "A short note is enough. We will help shape the next useful step.",
+            "ctaLabel": "Send project brief",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#f9eadf",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 64,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        },
+        {
+          "id": "contact-form",
+          "type": "form",
+          "preset": "studio/inquiry",
+          "settings": {
+            "surface": "paper",
+            "spacing": "lg",
+            "minHeight": "auto",
+            "backgroundMediaKey": ""
+          },
+          "data": {
+            "eyebrow": "",
+            "heading": "Project details",
+            "body": "",
+            "ctaLabel": "Send inquiry",
+            "ctaHref": "",
+            "mediaKey": "",
+            "alt": "",
+            "legacyPresentation": {
+              "backgroundType": "solid",
+              "background": "#ffffff",
+              "textColor": "#17181c",
+              "paddingY": 76,
+              "paddingX": 48,
+              "radius": 0,
+              "shadow": "none",
+              "opacity": 100,
+              "align": "left",
+              "fontSize": 40,
+              "lineHeight": 1.05,
+              "letterSpacing": -1.8,
+              "maxWidth": 1180
+            }
+          },
+          "blocks": []
+        }
+      ]
+    }
+  ]
+}
