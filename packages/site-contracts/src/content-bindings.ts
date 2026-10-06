@@ -73,7 +73,11 @@ export class ContentContractError extends Error {
 
 const fail = (message: string): never => { throw new ContentContractError(message); };
 const isAssetRef = (v: ContentValue): v is AssetRef =>
-  !!v && typeof v === "object" && !Array.isArray(v) && v.kind === "asset" && typeof v.key === "string";
+  !!v && typeof v === "object" && !Array.isArray(v) && v.kind === "asset" &&
+  typeof v.key === "string" && v.key.length > 0 && v.key.length <= 256 &&
+  /^[a-zA-Z0-9][a-zA-Z0-9_./:-]*$/.test(v.key) &&
+  !/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v.key) &&
+  !/^(data|javascript|vbscript|file):/i.test(v.key);
 const isEntryRef = (v: ContentValue): v is EntryRef =>
   !!v && typeof v === "object" && !Array.isArray(v) && v.kind === "entry" &&
   typeof v.id === "string" && typeof v.type === "string";
