@@ -24,6 +24,7 @@ const themeFiles = [
   "src/theme/base.css",
   "src/shell/header.css",
   "src/shell/overlays.css",
+  "src/shell/search-palette.css",
   "src/shell/footer.css",
   "src/variants/sections/foundation.css",
   "src/variants/sections/showcase.css",
