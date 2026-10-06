@@ -323,8 +323,6 @@ function bootSite() {
   const navigate = (path: string) => {
     const destination = new URL(path, location.href);
     history.pushState({}, "", destination.pathname + destination.hash);
-    editorOpen = false;
-    editScroll = 0;
     draw();
     const anchor = destination.hash ? decodeURIComponent(destination.hash.slice(1)) : "";
     if (anchor) {
@@ -375,12 +373,6 @@ function bootSite() {
       navigate(href);
       return;
     }
-    if (target.closest("[data-editor-toggle]")) {
-      editorOpen = !editorOpen;
-      draw();
-      return;
-    }
-    handleEditorClick(target);
   });
   document.addEventListener("submit", (event) => {
     const form = event.target as HTMLFormElement;
@@ -400,7 +392,6 @@ function bootSite() {
       form.replaceWith(notice);
       return;
     }
-    handleEditorSubmit(event, form);
   });
   document.addEventListener("input", (event) => {
     const input = event.target as HTMLInputElement;
@@ -410,7 +401,6 @@ function bootSite() {
     const search = root.querySelector<HTMLElement>('[data-overlay="search"][data-state="open"]');
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
       event.preventDefault();
-      if (editorOpen) return;
       if (search) {
         enhancement?.overlays.close();
         return;
@@ -431,304 +421,6 @@ function bootSite() {
       selected?.click();
     }
   });
-  document.addEventListener("change", (event) => handleEditorChange(event.target as HTMLElement));
-  window.addEventListener("popstate", () => { editorOpen = false; draw(); });
+  window.addEventListener("popstate", draw);
   draw();
-
-  // The editor's controls are defined below and mutate only the local draft.
-
-
-  function editorRow(title: string, kind: string, index: number, extra = "") {
-    return '<div class="revise-site__editor-row"><div><strong>' + esc(title) + '</strong>' + extra +
-      '</div><div class="revise-site__reorder">' +
-      '<button type="button" data-edit-action="up-' + kind + '" data-edit-index="' + index + '" aria-label="Move up">↑</button>' +
-      '<button type="button" data-edit-action="down-' + kind + '" data-edit-index="' + index + '" aria-label="Move down">↓</button>' +
-      '<button type="button" data-edit-action="remove-' + kind + '" data-edit-index="' + index + '" aria-label="Remove">×</button>' +
-      '</div></div>';
-  }
-  function option(value: string, label: string, selected: string) {
-    return '<option value="' + esc(value) + '"' + (value === selected ? " selected" : "") + '>' + esc(label) + '</option>';
-  }
-  function editorContentField(field: EditableSectionField, sectionIndex: number, blockIndex?: number): string {
-    const attr = blockIndex === undefined ? "data-editor-content" : "data-editor-block-content";
-    const identity = attr + '="' + sectionIndex + '" data-editor-key="' + esc(field.key) + '"' +
-      (blockIndex === undefined ? "" : ' data-block-index="' + blockIndex + '"');
-    const value = String(field.value);
-    if (field.kind === "boolean") {
-      return '<label class="revise-site__editor-toggle"><input type="checkbox" ' + identity +
-        (field.value ? " checked" : "") + '> ' + esc(field.label) + '</label>';
-    }
-    if (field.kind === "media") {
-      const keys = [...siteMedia.keys()].sort();
-      if (value && !siteMedia.has(value)) keys.unshift(value);
-      return '<label>' + esc(field.label) + '<select ' + identity +
-        '><option value="">None</option>' +
-        keys.map((key) => option(key, key, value)).join("") + '</select></label>';
-    }
-    if (field.kind === "long-text") {
-      return '<label>' + esc(field.label) + '<textarea ' + identity + ' rows="3">' +
-        esc(value) + '</textarea></label>';
-    }
-    return '<label>' + esc(field.label) + '<input ' + identity +
-      (field.kind === "number" ? ' type="number" step="any"' : ' type="text"') +
-      ' value="' + esc(value) + '"></label>';
-  }
-  function editorMarkup(page: SitePage) {
-    const headerBlocks = site.header.blocks.map((block, i) =>
-      editorRow(block.label, "header", i, '<small>' + esc(block.type) + '</small>')).join("");
-    const sections = page.sections.map((section, index) => {
-      const labels = section.blocks?.map((block, blockIndex) =>
-        '<div class="revise-site__block"><div class="revise-site__block-content">' +
-        '<small>Block ' + (blockIndex + 1) + '</small>' +
-        editableSectionFields(block.data).map((field) => editorContentField(field, index, blockIndex)).join("") +
-        '</div><div class="revise-site__reorder"><button type="button" data-edit-action="up-block" data-edit-index="' +
-        index + '" data-block-index="' + blockIndex + '" aria-label="Move block up">↑</button>' +
-        '<button type="button" data-edit-action="down-block" data-edit-index="' +
-        index + '" data-block-index="' + blockIndex + '" aria-label="Move block down">↓</button>' +
-        '<button type="button" data-edit-action="remove-block" data-edit-index="' +
-        index + '" data-block-index="' + blockIndex + '" aria-label="Remove block">×</button></div></div>').join("") ?? "";
-      const backgrounds = (["canvas", "paper", "muted", "inverse", "image"] as const)
-        .map((surface) => option(surface, surface, section.settings.surface ?? "canvas")).join("");
-      const fields = editableSectionFields(section.data);
-      return '<div class="revise-site__editor-section">' +
-        editorRow(section.preset.replace("revise/", ""), "section", index) +
-        '<div class="revise-site__section-content">' +
-        '<small>Content · ' + fields.length + ' editable field' + (fields.length === 1 ? "" : "s") + '</small>' +
-        fields.map((field) => editorContentField(field, index)).join("") + '</div>' +
-        '<label>Background<select data-editor-surface="' + index + '">' + backgrounds + '</select></label>' +
-        '<label>Background image key<input data-editor-image="' + index + '" placeholder="fnf.hero" value="' +
-        esc(section.settings.backgroundMediaKey ?? "") + '"></label>' +
-        (section.blocks ? '<div class="revise-site__editor-blocks"><small>Blocks · edit content, move or add</small>' + labels +
-          '<button class="revise-site__editor-add" type="button" data-edit-action="add-block" data-edit-index="' +
-          index + '">+ Add block</button></div>' : "") +
-        '</div>';
-    }).join("");
-    const footerBlocks = site.footer.blocks.map((block, i) => {
-      const editableLinks = block.type !== "newsletter" ? (block.links ?? []).map((item, j) =>
-        '<div class="revise-site__editor-link">' +
-        '<input aria-label="Link label" data-editor-footer-link-label="' + i + '" data-link-index="' + j +
-        '" value="' + esc(item.label) + '">' +
-        '<input aria-label="Link destination" data-editor-footer-link-href="' + i + '" data-link-index="' + j +
-        '" value="' + esc(item.href) + '">' +
-        '<button type="button" data-edit-action="remove-footer-link" data-edit-index="' + i +
-        '" data-link-index="' + j + '" aria-label="Remove link">×</button></div>').join("") : "";
-      const addLink = block.type !== "newsletter"
-        ? '<form data-editor-form="footer-link" data-footer-index="' + i +
-          '"><input name="label" placeholder="Link label" required><input name="href" placeholder="/products/ or https://…" required>' +
-          '<button class="revise-site__editor-add" type="submit">+ Add link</button></form>' : "";
-      return '<div class="revise-site__editor-footer-block">' +
-        editorRow(block.title, "footer", i, '<small>' + esc(block.type) + '</small>') +
-        editableLinks + addLink + '</div>';
-    }).join("");
-    return '<aside class="revise-site__editor' + (editorOpen ? ' is-open' : '') + '" id="site-editor" ' +
-      'aria-label="Site layout editor" aria-hidden="' + !editorOpen + '"' + (!editorOpen ? ' inert' : '') + '>' +
-      '<div class="revise-site__editor-head"><div><small>Revise / Local Studio</small><h2>Site structure</h2></div>' +
-      '<button type="button" data-editor-toggle aria-label="Close editor">×</button></div>' +
-      '<div class="revise-site__editor-content"><p class="revise-site__editor-note">' +
-      'Local draft only. This editor does not modify live commerce, server files or campaigns. Export JSON when ready to commit.</p>' +
-      '<div class="revise-site__editor-group"><h3>Global Header</h3>' +
-      '<label class="revise-site__editor-toggle"><input type="checkbox" data-editor-sticky ' +
-      (site.header.settings.sticky ? 'checked' : '') + '> Sticky header</label>' +
-      '<label class="revise-site__editor-toggle"><input type="checkbox" data-editor-announcement-enabled ' +
-      (site.header.announcement.enabled ? 'checked' : '') + '> Announcement bar</label>' +
-      '<label>Announcements (separate with |)<input data-editor-announcements value="' +
-      esc(site.header.announcement.messages.join(" | ")) + '"></label>' + headerBlocks +
-      '<form data-editor-form="header"><label>Add navigation item<input name="label" placeholder="New page" required></label>' +
-      '<label>Path<input name="href" placeholder="/stories/" pattern="/.*" required></label>' +
-      '<button class="revise-site__editor-add" type="submit">+ Add header link</button></form></div>' +
-      '<div class="revise-site__editor-group"><h3>Page Template · ' + esc(page.title) + '</h3>' +
-      '<label>Page title<input data-editor-page-title value="' + esc(page.title) + '"></label>' +
-      '<p class="revise-site__editor-note">' + page.sections.length + ' section(s). Each section is a portable preset instance.</p>' +
-      sections +
-      '<form data-editor-form="section"><label>Add section from Revise catalog<select name="preset">' +
-      sectionCatalog.map((item) => option(item.id, item.title + " · " + item.type, "")).join("") +
-      '</select></label><button class="revise-site__editor-add" type="submit">+ Add section</button></form></div>' +
-      '<div class="revise-site__editor-group"><h3>Global Footer</h3>' +
-      '<label>Footer surface<select data-editor-footer-surface>' +
-      (["inverse", "canvas", "paper", "muted"] as const).map((v) => option(v, v, site.footer.settings.background)).join("") +
-      '</select></label>' + footerBlocks +
-      '<form data-editor-form="footer"><label>New footer block<input name="title" placeholder="Resources" required></label>' +
-      '<label>Block type<select name="blockType">' +
-      option("menu","Menu","menu") + option("social","Social","menu") +
-      option("legal","Policies and legal","menu") + option("newsletter","Newsletter","menu") +
-      '</select></label>' +
-      '<button class="revise-site__editor-add" type="submit">+ Add menu block</button></form></div>' +
-      '<div class="revise-site__editor-group"><h3>Design library</h3>' +
-      '<p class="revise-site__editor-note">Browse historical themes, reusable sections and archived experiments before adding a new design direction.</p>' +
-      '<a class="revise-site__editor-add revise-site__editor-open-library" href="/library/">Open visual library ↗</a></div>' +
-      '<div class="revise-site__editor-group"><button type="button" data-edit-action="export">Export site JSON ↓</button>' +
-      '<button type="button" data-edit-action="reset">Reset local draft</button></div>' +
-      '</div></aside>';
-  }
-  function move<T>(list: T[], index: number, direction: number) {
-    const next = index + direction;
-    if (index < 0 || index >= list.length || next < 0 || next >= list.length) return;
-    [list[index], list[next]] = [list[next], list[index]];
-  }
-  function updateView() {
-    editScroll = root.querySelector(".revise-site__editor-content")?.scrollTop ?? 0;
-    persist();
-    draw();
-  }
-  function handleEditorClick(target: HTMLElement) {
-    const trigger = target.closest<HTMLButtonElement>("[data-edit-action]");
-    if (!trigger) return;
-    const action = trigger.dataset.editAction ?? "";
-    const index = Number(trigger.dataset.editIndex);
-    const blockIndex = Number(trigger.dataset.blockIndex);
-    const page = pageForPath();
-    if (action === "export") {
-      const blob = new Blob([JSON.stringify(site, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = site.id + ".site-document.json";
-      anchor.click();
-      URL.revokeObjectURL(url);
-      return;
-    }
-    if (action === "remove-footer-link") {
-      site.footer.blocks[index]?.links?.splice(Number(trigger.dataset.linkIndex), 1);
-      updateView();
-      return;
-    }
-    if (action === "reset") {
-      if (!confirm("Discard the local draft and restore the initial site layout?")) return;
-      site = structuredClone(initialSite);
-      updateView();
-      return;
-    }
-    if (action === "add-block") {
-      const section = page.sections[index];
-      if (!section?.blocks) return;
-      const sample = section.blocks.at(-1)?.data ?? { title: "New item", mediaKey: "fnf.hero", href: "/" };
-      section.blocks.push({ id: section.id + "-block-" + Date.now(), type: "item", data: { ...sample, title: "New item", label: "New item" } });
-      updateView();
-      return;
-    }
-    const groups: Record<string, Array<unknown>> = {
-      header: site.header.blocks,
-      section: page.sections,
-      footer: site.footer.blocks,
-      block: page.sections[index]?.blocks ?? [],
-    };
-    const operation = action.split("-")[0];
-    const kind = action.slice(operation.length + 1);
-    const list = groups[kind];
-    if (!list) return;
-    const current = kind === "block" ? blockIndex : index;
-    if (operation === "up") move(list, current, -1);
-    else if (operation === "down") move(list, current, 1);
-    else if (operation === "remove") {
-      if (kind === "header" && site.header.blocks[index]?.type === "brand") return;
-      list.splice(current, 1);
-    } else return;
-    updateView();
-  }
-  function handleEditorSubmit(event: Event, form: HTMLFormElement) {
-    const type = form.dataset.editorForm;
-    if (!type) return;
-    event.preventDefault();
-    const values = new FormData(form);
-    if (type === "header") {
-      const label = String(values.get("label") ?? "").trim();
-      const href = String(values.get("href") ?? "").trim();
-      if (!label || !href.startsWith("/") || href.startsWith("//")) return;
-      const brandIndex = site.header.blocks.findIndex((b) => b.type === "brand");
-      site.header.blocks.splice(Math.max(0, brandIndex), 0, {
-        id: "nav-" + Date.now(), type: "link", label, href,
-      });
-    }
-    if (type === "section") {
-      const preset = String(values.get("preset") ?? "");
-      if (!sectionCatalog.some((item) => item.id === preset)) return;
-      pageForPath().sections.push(sectionFromCatalog(preset, pageForPath().id));
-    }
-    if (type === "footer") {
-      const title = String(values.get("title") ?? "").trim();
-      const blockType = String(values.get("blockType") ?? "menu");
-      if (!title || !["menu", "social", "legal", "newsletter"].includes(blockType)) return;
-      site.footer.blocks.push({
-        id: "footer-" + Date.now(), type: blockType as SiteFooterBlock["type"], title, links: [],
-      });
-    }
-    if (type === "footer-link") {
-      const index = Number(form.dataset.footerIndex);
-      const block = site.footer.blocks[index];
-      const label = String(values.get("label") ?? "").trim();
-      const href = String(values.get("href") ?? "").trim();
-      if (!block || !label || !(/^(\/(?!\/)|https:\/\/|mailto:)/).test(href)) return;
-      if (!block.links) block.links = [];
-      block.links.push({ id: "footer-link-" + Date.now(), label, href });
-    }
-    updateView();
-  }
-  function handleEditorChange(target: HTMLElement) {
-    const input = target as HTMLInputElement | HTMLSelectElement;
-    const page = pageForPath();
-    if (input.hasAttribute("data-editor-sticky")) site.header.settings.sticky = (input as HTMLInputElement).checked;
-    else if (input.hasAttribute("data-editor-announcement-enabled")) {
-      site.header.announcement.enabled = (input as HTMLInputElement).checked;
-    }
-    else if (input.hasAttribute("data-editor-announcements")) {
-      site.header.announcement.messages = input.value.split("|").map((s) => s.trim()).filter(Boolean);
-    }
-    else if (input.hasAttribute("data-editor-page-title")) page.title = input.value.trim() || page.title;
-    else if (input.hasAttribute("data-editor-footer-surface")) {
-      site.footer.settings.background = input.value as SiteDocument["footer"]["settings"]["background"];
-    }
-    else if (input.hasAttribute("data-editor-footer-link-label")) {
-      const link = site.footer.blocks[Number(input.getAttribute("data-editor-footer-link-label"))]?.links?.[Number(input.dataset.linkIndex)];
-      if (!link) return;
-      link.label = input.value;
-    }
-    else if (input.hasAttribute("data-editor-footer-link-href")) {
-      const link = site.footer.blocks[Number(input.getAttribute("data-editor-footer-link-href"))]?.links?.[Number(input.dataset.linkIndex)];
-      if (!link || !(/^(\/(?!\/)|https:\/\/|mailto:)/).test(input.value)) return;
-      link.href = input.value;
-    }
-    else if (input.hasAttribute("data-editor-content") || input.hasAttribute("data-editor-block-content")) {
-      const index = Number(input.getAttribute(input.hasAttribute("data-editor-content")
-        ? "data-editor-content" : "data-editor-block-content"));
-      const section = page.sections[index];
-      const record = input.hasAttribute("data-editor-block-content")
-        ? section?.blocks?.[Number(input.dataset.blockIndex)]?.data : section?.data;
-      const key = input.getAttribute("data-editor-key") ?? "";
-      if (!record) return;
-      const value = input instanceof HTMLInputElement && input.type === "checkbox"
-        ? input.checked : input.value;
-      const outcome = applySectionFieldEdit(record, key, value, {
-        mediaKeys: new Set(siteMedia.keys()),
-      });
-      if (!outcome.ok) {
-        input.setAttribute("aria-invalid", "true");
-        return;
-      }
-      input.removeAttribute("aria-invalid");
-    }
-    else if (input.hasAttribute("data-editor-heading")) {
-      const section = page.sections[Number(input.getAttribute("data-editor-heading"))];
-      if (!section) return;
-      section.data.heading = input.value;
-    }
-    else if (input.hasAttribute("data-editor-surface")) {
-      const section = page.sections[Number(input.getAttribute("data-editor-surface"))];
-      if (!section) return;
-      section.settings.surface = input.value as SiteSection["settings"]["surface"];
-    }
-    else if (input.hasAttribute("data-editor-image")) {
-      const section = page.sections[Number(input.getAttribute("data-editor-image"))];
-      if (!section) return;
-      section.settings.backgroundMediaKey = siteMedia.has(input.value) ? input.value : undefined;
-    }
-    else if (input.hasAttribute("data-editor-block-title")) {
-      const block = page.sections[Number(input.getAttribute("data-editor-block-title"))]
-        ?.blocks?.[Number(input.dataset.blockIndex)];
-      if (!block) return;
-      block.data.title = input.value;
-      block.data.label = input.value;
-    }
-    else return;
-    updateView();
-  }
 }
