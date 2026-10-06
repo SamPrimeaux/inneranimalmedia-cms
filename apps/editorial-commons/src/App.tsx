@@ -3,6 +3,7 @@ import { EditorialScene } from './portable/EditorialScene';
 import { EditorialSceneGallery } from './portable/EditorialSceneGallery';
 import { EditorialHostProvider } from './portable/EditorialHost';
 import { fieldworkSite, fieldworkMedia } from './portable/fieldwork-site';
+import { SectionWorkbench } from './portable/SectionWorkbench';
 
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { CartProvider, useCart } from './context/CartContext';
@@ -195,14 +196,17 @@ const MainStoreContent: React.FC = () => {
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
+  if (params.has('workbench')) return <SectionWorkbench />;
   const selectedScene = params.get('scene');
   if (selectedScene) {
-    const fixture = selectedScene === 'curtain-hero' && params.get('fixture') === 'fieldwork'
-      ? fieldworkSite : null;
+    const fixture = params.get('fixture') === 'fieldwork' ? fieldworkSite : null;
+    const section = fixture?.pages[0]?.sections.find((candidate) =>
+      candidate.preset === 'commons/' + selectedScene);
     return <EditorialScene id={selectedScene}
       brand={fixture ? { name: fixture.brand.name, season: 'CORE COLLECTION' } :
         params.has('brand') ? { name: params.get('brand') ?? 'FORM / 26' } : undefined}
-      section={fixture?.pages[0]?.sections[0]}
+      section={section}
+      tokens={fixture?.design}
       resolveMedia={fixture ? (key: string) => fieldworkMedia.get(key) ?? null : undefined} />;
   }
   if (params.has('gallery')) return <EditorialSceneGallery />;

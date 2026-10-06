@@ -69,10 +69,14 @@ live under apps/editorial-commons in this one CMS repository, with donor Git
 history preserved. The combined Design Atlas shows these real previews alongside
 Revise, with one additional FIELDWORK cross-brand section demonstration.
 
-The shared SiteDocument editor now exposes typed text, media, CTA and card fields
-instead of only headings. The curtain hero is the first React scene accepting
-that same document format and customer-owned media; the remaining scenes are
-visual candidates until given typed adapters and actual provider integrations.
+The shared SiteDocument editor exposes typed text, media, CTA and card fields
+instead of only headings. Four original React scenes now consume that same
+SiteDocument contract: curtain hero, category wardrobe, split media, and editorial
+statement. A local multipage authoring workbench edits real section data, blocks,
+brand color tokens and backgrounds; other donor scenes remain visual candidates
+pending adapter and provider integration.
+
+Browse the editable workbench at /library/evidence/editorial-commons/index.html?workbench=1.
 
 See docs/UNIVERSAL_SECTIONS.md for ownership, acceptance and next steps.
 

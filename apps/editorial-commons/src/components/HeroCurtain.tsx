@@ -79,8 +79,8 @@ export const HeroCurtain: React.FC = () => {
       {/* Main Content Grid */}
       <div className="relative z-20 h-full max-w-[1440px] mx-auto px-5 sm:px-12 md:px-16 flex flex-col justify-end sm:justify-center pb-16 sm:pb-0">
         <div className="max-w-xl space-y-4 sm:space-y-6 pt-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#e2a8aa] font-semibold border border-white/10">
-            <Sparkles className="w-3 h-3 text-[#8b181b]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[var(--editorial-accent-soft)] font-semibold border border-white/10">
+            <Sparkles className="w-3 h-3 text-[var(--editorial-accent)]" />
             <span>{eyebrow}</span>
           </div>
 
@@ -98,7 +98,7 @@ export const HeroCurtain: React.FC = () => {
           <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             {!section && sableBlazer && merinoTurtleneck && <button
               onClick={handleAddAllToCart}
-              className="py-3.5 sm:py-4 px-6 sm:px-8 bg-white text-black hover:bg-[#8b181b] hover:text-white text-xs font-bold uppercase tracking-[0.22em] transition-all duration-300 shadow-2xl flex items-center justify-center gap-3 group cursor-pointer"
+              className="py-3.5 sm:py-4 px-6 sm:px-8 bg-white text-black hover:bg-[var(--editorial-accent)] hover:text-white text-xs font-bold uppercase tracking-[0.22em] transition-all duration-300 shadow-2xl flex items-center justify-center gap-3 group cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4" />
               <span>ADD ALL TO CART · {formatPrice(sableBlazer.price + merinoTurtleneck.price)}</span>
@@ -128,14 +128,14 @@ export const HeroCurtain: React.FC = () => {
             className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110 cursor-pointer hotspot-pulse"
             aria-label="View Sable Blazer hotspot"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#8b181b]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--editorial-accent)]" />
           </button>
 
           {/* Hotspot Popover Card */}
           {activeHotspot === 'hotspot-blazer' && (
             <div className="absolute -left-48 sm:left-9 -top-12 w-56 sm:w-64 bg-[#121212]/95 backdrop-blur-md p-4 rounded-sm border border-white/20 shadow-2xl text-left animate-[themeReveal_0.3s_cubic-bezier(0.22,1,0.36,1)] z-40">
               <div className="flex justify-between items-start">
-                <span className="text-[9px] uppercase tracking-widest text-[#8b181b] font-bold">LOOK PIECE 01</span>
+                <span className="text-[9px] uppercase tracking-widest text-[var(--editorial-accent)] font-bold">LOOK PIECE 01</span>
                 <button
                   onClick={() => setActiveHotspot(null)}
                   className="text-white/40 hover:text-white p-0.5"
@@ -155,7 +155,7 @@ export const HeroCurtain: React.FC = () => {
                     addToCart(sableBlazer, { event: e });
                     setActiveHotspot(null);
                   }}
-                  className="flex-1 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-[#8b181b] hover:text-white transition-colors"
+                  className="flex-1 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--editorial-accent)] hover:text-white transition-colors"
                 >
                   QUICK ADD
                 </button>
@@ -180,13 +180,13 @@ export const HeroCurtain: React.FC = () => {
             className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110 cursor-pointer hotspot-pulse"
             aria-label="View Merino Turtleneck hotspot"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-[#8b181b]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--editorial-accent)]" />
           </button>
 
           {activeHotspot === 'hotspot-merino' && (
             <div className="absolute -left-48 sm:left-9 -top-12 w-56 sm:w-64 bg-[#121212]/95 backdrop-blur-md p-4 rounded-sm border border-white/20 shadow-2xl text-left animate-[themeReveal_0.3s_cubic-bezier(0.22,1,0.36,1)] z-40">
               <div className="flex justify-between items-start">
-                <span className="text-[9px] uppercase tracking-widest text-[#8b181b] font-bold">LOOK PIECE 02</span>
+                <span className="text-[9px] uppercase tracking-widest text-[var(--editorial-accent)] font-bold">LOOK PIECE 02</span>
                 <button
                   onClick={() => setActiveHotspot(null)}
                   className="text-white/40 hover:text-white p-0.5"
@@ -206,7 +206,7 @@ export const HeroCurtain: React.FC = () => {
                     addToCart(merinoTurtleneck, { event: e });
                     setActiveHotspot(null);
                   }}
-                  className="flex-1 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-[#8b181b] hover:text-white transition-colors"
+                  className="flex-1 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--editorial-accent)] hover:text-white transition-colors"
                 >
                   QUICK ADD
                 </button>

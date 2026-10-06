@@ -84,7 +84,7 @@ export function EditorialSceneGallery() {
             </h2>
             <p className="mt-2 text-sm text-[#6d756a]">Source: {current.source} · {current.status.replace("-", " ")}</p>
           </div>
-          <div className="flex gap-2 items-center text-xs">
+          <div className="flex flex-wrap gap-2 items-center text-xs max-w-full min-w-0">
             <div className="p-1 rounded-full bg-black/10 flex">
               <button type="button" onClick={()=>setViewport("desktop")}
                 aria-pressed={viewport==="desktop"} className={"px-4 py-2 rounded-full " +
@@ -93,10 +93,14 @@ export function EditorialSceneGallery() {
                 aria-pressed={viewport==="mobile"} className={"px-4 py-2 rounded-full " +
                   (viewport==="mobile"?"bg-white shadow-sm":"")}>Mobile</button>
             </div>
-            {selected === "curtain-hero" && <a href={entryPath+"?scene=curtain-hero&fixture=fieldwork"}
+            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement"].includes(selected) &&
+              <a href={entryPath+"?scene="+encodeURIComponent(selected)+"&fixture=fieldwork"}
               target="_blank" rel="noopener"
               className="px-4 py-3 rounded-full border border-[#161a18] text-[#161a18] no-underline font-semibold">
               Second brand ↗</a>}
+            {["curtain-hero", "wardrobe-gallery", "split-media", "editorial-statement"].includes(selected) &&
+              <a href={entryPath+"?workbench=1"} target="_blank" rel="noopener"
+                className="px-4 py-3 rounded-full bg-[#d7fe83] text-black no-underline font-semibold">Edit sections ↗</a>}
             <a href={entryPath+"?scene="+encodeURIComponent(selected)} target="_blank" rel="noopener"
               className="px-4 py-3 rounded-full bg-[#161a18] text-white no-underline font-semibold">Open ↗</a>
           </div>

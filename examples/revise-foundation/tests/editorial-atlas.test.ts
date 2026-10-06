@@ -10,12 +10,16 @@ const output = resolve(root, "examples/revise-foundation/public/library/evidence
 describe("merged Editorial Commons source-backed Design Atlas", () => {
   it("exposes all original sections, support modules, and multipage routes as distinct records", () => {
     expect(EDITORIAL_SCENES).toHaveLength(39);
-    expect(editorialAtlasItems).toHaveLength(41);
-    expect(new Set(editorialAtlasItems.map((item) => item.id)).size).toBe(41);
+    expect(editorialAtlasItems).toHaveLength(45);
+    expect(new Set(editorialAtlasItems.map((item) => item.id)).size).toBe(45);
     expect(editorialAtlasItems.filter((item) => item.kind === "page").length).toBeGreaterThanOrEqual(5);
     expect(editorialAtlasItems.filter((item) => item.kind === "section").length).toBeGreaterThanOrEqual(20);
     expect(editorialAtlasItems.some((item) => item.id === "commons-gallery")).toBe(true);
     expect(editorialAtlasItems.some((item) => item.id === "commons-fieldwork-hero")).toBe(true);
+    expect(editorialAtlasItems.some((item) => item.id === "commons-fieldwork-wardrobe")).toBe(true);
+    expect(editorialAtlasItems.some((item) => item.id === "commons-fieldwork-diptych")).toBe(true);
+    expect(editorialAtlasItems.some((item) => item.id === "commons-fieldwork-statement")).toBe(true);
+    expect(editorialAtlasItems.some((item) => item.id === "commons-workbench")).toBe(true);
     expect(editorialAtlasItems.every((item) => item.sourcePath.startsWith("apps/editorial-commons/"))).toBe(true);
   });
   it("mounts actual built index and source-image assets instead of dead placeholder URLs", () => {

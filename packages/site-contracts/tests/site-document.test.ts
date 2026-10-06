@@ -16,6 +16,15 @@ describe("site document v1", () => {
   it("accepts a neutral, provider-independent website contract", () => {
     expect(validateSiteDocument(example)).toEqual([]);
   });
+  it("accepts optional color tokens and rejects invalid CSS or unexpected design keys", () => {
+    const doc = structuredClone(example);
+    doc.design = { accent: "#4C6655", accentSoft: "#C0D3B2", canvas: "#F0EFE7" };
+    expect(validateSiteDocument(doc)).toEqual([]);
+    doc.design.accent = "url(javascript:alert(1))";
+    expect(validateSiteDocument(doc)).toContain("Invalid site design token: accent");
+    doc.design = { accent: "#123456", unknownToken: "#abcdef" } as typeof doc.design;
+    expect(validateSiteDocument(doc)).toContain("Invalid site design token: unknownToken");
+  });
   it("detects duplicate routes and duplicate section identifiers", () => {
     const broken = structuredClone(example);
     broken.pages[0].sections = [

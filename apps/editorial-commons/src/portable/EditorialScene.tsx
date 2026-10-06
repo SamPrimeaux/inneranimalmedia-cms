@@ -3,7 +3,7 @@ import { CartProvider, useCart } from "../context/CartContext";
 import { EditorialHostProvider, useEditorialData } from "./EditorialHost";
 import { getEditorialScene, type EditorialSceneSpec } from "./scene-manifest";
 import type { EditorialBrand, EditorialCatalog, EditorialCommerceAdapter } from "./EditorialHost";
-import type { SiteSection } from "../../../../packages/site-contracts/src/site-document.js";
+import type { SiteSection, SiteDesignTokens } from "../../../../packages/site-contracts/src/site-document.js";
 
 const modules = import.meta.glob("../components/*.tsx", { eager: true }) as Record<
   string, Record<string, React.ComponentType>
@@ -19,6 +19,7 @@ export interface EditorialSceneProps {
   commerce?: EditorialCommerceAdapter;
   mode?: "preview" | "connected";
   section?: SiteSection;
+  tokens?: SiteDesignTokens;
   resolveMedia?: (key: string) => string | null;
   showSupportOverlays?: boolean;
 }
@@ -57,7 +58,7 @@ function ExistingSupport({ active }: { active: string }) {
 
 /** React consumer entry: no theme/framework singleton or FNF storefront assumptions. */
 export function EditorialScene({
-  id, brand, catalog, commerce, section, resolveMedia,
+  id, brand, catalog, commerce, section, tokens, resolveMedia,
   mode = "preview", showSupportOverlays = true,
 }: EditorialSceneProps) {
   const scene = getEditorialScene(id);
@@ -79,7 +80,17 @@ export function EditorialScene({
         data-editorial-scene={scene.id}
         data-editorial-scene-kind={scene.kind}
         className="editorial-scene"
-        style={{ minHeight: "100dvh", background: "var(--editorial-background, #0b0b0b)" }}
+        style={{
+          minHeight: !section || section.settings.minHeight === "screen" ? "100dvh" : "auto",
+          background: section?.settings.surface === "paper" ? tokens?.paper ?? "#fff" :
+            section?.settings.surface === "muted" ? "#e8e8e2" :
+            "var(--editorial-background, #0b0b0b)",
+          "--editorial-accent": tokens?.accent ?? "#8b181b",
+          "--editorial-accent-soft": tokens?.accentSoft ?? "#e2a8aa",
+          "--editorial-canvas": tokens?.canvas ?? "#f4f3ee",
+          "--editorial-paper": tokens?.paper ?? "#ffffff",
+          "--editorial-ink": tokens?.ink ?? "#111111",
+        } as React.CSSProperties}
       >
         <SceneActivation scene={scene} />
         <Component />

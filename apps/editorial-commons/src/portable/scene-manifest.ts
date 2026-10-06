@@ -2,7 +2,7 @@ export type EditorialSceneKind =
   | "section" | "header" | "footer" | "overlay" | "product-page" | "page" | "studio";
 
 export type EditorialSceneStatus =
-  | "adapted-catalog" | "legacy-interaction" | "studio-only";
+  | "adapted-catalog" | "site-document-bound" | "legacy-interaction" | "studio-only";
 
 export interface EditorialSceneSpec {
   id: string;
@@ -16,9 +16,12 @@ export interface EditorialSceneSpec {
   customerFacing: boolean;
 }
 
-const section = (id: string, component: string, title: string, act: string): EditorialSceneSpec => ({
+const section = (
+  id: string, component: string, title: string, act: string,
+  status: EditorialSceneStatus = "adapted-catalog",
+): EditorialSceneSpec => ({
   id, component, title, act,
-  kind: "section", status: "adapted-catalog",
+  kind: "section", status,
   source: "src/components/" + component + ".tsx",
   customerFacing: true,
 });
@@ -36,14 +39,14 @@ const support = (
 /** Every original React scene has a discoverable, stable, brand-neutral ID. */
 export const EDITORIAL_SCENES: readonly EditorialSceneSpec[] = Object.freeze([
   support("site-header", "Header", "Announcement & navigation", "header", "legacy-interaction"),
-  section("curtain-hero", "HeroCurtain", "Sticky curtain hero", "I · Entrance"),
-  section("wardrobe-gallery", "WardrobeGallery", "Category wardrobe rail", "I · Entrance"),
+  section("curtain-hero", "HeroCurtain", "Sticky curtain hero", "I · Entrance", "site-document-bound"),
+  section("wardrobe-gallery", "WardrobeGallery", "Category wardrobe rail", "I · Entrance", "site-document-bound"),
   section("promo-grid", "PromoGrid", "Dark promotional grid", "II · Discovery"),
   section("story-rings", "StoriesRings", "Interactive story rings", "II · Discovery"),
   section("collection-carousel", "CollectionCarousel", "Tabbed collection carousel", "II · Discovery"),
   section("full-screen-editorial", "FullscreenEditorial", "Fullscreen editorial product", "III · Brand world"),
-  section("split-media", "SplitMediaDiptych", "Editorial media diptych", "III · Brand world"),
-  section("editorial-statement", "DressBlurb", "Editorial statement", "III · Brand world"),
+  section("split-media", "SplitMediaDiptych", "Editorial media diptych", "III · Brand world", "site-document-bound"),
+  section("editorial-statement", "DressBlurb", "Editorial statement", "III · Brand world", "site-document-bound"),
   section("lookbook-hotspots", "ShopTheLookbook", "Shoppable hotspot lookbook", "III · Brand world"),
   section("bundle-builder", "BundleBuilder", "Selectable bundle composition", "IV · Commerce"),
   section("featured-product", "FeaturedPDP", "Three-column featured product", "IV · Commerce"),

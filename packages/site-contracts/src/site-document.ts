@@ -52,8 +52,17 @@ export interface SiteFooterBlock {
   links?: SiteLink[];
   description?: string;
 }
+/** Optional visual identity variables; sections never own an immutable brand palette. */
+export interface SiteDesignTokens {
+  accent?: string;
+  accentSoft?: string;
+  canvas?: string;
+  paper?: string;
+  ink?: string;
+}
 export interface SiteDocument {
   schemaVersion: typeof SITE_DOCUMENT_VERSION;
+  design?: SiteDesignTokens;
   id: string;
   theme: string;
   brand: { name: string; home: string; description: string };
@@ -75,6 +84,14 @@ export function validateSiteDocument(value: unknown): string[] {
   const issues: string[] = [];
   if (doc.schemaVersion !== SITE_DOCUMENT_VERSION) issues.push("Unsupported site document version");
   if (!doc.id || !doc.brand?.name) issues.push("Site identity is required");
+  if (doc.design) {
+    for (const [token, value] of Object.entries(doc.design)) {
+      if (!["accent", "accentSoft", "canvas", "paper", "ink"].includes(token) ||
+          typeof value !== "string" || !/^#[0-9a-fA-F]{6}$/.test(value)) {
+        issues.push("Invalid site design token: " + token);
+      }
+    }
+  }
   if (!doc.header || !Array.isArray(doc.header.blocks)) issues.push("Header blocks are required");
   if (!doc.footer || !Array.isArray(doc.footer.blocks)) issues.push("Footer blocks are required");
   if (!Array.isArray(doc.pages) || !doc.pages.length) issues.push("At least one page is required");

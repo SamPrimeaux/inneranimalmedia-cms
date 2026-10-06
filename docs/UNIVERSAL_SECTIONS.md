@@ -18,19 +18,65 @@ The existing FNF editor is now based on the shared exports editableSectionFields
 
 Edits update actual SiteSection.data and SiteSection.blocks data, persist in the local draft, and re-render the page. Header, footer, page arrangement, background surfaces and section order remain separate controls. Complex nested tabs and product variants require explicit schemas in a later pass.
 
-## React cross-brand acceptance
+## React cross-brand acceptance: four independently configurable scenes
 
-The original Editorial Commons HeroCurtain component accepts a SiteSection from EditorialScene/EditorialHostProvider. Supported content: eyebrow, heading, body, mediaKey, CTA label and CTA destination. It also uses backgroundMediaKey as a media fallback and a host-supplied media resolver. No other customer's photo is substituted for a missing media key. When a customer SiteDocument is passed, donor shopping hotspots and fake bundled checkout controls are excluded. Without a SiteDocument, the original donor preview remains intact.
+Four original React components now consume canonical SiteSection records, and
+none copies a component just to change the brand:
 
-FIELDWORK / STUDIO is an unrelated illustrative brand fixture, supplied using a complete SiteDocument v1. The same HeroCurtain component renders a different heading, body, CTA, and media without a copied component.
+| Scene | Content and editing boundary |
+| --- | --- |
+| Curtain hero | Eyebrow, heading, body, CTA label/destination, media key and fallback background-media key |
+| Category wardrobe | Section eyebrow/heading; variable category blocks with title, caption, media, alt and per-card link |
+| Media diptych | Variable panel blocks with title, eyebrow, body, media, alt, CTA label and link |
+| Editorial statement | Body, CTA label and destination (without inherited donor product quick-view) |
 
-Original scene:
-    /library/evidence/editorial-commons/index.html?scene=curtain-hero
+Each section can be added, reordered, customized or removed independently.
+The host resolves media keys; an unresolved image displays a neutral missing-media
+surface instead of another brand's photography. Links are validated in the
+shared CMS editing contract and sanitized again before rendering.
+Customer-bound scenes do not inherit demo merchandising, add-to-bag actions or
+donor product hotspots.
 
-Different customer document:
-    /library/evidence/editorial-commons/index.html?scene=curtain-hero&fixture=fieldwork
+SiteDocument v1 also supports an optional design-token record (accent, accentSoft,
+canvas, paper, ink) with six-digit hexadecimal validation. Migrated scenes use
+these CSS variables and honor per-section surface settings. This is a
+nonbreaking, optional contract addition, not a new competing theme system.
 
-The Design Atlas exposes all 39 original scene IDs, a complete independent gallery and this cross-brand fixture. Review visibility is not a claim that every donor component is already a production-grade CMS section.
+FIELDWORK / STUDIO remains an illustrative, unrelated SiteDocument fixture with
+its own brand, color tokens, media registry and four section records.
+The original FORM / 26 gallery and its interactions remain preserved.
+
+- Original visual reference: /library/evidence/editorial-commons/index.html?gallery=1
+- Cross-brand hero: /library/evidence/editorial-commons/index.html?scene=curtain-hero&fixture=fieldwork
+- Cross-brand categories: /library/evidence/editorial-commons/index.html?scene=wardrobe-gallery&fixture=fieldwork
+- Cross-brand split media: /library/evidence/editorial-commons/index.html?scene=split-media&fixture=fieldwork
+- Cross-brand statement: /library/evidence/editorial-commons/index.html?scene=editorial-statement&fixture=fieldwork
+
+## Editable multipage SiteDocument workbench
+
+Open /library/evidence/editorial-commons/index.html?workbench=1
+
+This is an authoring *study* driven by the **same SiteDocument and the same
+shared applySectionFieldEdit implementation** as the CMS editor; there is
+no second persistent schema. It offers:
+
+- Site branding, validated palette inputs and independent section background surfaces
+- Editable section text/CTA/media and individual collection/panel blocks
+- Add, reorder and delete sections or blocks; choose a section to preview or compose the whole page
+- Add/select pages, edit their titles and unique local routes, import and export valid SiteDocument JSON
+- Browser-local draft persistence; no remote CMS write, checkout, booking or publish claims
+
+The workbench uses a bundled demonstration media registry. Importing
+unrelated customer JSON will preserve unrecognized media keys, but the preview
+will not silently replace them with donor assets. A real CMS installation must
+supply the customer's media resolver and persistence adapter.
+
+The combined Design Atlas now contains 39 donor scenes, their full gallery,
+four cross-brand scene examples, and this workbench, all source-backed.
+**Only the four explicitly labeled SiteDocument-bound scenes have this
+direct React editing adapter.** The HTML site renderer's installed Revise
+sections remain separate; broader framework-independent mounting has
+not yet been completed.
 
 ## Development workflow
 
@@ -52,7 +98,20 @@ Run the combined CMS preview:
 
 The combined Design Atlas is at /library/. The Editorial Commons gallery is at /library/evidence/editorial-commons/index.html?gallery=1 on the same server. No second dev server is required to review the built source-backed scenes.
 
-For optional browser acceptance, set PLAYWRIGHT_PACKAGE and REVISE_CHROME then run npm run smoke:universal. Use CMS_UNIVERSAL_URL to target a nondefault test server.
+For browser acceptance, set PLAYWRIGHT_PACKAGE and REVISE_CHROME, and run:
+
+    npm run smoke:universal
+    npm run smoke:editorial:workbench
+
+To check all 39 original scenes, the standalone React smoke can target the
+embedded source-backed build instead of requiring another dev server:
+
+    EDITORIAL_PREVIEW_URL=http://127.0.0.1:4319/library/evidence/editorial-commons/index.html \
+      npm --prefix apps/editorial-commons run smoke:editorial
+
+Use CMS_UNIVERSAL_URL and REVISE_PREVIEW_URL to target a nondefault CMS server.
+The original CMS still has pre-existing portability audit blockers; successful
+React section QA does not constitute production CMS certification.
 
 ## Remaining promotion criteria
 
