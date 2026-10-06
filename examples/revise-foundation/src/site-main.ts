@@ -6,12 +6,8 @@ import "./site-polish.css";
 
 import { renderSiteSection, presetLibraryFrom } from "@inneranimalmedia/section-library";
 import { enhanceRevise, reviseShowcasePresets } from "@inneranimalmedia/revise-theme";
-import {
-  applySectionFieldEdit, editableSectionFields, validateSiteDocument,
-  type EditableSectionField, type SiteDocument, type SiteHeaderBlock,
-  type SiteFooterBlock, type SiteSection, type SitePage,
-} from "@inneranimalmedia/site-contracts";
-import { initialSite, refineFnfCopy, sectionCatalog, sectionFromCatalog, siteMedia } from "./site-data.js";
+import { type SiteHeaderBlock, type SiteFooterBlock, type SitePage } from "@inneranimalmedia/site-contracts";
+import { initialSite, refineFnfCopy, siteMedia } from "./site-data.js";
 import { buildSiteSearchIndex, searchSite } from "./site-search.js";
 
 const params = new URLSearchParams(location.search);
