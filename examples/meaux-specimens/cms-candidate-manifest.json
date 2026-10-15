@@ -1,0 +1,122 @@
+{
+  "schema": "iam.cms.component-candidates.v1",
+  "status": "candidate-not-installed",
+  "sourceRef": "agentsam-theme-tools/examples/meaux-donors/candidates.json",
+  "rendererPackage": "@inneranimalmedia/section-library",
+  "css": "@inneranimalmedia/section-library/specimens.css",
+  "motion": "@inneranimalmedia/section-library/specimens-motion.js",
+  "installation": {
+    "authority": "cms_definitions+cms_artifacts",
+    "siteOwner": "merchant-account",
+    "required": [
+      "typed settings",
+      "approved component version",
+      "immutable artifact",
+      "render/save/reload",
+      "publish/restore",
+      "second installation"
+    ]
+  },
+  "definitions": [
+    {
+      "key": "meaux-partner-cards",
+      "kind": "section",
+      "renderer": "renderSpecimenCards",
+      "blocks": "partner card[]",
+      "fields": {
+        "title": {
+          "type": "text"
+        },
+        "description": {
+          "type": "textarea"
+        },
+        "columns": {
+          "type": "integer",
+          "min": 1,
+          "max": 6
+        },
+        "entrance": {
+          "type": "boolean"
+        },
+        "cards": {
+          "type": "blocks",
+          "allowed": [
+            "partner-card"
+          ]
+        },
+        "tokens": {
+          "type": "design-tokens",
+          "editable": [
+            "fontFamily",
+            "headingFontFamily",
+            "radius",
+            "buttonRadius",
+            "spacing",
+            "background",
+            "surface",
+            "text",
+            "muted",
+            "accent",
+            "accentSoft",
+            "glow",
+            "border"
+          ]
+        }
+      }
+    },
+    {
+      "key": "meaux-link-stack",
+      "kind": "section",
+      "renderer": "renderSpecimenLinks",
+      "blocks": "link[]",
+      "fields": {
+        "title": {
+          "type": "text"
+        },
+        "accentTitle": {
+          "type": "text"
+        },
+        "links": {
+          "type": "blocks",
+          "allowed": [
+            "link"
+          ]
+        },
+        "tokens": {
+          "type": "design-tokens",
+          "merchantOverride": true
+        }
+      }
+    },
+    {
+      "key": "brand-system-presentation",
+      "kind": "section",
+      "renderer": "renderBrandSystemPresentation",
+      "fields": {
+        "name": {
+          "type": "text"
+        },
+        "variant": {
+          "type": "preset",
+          "values": [
+            "original",
+            "enhanced"
+          ],
+          "nonRestrictive": true
+        },
+        "palette": {
+          "type": "color-map",
+          "merchantOverride": true
+        },
+        "typeSamples": {
+          "type": "font-roles",
+          "merchantOverride": true
+        },
+        "tokens": {
+          "type": "design-tokens",
+          "merchantOverride": true
+        }
+      }
+    }
+  ]
+}
