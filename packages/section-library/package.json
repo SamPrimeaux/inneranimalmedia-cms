@@ -10,14 +10,16 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./layout.css": "./dist/layout.css"
+    "./layout.css": "./dist/layout.css",
+    "./specimens.css": "./dist/specimens.css",
+    "./specimens-motion.js": "./dist/specimens-motion.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build-assets.mjs",
-    "test": "vitest run"
+    "test": "npm run build && vitest run && node --test scripts/specimens-check.mjs"
   },
   "dependencies": {
     "@inneranimalmedia/site-contracts": "^0.1.0"

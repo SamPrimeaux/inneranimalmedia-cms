@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meaux Component Refinery — Library Specimens</title>
+<link rel="stylesheet" href="../../packages/section-library/dist/specimens.css">
+<style>
+  :root{color-scheme:dark;font:15px/1.5 system-ui,sans-serif}*{box-sizing:border-box}
+  body{margin:0;background:#101318;color:#e3e9ed}
+  .lab{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 20px;background:#12151ef0;border-bottom:1px solid #3f4655;backdrop-filter:blur(12px)}
+  .lab label{display:flex;align-items:center;gap:6px;font-size:12px}.lab input,.lab select{font:inherit;background:#242936;border:1px solid #576074;color:#fff;border-radius:8px;padding:6px 9px}
+  .lab button{font:inherit;padding:8px 12px;background:#303b46;color:white;border-radius:9px;border:1px solid #566574;cursor:pointer}
+  .lab button:focus-visible{outline:2px solid orange}
+  .lab .small{color:#b9c0ca;font-size:11px}.lab h1{font-size:17px;margin:0 16px 0 0}
+  #cards,#links,#brand{margin:22px auto;max-width:1400px}
+</style>
+</head>
+<body>
+<div class="lab">
+ <h1>Meaux design specimen lab</h1>
+ <label>Presentation <select id="scheme"><option value="original">Original</option><option value="enhanced" selected>Teal Steel</option></select></label>
+ <label>Font family <input id="font" value="Inter, sans-serif" aria-label="Font family"></label>
+ <label>Radius <input id="radius" value="22px" aria-label="Card radius"></label>
+ <label>Accent <input id="accent" type="color" value="#1f97a9"></label>
+ <button id="render">Apply</button><span class="small">Editable candidates • no CMS publication or backend writes</span>
+</div>
+<main>
+ <div id="cards"></div>
+ <div id="links"></div>
+ <div id="brand"></div>
+</main>
+<script type="module">
+import {renderSpecimenCards,renderSpecimenLinks,renderBrandSystemPresentation,MEAUX_ORIGINAL_DESIGN,MEAUX_ENHANCED_DESIGN}
+  from "../../packages/section-library/dist/specimens.js";
+import {enhanceDesignSpecimens} from "../../packages/section-library/dist/specimens-motion.js";
+let stop = ()=>{};
+function render(){
+  stop();
+  const enhanced = document.querySelector("#scheme").value === "enhanced";
+  const base = enhanced ? MEAUX_ENHANCED_DESIGN : MEAUX_ORIGINAL_DESIGN;
+  const tokens = { ...base, fontFamily:document.querySelector("#font").value,
+    headingFontFamily:document.querySelector("#font").value, radius:document.querySelector("#radius").value,
+    accent:document.querySelector("#accent").value };
+  document.querySelector("#cards").innerHTML = renderSpecimenCards({
+    title:"Partner spotlight",description:"Preserved motion language: centered underline, gloss sweep, lift and tier color.",
+    columns:3,entrance:true,tokens,cards:[
+      {id:"story-one",title:"Community foundation",eyebrow:"Diamond",tone:"#8a2be2",description:"A genuine reusable treatment; provide real organization copy and media through the CMS.",href:"/projects"},
+      {id:"story-two",title:"Creative partner",eyebrow:"Platinum",tone:"#1f97a9",description:"Typography, background, radii, layout and colors remain editable.",href:"/about"},
+      {id:"story-three",title:"Local resource",eyebrow:"Gold",tone:"#e2af1d",description:"Motion is independent from the card and reduced-motion safe.",href:"/contact"}
+    ]
+  });
+  document.querySelector("#links").innerHTML = renderSpecimenLinks({
+    title:"Need Help?",accentTitle:"Connect With Us",tokens,
+    links:[{id:"connect",label:"Supporting organizations",href:"/partners"},{id:"inquiries",label:"Partnership inquiries",href:"/contact"}]
+  });
+  document.querySelector("#brand").innerHTML = renderBrandSystemPresentation({
+    id:"meaux-brand-system",name:"Meaux",tagline:"Teal Steel. Liquid Metal. Pure Innovation.",variant:enhanced?"enhanced":"original",tokens,
+    description:"Original palette plus optional extended roles. This presentation template can consume any brand's approved content.",
+    typeSamples:[{role:"Display",family:tokens.headingFontFamily,sample:"Shape the experience",weight:800},{role:"Body",family:tokens.fontFamily,sample:"Every detail matters.",weight:400}]
+  });
+  stop=enhanceDesignSpecimens(document);
+}
+document.querySelector("#render").addEventListener("click",render);
+render();
+</script>
+</body></html>
