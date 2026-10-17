@@ -18,15 +18,9 @@ CORE_TABLES = {
     "cms_assets",
 }
 
-CATALOG_TABLES = {
-    "cms_runtime_info",
-    "cms_table_catalog",
-    "cms_capability_catalog",
-    "cms_tool_catalog",
-    "cms_skill_catalog",
-    "cms_usage_guides",
-    "cms_schema_migrations",
-}
+RETIRED_TABLES = {'cms_runtime_info','cms_table_catalog','cms_capability_catalog',
+    'cms_tool_catalog','cms_skill_catalog','cms_usage_guides','cms_schema_migrations'}
+RETIRED_VIEWS = {'cms_runtime_help','cms_runtime_tools','cms_runtime_tables'}
 
 
 class LocalSqliteContractTests(unittest.TestCase):
@@ -37,67 +31,19 @@ class LocalSqliteContractTests(unittest.TestCase):
         db.executescript(SCHEMA.read_text())
         return tmp, db
 
-    def test_schema_contains_core_and_self_describing_catalogs(self):
-        tmp, db = self.open_db()
-        self.addCleanup(tmp.cleanup)
-        rows = {
-            row[0]
-            for row in db.execute(
-                "SELECT name FROM sqlite_master WHERE type='table'"
-            ).fetchall()
-        }
-        self.assertTrue(CORE_TABLES.issubset(rows))
-        self.assertTrue(CATALOG_TABLES.issubset(rows))
+    def test_site_tables_without_shadow_registries(self):
+        tmp, db = self.open_db(); self.addCleanup(tmp.cleanup)
+        tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        views = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='view'")}
+        self.assertTrue(CORE_TABLES <= tables)
+        self.assertFalse(RETIRED_TABLES & tables)
+        self.assertFalse(RETIRED_VIEWS & views)
+        self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0], 2)
 
-    def test_runtime_explains_authority_and_first_queries(self):
-        tmp, db = self.open_db()
-        self.addCleanup(tmp.cleanup)
-        info = dict(
-            db.execute("SELECT key,value FROM cms_runtime_info").fetchall()
-        )
-        self.assertEqual(info["cms_contract"], "cms-core.v2")
-        self.assertEqual(info["provider"], "sqlite")
-        self.assertEqual(info["mode"], "local_authority")
-        self.assertIn("cms_runtime_help", info["start_agent"])
-
-    def test_tools_distinguish_safe_sql_from_adapter_mutations(self):
-        tmp, db = self.open_db()
-        self.addCleanup(tmp.cleanup)
-        inspect = db.execute(
-            "SELECT availability,mutates,risk_level FROM cms_tool_catalog "
-            "WHERE tool_key='cms.runtime.inspect'"
-        ).fetchone()
-        publish = db.execute(
-            "SELECT availability,mutates,requires_approval,risk_level "
-            "FROM cms_tool_catalog WHERE tool_key='cms.publish'"
-        ).fetchone()
-        self.assertEqual(inspect, ("sql", 0, "low"))
-        self.assertEqual(publish, ("adapter_required", 1, 1, "high"))
-
-    def test_skills_reference_discoverable_tools(self):
-        tmp, db = self.open_db()
-        self.addCleanup(tmp.cleanup)
-        skill_count = db.execute(
-            "SELECT count(*) FROM cms_skill_catalog"
-        ).fetchone()[0]
-        tool_count = db.execute(
-            "SELECT count(*) FROM cms_tool_catalog"
-        ).fetchone()[0]
-        self.assertGreaterEqual(skill_count, 5)
-        self.assertGreaterEqual(tool_count, 10)
-
-    def test_help_views_are_queryable(self):
-        tmp, db = self.open_db()
-        self.addCleanup(tmp.cleanup)
-        self.assertGreater(
-            db.execute("SELECT count(*) FROM cms_runtime_help").fetchone()[0], 0
-        )
-        self.assertGreater(
-            db.execute("SELECT count(*) FROM cms_runtime_tools").fetchone()[0], 0
-        )
-        self.assertGreater(
-            db.execute("SELECT count(*) FROM cms_runtime_tables").fetchone()[0], 0
-        )
+    def test_no_cms_shadow_catalog_after_new_install(self):
+        tmp, db = self.open_db(); self.addCleanup(tmp.cleanup)
+        tables = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        self.assertEqual(len([x for x in tables if x.startswith('cms_')]), 16)
 
 
 if __name__ == "__main__":

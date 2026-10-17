@@ -41,15 +41,13 @@ class PackageCliTests(unittest.TestCase):
             doctor = self.run_cli(root, "doctor")
             self.assertTrue(doctor["ok"])
             self.assertEqual(doctor["project"], "newuser123-site")
-            self.assertGreaterEqual(doctor["tools"], 15)
-            self.assertGreaterEqual(doctor["skills"], 5)
+            self.assertEqual(doctor["schemaVersion"], 2)
+            self.assertEqual(doctor["capabilityAuthority"], "agentsam")
 
             db = sqlite3.connect(db_path)
-            source = db.execute(
-                "SELECT value FROM cms_runtime_info WHERE key='schema_source'"
-            ).fetchone()[0]
+            version = db.execute('PRAGMA user_version').fetchone()[0]
             db.close()
-            self.assertEqual(source, "package:@inneranimalmedia/cms-runtime/sqlite-schema")
+            self.assertEqual(version, 2)
 
 
     def test_v1_install_upgrades_without_losing_site_content(self):
