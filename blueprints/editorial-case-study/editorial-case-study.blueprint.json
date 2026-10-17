@@ -1,0 +1,266 @@
+{
+  "schema": "iam.blueprint.v1",
+  "key": "editorial-case-study",
+  "version": "1.0.0",
+  "status": "draft",
+  "origin": {
+    "kind": "inspired_by_research",
+    "source": "user-provided layout analysis; not third-party source code",
+    "license_review_required": true,
+    "measurement_confidence": "mixed",
+    "note": "Values based on supplied research; not independently remeasured. Never bundle a third-party logo or media."
+  },
+  "storage": {
+    "bucketBinding": "CMS_BLUEPRINTS",
+    "objectPrefix": "blueprints/editorial-case-study/1.0.0/",
+    "sourceOfTruth": "git",
+    "r2Purpose": "immutable release artifacts, previews, manifests"
+  },
+  "tokenContract": {
+    "required": [
+      "color.background",
+      "color.text",
+      "color.accent",
+      "font.body",
+      "font.display",
+      "space.section",
+      "layout.container"
+    ],
+    "defaults": {
+      "color.background": "#ffffff",
+      "color.text": "#171921",
+      "color.accent": "#eeedff",
+      "font.body": "system-ui",
+      "font.display": "system-ui",
+      "space.section": "clamp(64px,8vw,128px)",
+      "layout.container": "1200px"
+    }
+  },
+  "sku": {
+    "template": "{BRAND}-{LAYER}-{CODE}-{VERSION}",
+    "layers": [
+      "TKN",
+      "MED",
+      "CMP",
+      "SEC",
+      "PG",
+      "GLB"
+    ],
+    "rule": "SKU identifies reusable structure; variations are settings. Existing SKU is never silently renamed or reused."
+  },
+  "sections": [
+    {
+      "key": "case-hero",
+      "code": "HERO",
+      "label": "Case study hero",
+      "composition": [
+        "title",
+        "hero-media",
+        "intro-split"
+      ],
+      "allowedBlocks": [
+        "heading",
+        "text",
+        "image",
+        "service-list"
+      ],
+      "mediaSlots": [
+        "hero"
+      ],
+      "settings": {
+        "theme": "light",
+        "layout": "full"
+      }
+    },
+    {
+      "key": "case-chapter",
+      "code": "CHAP",
+      "label": "Editorial chapter",
+      "composition": [
+        "chapter-heading",
+        "paragraph",
+        "media"
+      ],
+      "allowedBlocks": [
+        "heading",
+        "text",
+        "media"
+      ],
+      "mediaSlots": [
+        "primary"
+      ],
+      "settings": {
+        "theme": "light",
+        "mediaLayout": "inset"
+      }
+    },
+    {
+      "key": "case-media",
+      "code": "MEDIA",
+      "label": "Media chapter",
+      "composition": [
+        "media"
+      ],
+      "allowedBlocks": [
+        "media"
+      ],
+      "mediaSlots": [
+        "primary"
+      ],
+      "settings": {
+        "mediaLayout": "full"
+      }
+    },
+    {
+      "key": "case-carousel",
+      "code": "CARO",
+      "label": "Horizontal media carousel",
+      "composition": [
+        "chapter-heading",
+        "carousel"
+      ],
+      "allowedBlocks": [
+        "heading",
+        "carousel-item"
+      ],
+      "mediaSlots": [
+        "slides"
+      ],
+      "settings": {
+        "theme": "dark",
+        "slides": 4
+      }
+    },
+    {
+      "key": "case-breaker",
+      "code": "BRKR",
+      "label": "Full-bleed image breaker",
+      "composition": [
+        "media"
+      ],
+      "allowedBlocks": [
+        "media"
+      ],
+      "mediaSlots": [
+        "primary"
+      ],
+      "settings": {
+        "mediaLayout": "full"
+      }
+    },
+    {
+      "key": "case-next",
+      "code": "NEXT",
+      "label": "Next case study link",
+      "composition": [
+        "title",
+        "media",
+        "link"
+      ],
+      "allowedBlocks": [
+        "heading",
+        "media",
+        "link"
+      ],
+      "mediaSlots": [
+        "preview"
+      ],
+      "settings": {
+        "theme": "light"
+      }
+    },
+    {
+      "key": "case-services",
+      "code": "SERV",
+      "label": "Services grid",
+      "composition": [
+        "heading",
+        "service-grid"
+      ],
+      "allowedBlocks": [
+        "heading",
+        "service-card"
+      ],
+      "mediaSlots": [],
+      "settings": {
+        "columns": 3
+      }
+    }
+  ],
+  "mediaLayouts": [
+    {
+      "key": "full",
+      "code": "FULL",
+      "width": "100%",
+      "aspect": "16/9"
+    },
+    {
+      "key": "inset",
+      "code": "INSET",
+      "width": "87%",
+      "aspect": "16/9"
+    },
+    {
+      "key": "two-up",
+      "code": "TWO",
+      "width": "calc(50% - var(--gap)/2)",
+      "aspect": "1/1"
+    },
+    {
+      "key": "carousel",
+      "code": "CARO",
+      "width": "min(78vw,900px)",
+      "aspect": "16/10"
+    },
+    {
+      "key": "mosaic",
+      "code": "MOSC",
+      "width": "43%",
+      "aspect": "3/4"
+    }
+  ],
+  "pagePresets": [
+    {
+      "key": "case-study-short",
+      "code": "CSS",
+      "sections": [
+        "case-hero",
+        "case-chapter",
+        "case-chapter",
+        "case-media",
+        "case-carousel",
+        "case-breaker",
+        "case-next"
+      ]
+    },
+    {
+      "key": "case-study-standard",
+      "code": "CSM",
+      "sections": [
+        "case-hero",
+        "case-chapter",
+        "case-media",
+        "case-chapter",
+        "case-carousel",
+        "case-chapter",
+        "case-breaker",
+        "case-next"
+      ]
+    }
+  ],
+  "requiredPipeline": [
+    "discover",
+    "hash_and_provenance",
+    "dedupe",
+    "classify",
+    "propose_sku",
+    "extract_slots",
+    "bind_brand_tokens",
+    "validate_dependencies",
+    "render_preview",
+    "human_approval",
+    "install_definition",
+    "create_private_revision",
+    "publish_explicitly"
+  ]
+}

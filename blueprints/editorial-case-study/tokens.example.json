@@ -1,0 +1,9 @@
+{
+  "color.background": "#ffffff",
+  "color.text": "#171921",
+  "color.accent": "#ddd9f7",
+  "font.body": "system-ui",
+  "font.display": "system-ui",
+  "space.section": "clamp(64px,8vw,128px)",
+  "layout.container": "1200px"
+}
