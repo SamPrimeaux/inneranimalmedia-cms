@@ -6,13 +6,13 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / "schemas" / "sqlite" / "cms-local-runtime.v1.sql"
+SCHEMA = ROOT / "schemas" / "sqlite" / "cms-local-runtime.v2.sql"
 
 CORE_TABLES = {
     "cms_sites",
     "cms_pages",
-    "cms_sections",
-    "cms_blocks",
+    "cms_page_sections",
+    "cms_section_blocks",
     "cms_revisions",
     "cms_publications",
     "cms_assets",
@@ -55,7 +55,7 @@ class LocalSqliteContractTests(unittest.TestCase):
         info = dict(
             db.execute("SELECT key,value FROM cms_runtime_info").fetchall()
         )
-        self.assertEqual(info["cms_contract"], "cms-core.v1")
+        self.assertEqual(info["cms_contract"], "cms-core.v2")
         self.assertEqual(info["provider"], "sqlite")
         self.assertEqual(info["mode"], "local_authority")
         self.assertIn("cms_runtime_help", info["start_agent"])
