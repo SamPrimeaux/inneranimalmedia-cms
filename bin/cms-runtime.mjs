@@ -106,17 +106,7 @@ async function initRuntime(options) {
   try {
     db.exec('PRAGMA foreign_keys = ON;');
     db.exec(fs.readFileSync(SCHEMA_PATH, 'utf8'));
-    const upsert = db.prepare(
-      'INSERT OR REPLACE INTO cms_runtime_info(key,value,description,updated_at) VALUES (?,?,?,CURRENT_TIMESTAMP)',
-    );
-    upsert.run('project_id', projectId, 'Portable project identity selected during cms-runtime init.');
-    upsert.run('runtime_package', '@inneranimalmedia/cms-runtime', 'Package that initialized this local runtime.');
-    upsert.run('runtime_package_version', readPackageVersion(), 'Package version that last initialized/updated this runtime.');
-    upsert.run(
-      'schema_source',
-      'package:@inneranimalmedia/cms-runtime/sqlite-schema',
-      'Portable package-relative schema reference; never a developer filesystem path.',
-    );
+    db.exec('PRAGMA user_version = 2;');
   } finally {
     db.close();
   }
@@ -141,7 +131,7 @@ async function initRuntime(options) {
       database: '.agentsam/cms.sqlite',
       content: '.agentsam/cms-content',
       receipt: '.agentsam/cms/runtime.json',
-      next: ['cms-runtime doctor', 'cms-runtime tools', 'cms-runtime skills'],
+      next: ['cms-runtime doctor', 'agentsam tools', 'agentsam skills'],
     },
     options.json,
   );
@@ -155,55 +145,25 @@ async function inspectRuntime(options) {
 
   const db = await openDatabase(p.dbPath);
   try {
-    const infoRows = db.prepare('SELECT key,value FROM cms_runtime_info ORDER BY key').all();
-    const info = Object.fromEntries(infoRows.map((row) => [String(row.key), String(row.value)]));
     const integrity = db.prepare('PRAGMA integrity_check').get();
+    const schemaVersion = db.prepare('PRAGMA user_version').get()?.user_version;
     const counts = {};
-    for (const table of ['cms_sites', 'cms_pages', 'cms_page_sections', 'cms_section_blocks', 'cms_revisions', 'cms_publications', 'cms_assets']) {
+    for (const table of ['cms_sites','cms_pages','cms_page_sections','cms_section_blocks','cms_revisions','cms_publications','cms_assets']) {
       counts[table] = Number(db.prepare(`SELECT count(*) AS n FROM ${table}`).get().n);
     }
-    const toolCount = Number(db.prepare('SELECT count(*) AS n FROM cms_tool_catalog').get().n);
-    const skillCount = Number(db.prepare('SELECT count(*) AS n FROM cms_skill_catalog').get().n);
-    print(
-      {
-        ok: String(integrity.integrity_check ?? integrity['integrity_check']) === 'ok',
-        schema: info.schema,
-        contract: info.cms_contract,
-        project: info.project_id ?? null,
-        provider: info.provider,
-        mode: info.mode,
-        database: '.agentsam/cms.sqlite',
-        counts,
-        tools: toolCount,
-        skills: skillCount,
-      },
-      options.json,
-    );
+    print({
+      ok: String(integrity.integrity_check) === 'ok',
+      schema: 'inneranimalmedia.cms.local-runtime.v2',
+      schemaVersion, project: slug(options.project ?? path.basename(options.root)),
+      provider: 'sqlite', mode: 'local_authority',
+      database: '.agentsam/cms.sqlite', counts,
+      capabilityAuthority: 'agentsam',
+    }, true);
   } finally {
     db.close();
   }
 }
 
-async function catalog(options, kind) {
-  const p = pathsFor(options.root);
-  if (!fs.existsSync(p.dbPath)) {
-    throw new Error(`cms runtime not initialized in ${options.root}; run cms-runtime init`);
-  }
-  const db = await openDatabase(p.dbPath);
-  try {
-    const rows =
-      kind === 'tools'
-        ? db.prepare(
-            'SELECT tool_key,display_name,availability,risk_level,mutates,requires_approval,description FROM cms_runtime_tools ORDER BY category,tool_key',
-          ).all()
-        : db.prepare(
-            'SELECT skill_key,title,audience,description,when_to_use,steps_json,tool_keys_json FROM cms_skill_catalog ORDER BY skill_key',
-          ).all();
-    print(rows, true);
-  } finally {
-    db.close();
-  }
-}
 
 function help() {
   process.stdout.write(`@inneranimalmedia/cms-runtime
@@ -213,8 +173,6 @@ Portable CMS runtime bootstrap. Commands resolve bundled package assets; no deve
 Usage:
   cms-runtime init [--project ID] [--root PATH] [--json]
   cms-runtime doctor [--root PATH] [--json]
-  cms-runtime tools [--root PATH]
-  cms-runtime skills [--root PATH]
 
 Typical clean-machine flow:
   mkdir my-site && cd my-site
@@ -232,12 +190,6 @@ async function main() {
       break;
     case 'doctor':
       await inspectRuntime(options);
-      break;
-    case 'tools':
-      await catalog(options, 'tools');
-      break;
-    case 'skills':
-      await catalog(options, 'skills');
       break;
     case 'help':
       help();
