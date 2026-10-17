@@ -16,6 +16,7 @@
     "bin/cms-runtime.mjs",
     "schemas/cms-package.v2.schema.json",
     "schemas/sqlite/cms-local-runtime.v2.sql",
+    "schemas/sqlite/upgrade-v1-to-v2.sql",
     "manifests/cms-package.v2.local.example.json",
     "manifests/cms-package.v2.cloudflare.example.json",
     "README.md"

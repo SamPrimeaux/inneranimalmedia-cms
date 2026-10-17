@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 const BIN_DIR = path.dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = path.resolve(BIN_DIR, '..');
 const SCHEMA_PATH = path.join(PACKAGE_ROOT, 'schemas', 'sqlite', 'cms-local-runtime.v2.sql');
+const UPGRADE_PATH = path.join(PACKAGE_ROOT, 'schemas', 'sqlite', 'upgrade-v1-to-v2.sql');
 const PACKAGE_JSON_PATH = path.join(PACKAGE_ROOT, 'package.json');
 
 function readPackageVersion() {
@@ -63,6 +64,33 @@ function print(value, asJson) {
   process.stdout.write(`${value}\n`);
 }
 
+async function upgradeLegacyRuntime(dbPath) {
+  if (!fs.existsSync(dbPath)) return;
+  let db = await openDatabase(dbPath);
+  const oldSchema = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='cms_sections'").get();
+  db.close();
+  if (!oldSchema) return;
+  fs.copyFileSync(dbPath, dbPath + '.pre-v2.sqlite');
+  db = await openDatabase(dbPath);
+  const names = ['sites', 'pages', 'sections', 'blocks', 'revisions', 'publications', 'assets'];
+  try {
+    db.exec('PRAGMA foreign_keys=OFF; BEGIN IMMEDIATE;');
+    for (const name of names) db.exec('ALTER TABLE cms_' + name + ' RENAME TO cms_legacy_' + name);
+    db.exec(fs.readFileSync(SCHEMA_PATH, 'utf8'));
+    db.exec(fs.readFileSync(UPGRADE_PATH, 'utf8'));
+    for (const name of names) db.exec('DROP TABLE cms_legacy_' + name);
+    db.exec('COMMIT; PRAGMA foreign_keys=ON;');
+    const integrity = db.prepare('PRAGMA integrity_check').get();
+    const violations = db.prepare('PRAGMA foreign_key_check').all();
+    if (integrity.integrity_check !== 'ok' || violations.length) {
+      throw new Error('v1-to-v2 integrity check failed; preserved backup at .agentsam/cms.sqlite.pre-v2.sqlite');
+    }
+  } catch (error) {
+    try { db.exec('ROLLBACK;'); } catch {}
+    throw error;
+  } finally { db.close(); }
+}
+
 async function initRuntime(options) {
   const p = pathsFor(options.root);
   const projectId = slug(options.project ?? path.basename(options.root));
@@ -73,6 +101,7 @@ async function initRuntime(options) {
     throw new Error('bundled sqlite schema missing from package');
   }
 
+  await upgradeLegacyRuntime(p.dbPath);
   const db = await openDatabase(p.dbPath);
   try {
     db.exec('PRAGMA foreign_keys = ON;');
@@ -93,7 +122,7 @@ async function initRuntime(options) {
   }
 
   const receipt = {
-    schema: 'inneranimalmedia.cms.local-runtime-receipt.v1',
+    schema: 'inneranimalmedia.cms.local-runtime-receipt.v2',
     project: { id: projectId },
     provider: 'sqlite',
     mode: 'local_authority',
