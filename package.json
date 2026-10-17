@@ -8,20 +8,14 @@
   },
   "exports": {
     "./manifest-schema": "./schemas/cms-package.v2.schema.json",
-    "./sqlite-schema": "./schemas/sqlite/cms-local-runtime.v1.sql",
-    "./editorial-publisher": "./integration/host-adapters/cms-editorial-publisher.js",
+    "./sqlite-schema": "./schemas/sqlite/cms-local-runtime.v2.sql",
     "./examples/local": "./manifests/cms-package.v2.local.example.json",
     "./examples/cloudflare": "./manifests/cms-package.v2.cloudflare.example.json"
   },
   "files": [
     "bin/cms-runtime.mjs",
-    "bin/cms-editorial-publish.mjs",
-    "bin/cms-editorial-install.mjs",
-    "integration/host-adapters/cms-editorial-publisher.js",
-    "integration/host-adapters/cms-editorial-publisher.d.ts",
-    "integration/host-adapters/editorial-assets/",
     "schemas/cms-package.v2.schema.json",
-    "schemas/sqlite/cms-local-runtime.v1.sql",
+    "schemas/sqlite/cms-local-runtime.v2.sql",
     "manifests/cms-package.v2.local.example.json",
     "manifests/cms-package.v2.cloudflare.example.json",
     "README.md"
@@ -29,22 +23,7 @@
   "scripts": {
     "test": "python3 -m unittest discover -s test -p 'test_*.py' -v",
     "audit:portability": "python3 scripts/audit-portability.py . --fail-on high",
-    "pack:check": "npm pack --dry-run",
-    "build:site": "npm run build -w @inneranimalmedia/site-contracts && npm run build -w @inneranimalmedia/section-library && npm run build -w @inneranimalmedia/revise-theme && npm run build -w @inneranimalmedia/revise-foundation-demo",
-    "test:site": "npm run test -w @inneranimalmedia/site-contracts && npm run test -w @inneranimalmedia/section-library && npm run test -w @inneranimalmedia/revise-theme",
-    "verify:revise": "npm run build:site && npm run test:site && npm run pack:check -w @inneranimalmedia/revise-theme",
-    "test:atlas": "vitest run examples/revise-foundation/tests/site-data.test.ts examples/revise-foundation/tests/design-atlas.test.ts",
-    "verify:atlas": "npm run build:site && npm run test:site && npm run test:atlas",
-    "smoke:atlas": "node scripts/smoke-design-atlas.mjs",
-    "smoke:revise:polish": "node scripts/smoke-revise-polish.mjs",
-    "smoke:universal": "node scripts/smoke-universal-sections.mjs",
-    "smoke:editorial:workbench": "node scripts/smoke-editorial-workbench.mjs",
-    "smoke:editorial:bound": "node scripts/smoke-bound-editorial.mjs",
-    "smoke:editorial:publishing": "node scripts/smoke-cms-editorial-publishing.mjs",
-    "build:editorial-evidence": "node scripts/build-editorial-evidence.mjs",
-    "build:editorial-runtime": "node scripts/build-editorial-runtime.mjs",
-    "test:universal": "vitest run packages/site-contracts/tests/section-fields.test.ts examples/revise-foundation/tests/editorial-atlas.test.ts",
-    "verify:universal": "npm run verify:atlas && npm run test:universal"
+    "pack:check": "npm pack --dry-run"
   },
   "engines": {
     "node": ">=22.5"
@@ -56,15 +35,5 @@
   "license": "UNLICENSED",
   "publishConfig": {
     "access": "public"
-  },
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "typescript": "^5.9.0",
-    "vite": "^7.1.0",
-    "vitest": "^5.0.3"
   }
 }
