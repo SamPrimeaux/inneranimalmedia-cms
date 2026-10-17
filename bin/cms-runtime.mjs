@@ -4,12 +4,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { publishLocalEditorial } from './cms-editorial-publish.mjs';
-import { installLocalEditorial } from './cms-editorial-install.mjs';
 
 const BIN_DIR = path.dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = path.resolve(BIN_DIR, '..');
-const SCHEMA_PATH = path.join(PACKAGE_ROOT, 'schemas', 'sqlite', 'cms-local-runtime.v1.sql');
+const SCHEMA_PATH = path.join(PACKAGE_ROOT, 'schemas', 'sqlite', 'cms-local-runtime.v2.sql');
+const UPGRADE_PATH = path.join(PACKAGE_ROOT, 'schemas', 'sqlite', 'upgrade-v1-to-v2.sql');
 const PACKAGE_JSON_PATH = path.join(PACKAGE_ROOT, 'package.json');
 
 function readPackageVersion() {
@@ -21,15 +20,12 @@ function readPackageVersion() {
 }
 
 function parseArgs(argv) {
-  const out = { command: argv[0] ?? 'help', root: process.cwd(), json: false, project: null, page: null, preset: null, id: null };
+  const out = { command: argv[0] ?? 'help', root: process.cwd(), json: false, project: null };
   for (let i = 1; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--json') out.json = true;
     else if (arg === '--root') out.root = path.resolve(argv[++i] ?? '.');
     else if (arg === '--project') out.project = argv[++i] ?? null;
-    else if (arg === '--page') out.page = argv[++i] ?? null;
-    else if (arg === '--preset') out.preset = argv[++i] ?? null;
-    else if (arg === '--id') out.id = argv[++i] ?? null;
     else if (arg === '--help' || arg === '-h') out.command = 'help';
     else throw new Error(`unknown argument: ${arg}`);
   }
@@ -68,6 +64,33 @@ function print(value, asJson) {
   process.stdout.write(`${value}\n`);
 }
 
+async function upgradeLegacyRuntime(dbPath) {
+  if (!fs.existsSync(dbPath)) return;
+  let db = await openDatabase(dbPath);
+  const oldSchema = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='cms_sections'").get();
+  db.close();
+  if (!oldSchema) return;
+  fs.copyFileSync(dbPath, dbPath + '.pre-v2.sqlite');
+  db = await openDatabase(dbPath);
+  const names = ['sites', 'pages', 'sections', 'blocks', 'revisions', 'publications', 'assets'];
+  try {
+    db.exec('PRAGMA foreign_keys=OFF; BEGIN IMMEDIATE;');
+    for (const name of names) db.exec('ALTER TABLE cms_' + name + ' RENAME TO cms_legacy_' + name);
+    db.exec(fs.readFileSync(SCHEMA_PATH, 'utf8'));
+    db.exec(fs.readFileSync(UPGRADE_PATH, 'utf8'));
+    for (const name of names) db.exec('DROP TABLE cms_legacy_' + name);
+    db.exec('COMMIT; PRAGMA foreign_keys=ON;');
+    const integrity = db.prepare('PRAGMA integrity_check').get();
+    const violations = db.prepare('PRAGMA foreign_key_check').all();
+    if (integrity.integrity_check !== 'ok' || violations.length) {
+      throw new Error('v1-to-v2 integrity check failed; preserved backup at .agentsam/cms.sqlite.pre-v2.sqlite');
+    }
+  } catch (error) {
+    try { db.exec('ROLLBACK;'); } catch {}
+    throw error;
+  } finally { db.close(); }
+}
+
 async function initRuntime(options) {
   const p = pathsFor(options.root);
   const projectId = slug(options.project ?? path.basename(options.root));
@@ -78,6 +101,7 @@ async function initRuntime(options) {
     throw new Error('bundled sqlite schema missing from package');
   }
 
+  await upgradeLegacyRuntime(p.dbPath);
   const db = await openDatabase(p.dbPath);
   try {
     db.exec('PRAGMA foreign_keys = ON;');
@@ -98,7 +122,7 @@ async function initRuntime(options) {
   }
 
   const receipt = {
-    schema: 'inneranimalmedia.cms.local-runtime-receipt.v1',
+    schema: 'inneranimalmedia.cms.local-runtime-receipt.v2',
     project: { id: projectId },
     provider: 'sqlite',
     mode: 'local_authority',
@@ -135,7 +159,7 @@ async function inspectRuntime(options) {
     const info = Object.fromEntries(infoRows.map((row) => [String(row.key), String(row.value)]));
     const integrity = db.prepare('PRAGMA integrity_check').get();
     const counts = {};
-    for (const table of ['cms_sites', 'cms_pages', 'cms_sections', 'cms_blocks', 'cms_revisions', 'cms_publications', 'cms_assets']) {
+    for (const table of ['cms_sites', 'cms_pages', 'cms_page_sections', 'cms_section_blocks', 'cms_revisions', 'cms_publications', 'cms_assets']) {
       counts[table] = Number(db.prepare(`SELECT count(*) AS n FROM ${table}`).get().n);
     }
     const toolCount = Number(db.prepare('SELECT count(*) AS n FROM cms_tool_catalog').get().n);
@@ -191,8 +215,6 @@ Usage:
   cms-runtime doctor [--root PATH] [--json]
   cms-runtime tools [--root PATH]
   cms-runtime skills [--root PATH]
-  cms-runtime install-editorial --page PAGE_ID --preset PRESET [--id SECTION_ID] [--root PATH] [--json]
-  cms-runtime publish-editorial --page PAGE_ID [--root PATH] [--json]
 
 Typical clean-machine flow:
   mkdir my-site && cd my-site
@@ -216,12 +238,6 @@ async function main() {
       break;
     case 'skills':
       await catalog(options, 'skills');
-      break;
-    case 'install-editorial':
-      print(installLocalEditorial({ root: options.root, pageId: options.page, preset: options.preset, id: options.id }), options.json);
-      break;
-    case 'publish-editorial':
-      print(publishLocalEditorial({ root: options.root, pageId: options.page }), options.json);
       break;
     case 'help':
       help();
