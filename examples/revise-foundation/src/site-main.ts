@@ -13,8 +13,17 @@ import { buildSiteSearchIndex, searchSite } from "./site-search.js";
 const params = new URLSearchParams(location.search);
 // Keep the original CMS route independent from the immutable theme release URL.
 const previewBase = import.meta.env.BASE_URL.replace(/\/$/, "");
-const stripPreviewBase = (value: string) =>
-  previewBase && value.startsWith(previewBase + "/") ? value.slice(previewBase.length) : value;
+const stripPreviewBase = (value: string) => {
+  // Theme Store's friendly /themes/.../demo/... URL resolves to the same
+  // versioned R2 HTML without redirecting the browser location bar.
+  const aliases = [previewBase, previewBase ? "/themes/revise/presets/revise/demo" : ""];
+  for (const prefix of aliases) {
+    if (prefix && (value === prefix || value.startsWith(prefix + "/"))) {
+      return value.slice(prefix.length) || "/";
+    }
+  }
+  return value;
+};
 const previewHref = (href: string) =>
   previewBase && href.startsWith("/") && !href.startsWith("//") &&
   !href.startsWith(previewBase + "/") ? previewBase + href : href;
