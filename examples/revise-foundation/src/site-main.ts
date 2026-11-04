@@ -11,7 +11,14 @@ import { initialSite, refineFnfCopy, siteMedia } from "./site-data.js";
 import { buildSiteSearchIndex, searchSite } from "./site-search.js";
 
 const params = new URLSearchParams(location.search);
-if (location.pathname.startsWith("/library")) {
+// Keep the original CMS route independent from the immutable theme release URL.
+const previewBase = import.meta.env.BASE_URL.replace(/\/$/, "");
+const stripPreviewBase = (value: string) =>
+  previewBase && value.startsWith(previewBase + "/") ? value.slice(previewBase.length) : value;
+const previewHref = (href: string) =>
+  previewBase && href.startsWith("/") && !href.startsWith("//") &&
+  !href.startsWith(previewBase + "/") ? previewBase + href : href;
+if (stripPreviewBase(location.pathname).startsWith("/library")) {
   void import("./library-main.js");
 } else if (params.has("legacy") || params.has("fixture") || params.has("overlay") || params.has("section")) {
   void import("./main.js");
@@ -31,7 +38,7 @@ function bootSite() {
   const esc = (value: unknown) => String(value ?? "").replace(/&/g, "&amp;")
     .replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const route = (path: string) => path === "/" ? "/" : "/" + path.split("/").filter(Boolean).join("/") + "/";
-  const pageForPath = () => site.pages.find((p) => p.path === route(location.pathname)) ?? site.pages[0];
+  const pageForPath = () => site.pages.find((p) => p.path === route(stripPreviewBase(location.pathname))) ?? site.pages[0];
   const isLocalHref = (href: string) => href.startsWith("/") && !href.startsWith("//");
   function link(label: string, href: string, classes = "") {
     return '<a class="' + classes + '" href="' + esc(href) + '">' + esc(label) + "</a>";
@@ -85,7 +92,10 @@ function bootSite() {
   }
   function pageContent(page: SitePage) {
     const inner = page.sections.map((section) => renderSiteSection(section, {
-      context: { theme: site.theme, resolveMedia: (key) => siteMedia.get(key) ?? null },
+      context: { theme: site.theme, resolveMedia: (key) => {
+        const media = siteMedia.get(key);
+        return media ? previewHref(media) : null;
+      } },
       presets,
     })).join("");
     const pageNumber = String(site.pages.findIndex((item) => item.id === page.id) + 1).padStart(2, "0");
@@ -237,7 +247,7 @@ function bootSite() {
     }
     const action = panel.querySelector<HTMLAnchorElement>("[data-preview-cta]");
     if (action) {
-      action.href = product ? (isLive ? "https://fuelnfreetime.com/shop" : "/ideas/") : "/stories/";
+      action.href = product ? (isLive ? "https://fuelnfreetime.com/shop" : previewHref("/ideas/")) : previewHref("/stories/");
       action.textContent = product ? (isLive ? "Browse the live store ↗" : "See product ideas ↗") : "Explore stories ↗";
     }
     enhancement?.overlays.open("preview", { trigger });
@@ -267,7 +277,7 @@ function bootSite() {
     image?.removeAttribute("src");
     const action = panel.querySelector<HTMLAnchorElement>("[data-preview-cta]");
     if (action) {
-      action.href = "/ideas/";
+      action.href = previewHref("/ideas/");
       action.textContent = "Explore all ideas ↗";
     }
     enhancement?.overlays.open("preview", { trigger });
@@ -301,6 +311,21 @@ function bootSite() {
       '<div class="revise-scrim" data-overlay-scrim data-state="closed"></div>' +
       menuMarkup() + searchMarkup() + bagMarkup() + previewMarkup() + discoverMarkup() +
       '</div>';
+    // A pinned Theme Store preview stays inside its versioned URL; the default
+    // localhost experience still uses ordinary root-level CMS page paths.
+    if (previewBase) {
+      root.querySelectorAll<HTMLAnchorElement>('a[href^="/"]').forEach((anchor) => {
+        const href = anchor.getAttribute("href");
+        if (href?.startsWith("/library/")) {
+          // Shared design evidence belongs to the theme catalog, not a theme's ZIP.
+          anchor.setAttribute("href", "https://themes.inneranimalmedia.com/");
+        } else if (href) anchor.setAttribute("href", previewHref(href));
+      });
+      root.querySelectorAll<HTMLImageElement>('img[src^="/"]').forEach((image) => {
+        const src = image.getAttribute("src");
+        if (src) image.setAttribute("src", previewHref(src));
+      });
+    }
     enhancement = enhanceRevise(document);
     root.querySelectorAll<HTMLButtonElement>(".iam-product-card__quick").forEach((button) => {
       const item = button.closest<HTMLElement>(".iam-product-card");
@@ -366,7 +391,7 @@ function bootSite() {
         anchor.target !== "_blank") {
       event.preventDefault();
       const href = anchor.getAttribute("href") ?? "/";
-      if (href.startsWith("/library/")) {
+      if (stripPreviewBase(href).startsWith("/library/")) {
         window.location.assign(href);
         return;
       }
